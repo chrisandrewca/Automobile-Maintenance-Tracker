@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <set>
 
 // transform DB data into API data
 //class Vehicle
@@ -32,7 +33,7 @@ class VehicleType
 		Name
 	};
 
-	typedef std::set<VehicleTypeProperty> VehicleTypePropertyChangeset;
+	typedef std::set<VehicleTypeProperty> VehicleTypePropertyChangeSet;
 
 	int GetID() const;
 	void SetID(int value);
@@ -41,22 +42,29 @@ class VehicleType
 	void SetName(const std::string& value);
 };
 
-class Vehicle
+template <typename T>
+class DataStoreEntity
 {
 public:
-	enum class VehicleProperty
-	{
-		Type,
-		Make,
-		Model,
-		Year,
-		Odometer,
-		UserDefined
-	};
+	virtual const std::set<T>& GetPropertyChangeSet() const = 0;
+};
 
-	typedef std::set<VehicleProperty> VehiclePropetyChangeset;
+enum class VehicleProperty
+{
+	Type,
+	Make,
+	Model,
+	Year,
+	Odometer,
+	UserDefined
+};
 
-	Vehicle();
+typedef std::set<VehicleProperty> VehiclePropetyChangeSet;
+
+class Vehicle : public DataStoreEntity<VehicleProperty>
+{
+public:
+	Vehicle(); // id = -1
 
 	std::unique_ptr<VehicleType> GetType() const;
 	void SetType(VehicleType& value);
@@ -78,6 +86,8 @@ public:
 
 	std::string& GetProperty(const std::string& name, std::string& value) const;
 	void SetProperty(const std::string& name, const std::string& value);
+
+	const VehiclePropetyChangeSet& GetPropertyChangeSet() const override;
 };
 
 class MaintenanceType
@@ -87,7 +97,7 @@ class MaintenanceType
 		Name
 	};
 
-	typedef std::set<MaintenanceTypeProperty> MaintenanceTypePropertyChangeset;
+	typedef std::set<MaintenanceTypeProperty> MaintenanceTypePropertyChangeSet;
 
 	int GetID() const;
 	void SetID(int value);
@@ -99,15 +109,6 @@ class MaintenanceType
 class MaintenanceTask
 {
 public:
-	enum class MaintenanceTaskProperty
-	{
-		Type,
-		Date,
-		VehicleID
-	};
-
-	typedef std::set<MaintenanceTaskProperty> MaintenanceTaskPropertyChangeset;
-
 	MaintenanceTask();
 
 	std::unique_ptr<MaintenanceType> GetType() const;
@@ -120,7 +121,22 @@ public:
 
 	int VehicleID() const; // "lazy loading"
 	void SetVehicleID(int value);
+
+	enum class MaintenanceTaskProperty
+	{
+		Type,
+		Date,
+		VehicleID
+	};
+	typedef std::set<MaintenanceTaskProperty> MaintenanceTaskPropertyChangeSet;
+	const MaintenanceTaskPropertyChangeSet& GetChangeSet() const;
 };
+
+// can be pure API calls using other classes
+//class VehicleApplicableMaintenance;
+
+// can be pure API calls using other classes
+//class VehicleUserDefinedField
 
 // API creates objects
 // API has ptr to database, database inherits from "persistance layer"
@@ -138,7 +154,6 @@ class API
 public:
 	enum class DataStoreOption { Database };
 
-public:
 	API(DataStoreOption dataStore);
 	~API();
 
@@ -146,12 +161,12 @@ public:
 	std::unique_ptr<Vehicle> CreateVehicle(); // not really needed? we can handle -1 id case
 	bool DeleteVehicle(Vehicle& vehicle);
 	std::vector<std::unique_ptr<Vehicle> > FindVehicles(
-		const std::vector<Vehicle::VehicleProperty>& vehicleProperties,
+		const std::vector<VehicleProperty>& vehicleProperties,
 		const std::vector<std::string>& userDefinedProperties = std::vector<std::string>()) const;
 	std::vector<std::unique_ptr<Vehicle> > GetVehicle(int vehicleId) const;
 	std::vector<std::unique_ptr<Vehicle> > ListAllVehicles() const;
 	bool UpdateVehicle(Vehicle& vehicle);
-	bool UpdateVehicle(Vehicle& vehicle, Vehicle::VehiclePropetyChangeset& propertyChanges);
+	bool UpdateVehicle(Vehicle& vehicle, VehiclePropetyChangeSet& propertyChanges);
 
 private:
 	DataStore* dataStore;

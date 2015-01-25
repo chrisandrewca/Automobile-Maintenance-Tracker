@@ -30,9 +30,9 @@ using namespace AMT;
 int main(int argc, char* argv[])
 {
 	const char* DB_NAME = "auto_maintenance_tracker";
-	Database db;
-	std::string errMsg;
-	db.setup(DB_NAME, errMsg);
-	std::cout << errMsg << std::endl;
+	//Database db;
+	//std::string errMsg;
+	//db.setup(DB_NAME, errMsg);
+	//std::cout << errMsg << std::endl;
 	return 0;
 }

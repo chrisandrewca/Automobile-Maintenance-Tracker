@@ -12,7 +12,7 @@ class DataStore
 {
 public:
 	virtual bool UpdateVehicle(Vehicle& vehicle) = 0;
-	virtual bool UpdateVehicle(Vehicle& vehicle, Vehicle::VehiclePropetyChangeset& propertyChanges) = 0;
+	virtual bool UpdateVehicle(Vehicle& vehicle, VehiclePropetyChangeSet& propertyChanges) = 0;
 };
 
 }
