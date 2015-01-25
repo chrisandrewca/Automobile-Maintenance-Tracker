@@ -26,68 +26,46 @@
 namespace AMT
 {
 
-class VehicleType
+// if vehicle updated its own properties it would need a ref to the datastore, an injected ctor,
+	// and the user would need to call V.save with these flags anyways (because client cant change
+	// a const ref), so the API handles it
+enum class VehicleProperties
 {
-	enum class VehicleTypeProperty
-	{
-		Name
-	};
-
-	typedef std::set<VehicleTypeProperty> VehicleTypePropertyChangeSet;
-
-	int GetID() const;
-	void SetID(int value);
-
-	std::string GetName() const;
-	void SetName(const std::string& value);
+	All			=  0,
+	Type		=  1,
+	Make		=  2,
+	Model		=  4,
+	Year		=  8,
+	Odometer	= 16,
+	UserDefined = 32
 };
 
-template <typename T>
-class DataStoreEntity
-{
-public:
-	virtual const std::set<T>& GetPropertyChangeSet() const = 0;
-};
-
-enum class VehicleProperty
-{
-	Type,
-	Make,
-	Model,
-	Year,
-	Odometer,
-	UserDefined
-};
-
-typedef std::set<VehicleProperty> VehiclePropetyChangeSet;
-
-class Vehicle : public DataStoreEntity<VehicleProperty>
+class Vehicle/* : public DataStoreEntity<VehicleProperties>*/
 {
 public:
 	Vehicle(); // id = -1
 
-	std::unique_ptr<VehicleType> GetType() const;
-	void SetType(VehicleType& value);
+	// api returns unique ptr to class
+		// class returns reference and cleans up ptr via dtor/smart ptr
+	// onUpdate:: if type not in DataStore add it
+	std::string& GetType();
 
-	std::string& GetMake() const;
-	void SetMake(const std::string& value);
+	std::string& GetMake();
 
-	std::string& GetModel() const;
-	void SetModel(const std::string& value);
+	std::string& GetModel();
 
-	int GetYear();
-	void SetYear(int value);
+	int& GetYear();
 
-	int GetOdometer();
-	void SetOdometer(int value);
+	int& GetOdometer();
 
 	int GetID() const;
-	//void SetMaintenanceID(int value);
 
-	std::string& GetProperty(const std::string& name, std::string& value) const;
-	void SetProperty(const std::string& name, const std::string& value);
+	// onUpdate:: if property not in DataStore add it
+	void AddProperty(const std::string& property, const std::string& value);
 
-	const VehiclePropetyChangeSet& GetPropertyChangeSet() const override;
+	std::string& GetProperty(const std::string& name);
+
+	std::vector<std::string>& GetPropertyNames() const;
 };
 
 class MaintenanceType
@@ -159,14 +137,22 @@ public:
 
 	// !!! use unique ptrs
 	std::unique_ptr<Vehicle> CreateVehicle(); // not really needed? we can handle -1 id case
+	
 	bool DeleteVehicle(Vehicle& vehicle);
-	std::vector<std::unique_ptr<Vehicle> > FindVehicles(
-		const std::vector<VehicleProperty>& vehicleProperties,
-		const std::vector<std::string>& userDefinedProperties = std::vector<std::string>()) const;
-	std::vector<std::unique_ptr<Vehicle> > GetVehicle(int vehicleId) const;
+	
+	std::vector<std::unique_ptr<Vehicle> > FindVehicles(VehicleProperties vehicleProperties,
+		const Vehicle& vehicleValues) const;
+	
+	std::unique_ptr<Vehicle> GetVehicle(int vehicleId) const;
+	
 	std::vector<std::unique_ptr<Vehicle> > ListAllVehicles() const;
-	bool UpdateVehicle(Vehicle& vehicle);
-	bool UpdateVehicle(Vehicle& vehicle, VehiclePropetyChangeSet& propertyChanges);
+
+	// unique ptr to vector vs copy list?
+	std::vector<std::string> ListAllVehicleTypes();
+	std::vector<std::string> ListUserDefinedVehiclePropertiesByType(const std::string& vehicleType);
+	
+	bool UpdateVehicle(Vehicle& vehicle, VehicleProperties properties,
+		const std::vector<std::string>& userDefinedProperties = std::vector<std::string>());
 
 private:
 	DataStore* dataStore;
