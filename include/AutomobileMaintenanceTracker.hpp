@@ -2,27 +2,11 @@
 #define _AUTOMOBILE_MAINTENANCE_TRACKER_HPP_
 
 #include <string>
-#include <unordered_map>
 #include <memory>
 #include <vector>
-#include <set>
-
-// transform DB data into API data
-//class Vehicle
-//{
-//public:
-//	std::string type;
-//private:
-//	int id;
-//	int type;
-//	std::string model;
-//	int year;
-//	int odemeter;
-//};
 
 /// !!! what are the CRUD API semantics think ease of use
 
-// keeps track of changes via list of columns "TYPE"
 namespace AMT
 {
 
@@ -69,24 +53,7 @@ public:
 	std::vector<std::string>& GetPropertyNames() const;
 };
 
-// could this just be API calls?
-//class MaintenanceType
-//{
-//	enum class MaintenanceTypeProperty
-//	{
-//		Name
-//	};
-//
-//	typedef std::set<MaintenanceTypeProperty> MaintenanceTypePropertyChangeSet;
-//
-//	int GetID() const;
-//	void SetID(int value);
-//
-//	std::string GetName() const;
-//	void SetName(const std::string& value);
-//};
-
-enum class MaintenanceProperties
+enum class MaintenanceTaskProperties
 {
 	All		  = 0,
 	Type	  = 1,
@@ -108,22 +75,6 @@ public:
 	int& VehicleID(); // "lazy loading"
 };
 
-// can be pure API calls using other classes
-//class VehicleApplicableMaintenance;
-
-// can be pure API calls using other classes
-//class VehicleUserDefinedField
-
-// API creates objects
-// API has ptr to database, database inherits from "persistance layer"
-// API injects database:PL ptr into Vehicle
-// Vehicle calls PL.prepChange(id, property);
-// Vehicle calls PL.submitChanges(id);
-// PL has multimap<id,property>, database:PL constructs SQL query with if/else/Get
-
-
-// 2 interfaces- 1 to accept full Vehicle and submit
-			// - 2 to accept vehicle plus changeset
 class DataStore;
 class API
 {
@@ -145,7 +96,7 @@ public:
 
 	// !!! use unique ptrs
 	std::unique_ptr<Vehicle>
-	CreateVehicle(); // not really needed? we can handle -1 id case
+	CreateVehicle();
 	
 	bool
 	DeleteVehicle(Vehicle& vehicle);
@@ -184,7 +135,7 @@ public:
 
 	bool
 	UpdateMaintenanceTask(MaintenanceTask& task,
-						  MaintenanceProperties properties);
+						  MaintenanceTaskProperties properties);
 	
 	bool
 	DeleteMaintenanceTask(MaintenanceTask& task);

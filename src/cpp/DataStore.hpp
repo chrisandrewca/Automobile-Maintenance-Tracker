@@ -2,8 +2,6 @@
 #define _AMT_DATA_STORE_HPP_
 
 #include "AutomobileMaintenanceTracker.hpp"
-#include <unordered_map>
-#include <set>
 
 namespace AMT
 {
