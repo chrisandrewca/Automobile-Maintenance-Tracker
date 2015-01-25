@@ -14,6 +14,11 @@ Database::~Database()
 	}
 }
 
+bool Database::Open(const std::string& name, std::string& errorMessage)
+{
+	return this->setup(name.data(), errorMessage);
+}
+
 bool Database::setup(const char* databaseName, std::string& errorMessage)
 {
 	errorMessage.clear();

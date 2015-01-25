@@ -9,7 +9,7 @@ namespace AMT
 class DataStore
 {
 public:
-	virtual bool UpdateVehicle(Vehicle& vehicle) = 0;
+	virtual bool Open(const std::string& name, std::string& errorMessage) = 0;
 };
 
 }

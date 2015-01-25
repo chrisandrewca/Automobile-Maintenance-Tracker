@@ -14,11 +14,12 @@ public:
 	Database();
 	~Database();
 
-	bool setup(const char* databaseName, std::string& errorMessage);
+	bool Open(const std::string& name, std::string& errorMessage) override;
 
 private:
 	sqlite3* sqlite3;
 
+	virtual bool setup(const char* databaseName, std::string& errorMessage);
 };
 
 }
