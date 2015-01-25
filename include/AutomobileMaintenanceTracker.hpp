@@ -29,6 +29,7 @@ namespace AMT
 // if vehicle updated its own properties it would need a ref to the datastore, an injected ctor,
 	// and the user would need to call V.save with these flags anyways (because client cant change
 	// a const ref), so the API handles it
+	// flags could be as large or fine grained as needed to cover different types of objects
 enum class VehicleProperties
 {
 	All			=  0,
@@ -40,7 +41,7 @@ enum class VehicleProperties
 	UserDefined = 32
 };
 
-class Vehicle/* : public DataStoreEntity<VehicleProperties>*/
+class Vehicle
 {
 public:
 	Vehicle(); // id = -1
@@ -60,29 +61,30 @@ public:
 
 	int GetID() const;
 
-	// onUpdate:: if property not in DataStore add it
 	void AddProperty(const std::string& property, const std::string& value);
 
+	// onUpdate:: if property not in DataStore add it
 	std::string& GetProperty(const std::string& name);
 
 	std::vector<std::string>& GetPropertyNames() const;
 };
 
-class MaintenanceType
-{
-	enum class MaintenanceTypeProperty
-	{
-		Name
-	};
-
-	typedef std::set<MaintenanceTypeProperty> MaintenanceTypePropertyChangeSet;
-
-	int GetID() const;
-	void SetID(int value);
-
-	std::string GetName() const;
-	void SetName(const std::string& value);
-};
+// could this just be API calls?
+//class MaintenanceType
+//{
+//	enum class MaintenanceTypeProperty
+//	{
+//		Name
+//	};
+//
+//	typedef std::set<MaintenanceTypeProperty> MaintenanceTypePropertyChangeSet;
+//
+//	int GetID() const;
+//	void SetID(int value);
+//
+//	std::string GetName() const;
+//	void SetName(const std::string& value);
+//};
 
 class MaintenanceTask
 {
@@ -151,6 +153,7 @@ public:
 	std::vector<std::string> ListAllVehicleTypes();
 	std::vector<std::string> ListUserDefinedVehiclePropertiesByType(const std::string& vehicleType);
 	
+	bool UpdateVehicle(Vehicle& vehicle);
 	bool UpdateVehicle(Vehicle& vehicle, VehicleProperties properties,
 		const std::vector<std::string>& userDefinedProperties = std::vector<std::string>());
 
