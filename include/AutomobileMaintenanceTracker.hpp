@@ -59,7 +59,7 @@ public:
 
 	int& GetOdometer();
 
-	int GetID() const;
+	int GetID();
 
 	void AddProperty(const std::string& property, const std::string& value);
 
@@ -86,30 +86,26 @@ public:
 //	void SetName(const std::string& value);
 //};
 
+enum class MaintenanceProperties
+{
+	All		  = 0,
+	Type	  = 1,
+	Date	  = 2,
+	VehicleID = 4
+};
+
 class MaintenanceTask
 {
 public:
-	MaintenanceTask();
+	MaintenanceTask(); // id -1
 
-	std::unique_ptr<MaintenanceType> GetType() const;
-	void SetType(MaintenanceType& value); // API query maintenance types
-	
-	int GetDate() const;
-	void SetDate(int value);
+	std::string& GetType();
 
-	int GetID() const;
+	int& GetDate();
 
-	int VehicleID() const; // "lazy loading"
-	void SetVehicleID(int value);
+	int GetID();
 
-	enum class MaintenanceTaskProperty
-	{
-		Type,
-		Date,
-		VehicleID
-	};
-	typedef std::set<MaintenanceTaskProperty> MaintenanceTaskPropertyChangeSet;
-	const MaintenanceTaskPropertyChangeSet& GetChangeSet() const;
+	int& VehicleID(); // "lazy loading"
 };
 
 // can be pure API calls using other classes
@@ -137,25 +133,61 @@ public:
 	API(DataStoreOption dataStore);
 	~API();
 
-	// !!! use unique ptrs
-	std::unique_ptr<Vehicle> CreateVehicle(); // not really needed? we can handle -1 id case
-	
-	bool DeleteVehicle(Vehicle& vehicle);
-	
-	std::vector<std::unique_ptr<Vehicle> > FindVehicles(VehicleProperties vehicleProperties,
-		const Vehicle& vehicleValues) const;
-	
-	std::unique_ptr<Vehicle> GetVehicle(int vehicleId) const;
-	
-	std::vector<std::unique_ptr<Vehicle> > ListAllVehicles() const;
-
 	// unique ptr to vector vs copy list?
-	std::vector<std::string> ListAllVehicleTypes();
-	std::vector<std::string> ListUserDefinedVehiclePropertiesByType(const std::string& vehicleType);
+	bool
+	AddTypeOfVehicle(const std::string& type);
 	
-	bool UpdateVehicle(Vehicle& vehicle);
-	bool UpdateVehicle(Vehicle& vehicle, VehicleProperties properties,
-		const std::vector<std::string>& userDefinedProperties = std::vector<std::string>());
+	bool
+	UpdateTypesOfVehicles(const std::string& type, const std::string& newType);
+	
+	std::vector<std::string>
+	ListAllTypesOfVehicles();
+
+	// !!! use unique ptrs
+	std::unique_ptr<Vehicle>
+	CreateVehicle(); // not really needed? we can handle -1 id case
+	
+	bool
+	DeleteVehicle(Vehicle& vehicle);
+
+	std::vector<std::unique_ptr<Vehicle> >
+	ListAllVehicles() const;
+	
+	std::vector<std::unique_ptr<Vehicle> >
+	FindVehicles(VehicleProperties properties, const Vehicle& values) const;
+
+	std::unique_ptr<Vehicle>
+	GetVehicle(int vehicleId) const;
+	
+	bool
+	UpdateVehicle(Vehicle& vehicle);
+
+	bool
+	UpdateVehicle(Vehicle& vehicle,
+				  VehicleProperties properties,
+				  const std::vector<std::string>& userDefinedProperties = std::vector<std::string>());
+
+	bool
+	AddTypeOfMaintenance(const std::string& type);
+	
+	bool
+	UpdateTypesOfMaintenance(const std::string& type, const std::string& newType);
+	
+	std::vector<std::string>
+	ListAllTypesOfMaintenance();
+	
+	std::unique_ptr<MaintenanceTask>
+	CreateMaintenanceTask(int vehicleID);
+
+	bool
+	UpdateMaintenanceTask(MaintenanceTask& task);
+
+	bool
+	UpdateMaintenanceTask(MaintenanceTask& task,
+						  MaintenanceProperties properties);
+	
+	bool
+	DeleteMaintenanceTask(MaintenanceTask& task);
 
 private:
 	DataStore* dataStore;
