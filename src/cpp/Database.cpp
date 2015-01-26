@@ -13,31 +13,37 @@ Database::Database() :
 	sqlPreparedStatements.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
 	sqlQueryBag.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
 
-	// 0
+	// n: users
+	// 0: AddTypeOfVehicle
 	sqlQueryBag.push_back("INSERT INTO VehicleType (Name) VALUES (?)");
 	sqlQueryBindIndices[sqlQueryBag[0]] = std::unordered_map<std::string, int>(
 	{
 		{ "name", 1 }
 	});
 
-	// 1
+	// 1: UpdateTypesOfVehicles
+	sqlQueryBag.push_back("UPDATE VehicleType SET Name=? WHERE Name=?");
+	sqlQueryBindIndices[sqlQueryBag[1]] = std::unordered_map<std::string, int>(
+	{
+		{ "newName", 1 }, { "name", 2 }
+	});
 
 	assert(sqlQueryBag.size() < SQL_QUERY_BAG_INITIAL_SIZE);
 }
 
 Database::~Database()
 {
-	if (this->sqlite3)
-	{
-		sqlite3_close_v2(this->sqlite3);
-	}
-
 	for (auto& statement : sqlPreparedStatements)
 	{
 		if (statement.second)
 		{
 			sqlite3_finalize(statement.second);
 		}
+	}
+
+	if (this->sqlite3)
+	{
+		sqlite3_close_v2(this->sqlite3);
 	}
 }
 
@@ -85,7 +91,7 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS Vehicle ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"Type TEXT REFERENCES VehicleType (Name),"
+			"Type TEXT REFERENCES VehicleType (Name) ON UPDATE CASCADE,"
 			"Make TEXT,"
 			"Model TEXT,"
 			"Year INTEGER,"
@@ -102,7 +108,7 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 		"CREATE TABLE IF NOT EXISTS Maintenance ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"VehicleID INTEGER REFERENCES Vehicle (ID),"
-			"Type TEXT REFERENCES MaintenanceType (Name),"
+			"Type TEXT REFERENCES MaintenanceType (Name) ON UPDATE CASCADE,"
 			"Date INTEGER)",
 		NULL, NULL, &errMsg);
 	if (errMsg)
@@ -114,9 +120,9 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS VehicleApplicableMaintenance ("
-			"VehicleTypeID INTEGER REFERENCES VehicleType (ID),"
-			"MaintenanceType TEXT REFERENCES MaintenanceType (Name),"
-			"PRIMARY KEY (VehicleTypeID, MaintenanceType))",
+			"VehicleType TEXT REFERENCES VehicleType (Name) ON UPDATE CASCADE,"
+			"MaintenanceType TEXT REFERENCES MaintenanceType (Name) ON UPDATE CASCADE,"
+			"PRIMARY KEY (VehicleType, MaintenanceType))",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -157,7 +163,7 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 		"CREATE TABLE IF NOT EXISTS VehicleUserDefinedField ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"Name TEXT,"
-			"ApplicableVehicleType TEXT REFERENCES VehicleType (Name))",
+			"ApplicableVehicleType TEXT REFERENCES VehicleType (Name) ON UPDATE CASCADE)",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -235,5 +241,41 @@ Database::AddTypeOfVehicle(const std::string& name)
 bool
 Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
 {
-	return false;
+	/// !!! important
+	// need mutex on SQLITEPreparedStatement
+	// for functions which Bind + Step
+	// API, Datastore errors
+	// std::timed_mutex - succeed || timeout
+	// support C++ library & http nicely
+
+	bool succeeded = false;
+
+	std::size_t sqlQueryBagStatementIndex = 1;
+	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	SQLitePreparedStatementPtr statement = sqlPreparedStatements[sqlQueryString];
+	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
+
+	/// !!! TODO ERROR CHECKING
+	int bindResult = sqlite3_bind_text(statement,
+		bindIndices["name"],
+		name.data(),
+		name.size(),
+		NULL);
+	std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+	bindResult = sqlite3_bind_text(statement,
+		bindIndices["newName"],
+		newName.data(),
+		newName.size(),
+		NULL);
+	std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+	/// !!! TODO ERROR CHECKING
+	int stepResult = sqlite3_step(statement);
+	std::cout << "UpdateTypesOfVehicles sqlite3_step: " << stepResult << "\n";
+
+	sqlite3_reset(statement);
+	sqlite3_clear_bindings(statement);
+
+	return succeeded;
 }

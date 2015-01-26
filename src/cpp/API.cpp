@@ -27,9 +27,9 @@ API::AddTypeOfVehicle(const std::string& name)
 }
 
 bool
-API::UpdateTypesOfVehicles(const std::string& type, const std::string& newType)
+API::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
 {
-	return false;
+	return this->dataStore->UpdateTypesOfVehicles(name, newName);
 }
 
 std::vector<std::string>

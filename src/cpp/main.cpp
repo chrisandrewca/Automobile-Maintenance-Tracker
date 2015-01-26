@@ -10,6 +10,10 @@ int main(int argc, char* argv[])
 	std::string errMsg;
 	db.Open(DB_NAME, errMsg);
 	std::cout << errMsg << std::endl;
+
 	db.AddTypeOfVehicle("Electric");
+	db.UpdateTypesOfVehicles("Electric", "Diesel");
+	db.UpdateTypesOfVehicles("Diesel", "Gasoline");
+	db.UpdateTypesOfVehicles("Gasoline", "Electric2");
 	return 0;
 }
