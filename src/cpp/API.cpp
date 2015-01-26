@@ -25,9 +25,9 @@ API::~API()
 /// @param type the new type of vehicle
 /// @return true if added or already added otherwise false
 bool
-API::AddTypeOfVehicle(const std::string& type)
+API::AddTypeOfVehicle(const std::string& name)
 {
-	return this->dataStore->AddTypeOfVehicle(type);
+	return this->dataStore->AddTypeOfVehicle(name);
 }
 
 bool

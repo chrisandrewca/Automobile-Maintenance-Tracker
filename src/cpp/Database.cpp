@@ -1,10 +1,40 @@
 #include "Database.hpp"
 #include "utils\Debug.h"
+#include <cassert>
 using namespace AMT;
 
+#define SQL_QUERY_BAG_INITIAL_SIZE 50
+
 Database::Database() :
+	sqlPreparedStatements(SQL_QUERY_BAG_INITIAL_SIZE),
+	sqlQueryBag(SQL_QUERY_BAG_INITIAL_SIZE),
 	sqlite3(nullptr)
-{}
+{
+	// 0
+	sqlQueryBag.push_back("INSERT INTO VehicleType (Name) VALUES (?)");
+	sqlQueryBindIndices[sqlQueryBag[0]] = std::unordered_map<std::string, int>(
+	{
+		{ "name", 0 }
+	});
+	// 1
+
+	assert(sqlQueryBag.size() < SQL_QUERY_BAG_INITIAL_SIZE);
+
+	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
+	{
+		sqlite3_stmt* queryStmt;
+		sqlite3_prepare_v2(this->sqlite3,
+			sqlQueryBag[i].data(),
+			sqlQueryBag[i].size(),
+			&queryStmt,
+			NULL);
+
+		sqlPreparedStatements[sqlQueryBag[i]]
+			.statement = queryStmt;
+		sqlPreparedStatements[sqlQueryBag[i]]
+			.bindIndices = &sqlQueryBindIndices[sqlQueryBag[i]];
+	}
+}
 
 Database::~Database()
 {
@@ -12,14 +42,22 @@ Database::~Database()
 	{
 		sqlite3_close_v2(this->sqlite3);
 	}
+
+	for (auto& statement : sqlPreparedStatements)
+	{
+		if (statement.second.statement)
+		{
+			sqlite3_finalize(statement.second.statement);
+		}
+	}
 }
 
 bool Database::Open(const std::string& name, std::string& errorMessage)
 {
-	return this->setup(name.data(), errorMessage);
+	return this->Setup(name.data(), errorMessage);
 }
 
-bool Database::setup(const char* databaseName, std::string& errorMessage)
+bool Database::Setup(const char* databaseName, std::string& errorMessage)
 {
 	errorMessage.clear();
 
@@ -35,8 +73,7 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 	char* errMsg = nullptr;
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS VehicleType ("
-			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"Name TEXT)",
+			"Name TEXT PRIMARY KEY)",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -47,8 +84,7 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS MaintenanceType ("
-			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"Name TEXT)",
+			"Name TEXT PRIMARY KEY)",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -60,7 +96,7 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS Vehicle ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"Type INTEGER REFERENCES VehicleType (ID),"
+			"Type TEXT REFERENCES VehicleType (Name),"
 			"Make TEXT,"
 			"Model TEXT,"
 			"Year INTEGER,"
@@ -77,7 +113,7 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 		"CREATE TABLE IF NOT EXISTS Maintenance ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"VehicleID INTEGER REFERENCES Vehicle (ID),"
-			"Type INTEGER REFERENCES MaintenanceType (ID),"
+			"Type TEXT REFERENCES MaintenanceType (Name),"
 			"Date INTEGER)",
 		NULL, NULL, &errMsg);
 	if (errMsg)
@@ -90,8 +126,8 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 	sqlite3_exec(this->sqlite3,
 		"CREATE TABLE IF NOT EXISTS VehicleApplicableMaintenance ("
 			"VehicleTypeID INTEGER REFERENCES VehicleType (ID),"
-			"MaintenanceTypeID INTEGER REFERENCES MaintenanceType (ID),"
-			"PRIMARY KEY (VehicleTypeID, MaintenanceTypeID))",
+			"MaintenanceType TEXT REFERENCES MaintenanceType (Name),"
+			"PRIMARY KEY (VehicleTypeID, MaintenanceType))",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -132,7 +168,7 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 		"CREATE TABLE IF NOT EXISTS VehicleUserDefinedField ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"Name TEXT,"
-			"ApplicableVehicleType INTEGER REFERENCES VehicleType (ID))",
+			"ApplicableVehicleType TEXT REFERENCES VehicleType (Name))",
 		NULL, NULL, &errMsg);
 	if (errMsg)
 	{
@@ -158,13 +194,27 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 	return (errorMessage.size() == 0);
 }
 
-/// Track a new type of vehicle
-/// @param type the new type of vehicle
-/// @return true if added or already added otherwise false
 bool
-Database::AddTypeOfVehicle(const std::string& type)
+Database::AddTypeOfVehicle(const std::string& name)
 {
 	bool succeeded = false;
-	// SQL query here
+
+	std::size_t sqlQueryBagStatementIndex = 0;
+	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	SQLitePreparedStatement& statement = sqlPreparedStatements[sqlQueryString];
+	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
+
+	sqlite3_bind_text(statement.statement,
+		statement.bindIndices->at("name"),
+		name.data(),
+		name.size(),
+		NULL);
+
+	// need mutex on SQLITEPreparedStatement
+		// for functions which Bind + Step
+		// API, Datastore errors
+			// std::timed_mutex - succeed || timeout
+				// support C++ library & http nicely
+
 	return succeeded;
 }

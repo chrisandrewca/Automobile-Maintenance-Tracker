@@ -86,7 +86,7 @@ public:
 
 	// unique ptr to vector vs copy list?
 	bool
-	AddTypeOfVehicle(const std::string& type);
+	AddTypeOfVehicle(const std::string& name);
 	
 	bool
 	UpdateTypesOfVehicles(const std::string& type, const std::string& newType);

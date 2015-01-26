@@ -1,17 +1,156 @@
-﻿Build started 1/25/2015 7:28:29 PM.
+﻿Build started 1/25/2015 9:51:36 PM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\API.cpp
-         API.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\Debug\AutomobileMaintenanceTracker.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.lib" /MACHINE:X86 /SAFESEH  /machine:X86 /debug AutomobileMaintenanceTracker.dir\Debug\main.obj
-         AutomobileMaintenanceTracker.dir\Debug\API.obj
-         AutomobileMaintenanceTracker.dir\Debug\DataStore.obj
-         AutomobileMaintenanceTracker.dir\Debug\Database.obj
-         AutomobileMaintenanceTracker.dir\Debug\sqlite3.obj
-         AutomobileMaintenanceTracker.vcxproj -> C:\codez\amt\build\Debug\AutomobileMaintenanceTracker.exe
-     1>Done Building Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\Database.cpp
+         Database.cpp
+     1>c:\codez\amt\src\cpp\Database.hpp(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\tuple(746): error C2512: 'AMT::Database::SQLitePreparedStatement' : no appropriate default constructor available
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\tuple(762) : see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>,0,>(_Tuple1 &,_Tuple2 &,std::_Arg_idx<0>,std::_Arg_idx<>)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Tuple1=std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>
+         ,            _Tuple2=std::tuple<>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\tuple(762) : see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>,0,>(_Tuple1 &,_Tuple2 &,std::_Arg_idx<0>,std::_Arg_idx<>)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Tuple1=std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>
+         ,            _Tuple2=std::tuple<>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(600) : see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<const std::basic_string<char,std::char_traits<char>,std::allocator<char>>&,>(std::piecewise_construct_t,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(600) : see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<const std::basic_string<char,std::char_traits<char>,std::allocator<char>>&,>(std::piecewise_construct_t,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(723) : see reference to function template instantiation 'void std::allocator<_Other>::construct<_Objty,const std::piecewise_construct_t&,_Ty,std::tuple<>>(_Objty *,const std::piecewise_construct_t &,_Ty &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Objty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+         ,            _Ty=std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(723) : see reference to function template instantiation 'void std::allocator<_Other>::construct<_Objty,const std::piecewise_construct_t&,_Ty,std::tuple<>>(_Objty *,const std::piecewise_construct_t &,_Ty &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Objty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+         ,            _Ty=std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(872) : see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::allocator<_Other> &,_Objty *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Alloc=std::allocator<std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>>
+         ,            _Ty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+         ,            _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Objty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xmemory0(872) : see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::allocator<_Other> &,_Objty *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Alloc=std::allocator<std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>>
+         ,            _Ty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+         ,            _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Objty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(835) : see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Other>>::construct<_Ty,const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(_Ty *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Ty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(835) : see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Other>>::construct<_Ty,const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(_Ty *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Other=std::_List_node<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>,void *>
+         ,            _Ty=std::pair<const std::string,AMT::Database::SQLitePreparedStatement>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(1062) : see reference to function template instantiation 'std::_List_node<std::pair<const _Kty,_Ty>,void *> *std::_List_buy<std::pair<const _Kty,_Ty>,_Alloc>::_Buynode<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_List_node<std::pair<const _Kty,_Ty>,void *> *,std::_List_node<std::pair<const _Kty,_Ty>,void *> *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Alloc=std::allocator<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(1062) : see reference to function template instantiation 'std::_List_node<std::pair<const _Kty,_Ty>,void *> *std::_List_buy<std::pair<const _Kty,_Ty>,_Alloc>::_Buynode<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_List_node<std::pair<const _Kty,_Ty>,void *> *,std::_List_node<std::pair<const _Kty,_Ty>,void *> *,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Alloc=std::allocator<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(1034) : see reference to function template instantiation 'void std::list<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::_Insert<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_List_unchecked_const_iterator<std::_List_val<std::_List_simple_types<std::pair<const _Kty,_Ty>>>,std::_Iterator_base0>,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\list(1034) : see reference to function template instantiation 'void std::list<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::_Insert<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_List_unchecked_const_iterator<std::_List_val<std::_List_simple_types<std::pair<const _Kty,_Ty>>>,std::_Iterator_base0>,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xhash(394) : see reference to function template instantiation 'void std::list<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::emplace_front<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xhash(394) : see reference to function template instantiation 'void std::list<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::emplace_front<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\unordered_map(315) : see reference to function template instantiation 'std::pair<std::_List_iterator<std::_List_val<std::_List_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Hash<std::_Umap_traits<_Kty,_Ty,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>>::emplace<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Hasher=std::hash<std::string>
+         ,            _Keyeq=std::equal_to<std::string>
+         ,            _Alloc=std::allocator<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\unordered_map(315) : see reference to function template instantiation 'std::pair<std::_List_iterator<std::_List_val<std::_List_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Hash<std::_Umap_traits<_Kty,_Ty,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>>::emplace<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+         ,            _Hasher=std::hash<std::string>
+         ,            _Keyeq=std::equal_to<std::string>
+         ,            _Alloc=std::allocator<std::pair<const std::string,AMT::Database::SQLitePreparedStatement>>
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\unordered_map(308) : while compiling class template member function 'AMT::Database::SQLitePreparedStatement &std::unordered_map<std::string,AMT::Database::SQLitePreparedStatement,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>::operator [](const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &)'
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 ..\src\cpp\Database.cpp(33) : see reference to function template instantiation 'AMT::Database::SQLitePreparedStatement &std::unordered_map<std::string,AMT::Database::SQLitePreparedStatement,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>::operator [](const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &)' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+                 c:\codez\amt\src\cpp\Database.hpp(37) : see reference to class template instantiation 'std::unordered_map<std::string,AMT::Database::SQLitePreparedStatement,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' being compiled
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=AMT::Database::SQLitePreparedStatement
+                 ]
+     1>Done Building Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:00.96
+Time Elapsed 00:00:00.66
