@@ -292,13 +292,6 @@ Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newN
 std::unique_ptr<std::vector<std::string> >
 Database::ListAllTypesOfVehicles()
 {
-	auto* allVehicleTypes = new std::vector<string>();
-
-	std::size_t sqlQueryBagStatementIndex = 2;
-	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
-	SQLiteColumnIndices columnIndices = sqlQueryResultColumnIndices[sqlQueryString];
-
 	/// !!! TODO ERROR CHECKING LOGGING
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
@@ -306,18 +299,26 @@ Database::ListAllTypesOfVehicles()
 	// API, Datastore errors
 	// std::timed_mutex - succeed || timeout
 	// support C++ library & http nicely
+
+	auto* allVehicleTypes = new std::vector<string>();
+
+	std::size_t sqlQueryBagStatementIndex = 2;
+	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
+	SQLiteColumnIndices columnIndices = sqlQueryResultColumnIndices[sqlQueryString];
+
 	int stepResult = sqlite3_step(statement);
+	std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
+
 	while (SQLITE_ROW == stepResult)
 	{
-		std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
-
 		ustring nameBytes = sqlite3_column_text(statement, columnIndices["name"]);
-		int nameSize = sqlite3_column_bytes(statement, columnIndices["name"]);
 
-		string name(nameBytes.data(), nameBytes.data() + nameSize);
+		string name(nameBytes.begin(), nameBytes.end());
 		allVehicleTypes->push_back(name);
 
 		stepResult = sqlite3_step(statement);
+		std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
 	}
 
 	sqlite3_reset(statement);
