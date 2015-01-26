@@ -157,3 +157,13 @@ bool Database::setup(const char* databaseName, std::string& errorMessage)
 
 	return (errorMessage.size() == 0);
 }
+
+/// Track a new type of vehicle
+/// @param type the new type of vehicle
+/// @return true if added or already added otherwise false
+bool
+Database::AddTypeOfVehicle(const std::string& type)
+{
+	bool succeeded = false;
+	return succeeded;
+}

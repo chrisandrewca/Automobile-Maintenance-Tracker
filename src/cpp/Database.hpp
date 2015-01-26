@@ -16,6 +16,12 @@ public:
 
 	bool Open(const std::string& name, std::string& errorMessage) override;
 
+	/// Track a new type of vehicle
+	/// @param type the new type of vehicle
+	/// @return true if added or already added otherwise false
+	bool
+	AddTypeOfVehicle(const std::string& type) override;
+
 private:
 	sqlite3* sqlite3;
 
