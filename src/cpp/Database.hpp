@@ -22,18 +22,18 @@ public:
 	/// @param name the new type of vehicle
 	/// @return true if added or already added otherwise false
 	bool
-	AddTypeOfVehicle(const std::string& name) override;
+	AddTypeOfVehicle(const utf8string& name) override;
 
 	/// Update the name of a vehicle type
 	/// @param name the current name
 	/// @param newName the new name of the vehicle type
 	/// @return true if updated or the same otherwise false
 	bool
-	UpdateTypesOfVehicles(const std::string& name, const std::string& newName) override;
+	UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName) override;
 
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	std::unique_ptr<std::vector<std::string> >
+	std::unique_ptr<std::vector<utf8string> >
 	ListAllTypesOfVehicles() override;
 
 private:

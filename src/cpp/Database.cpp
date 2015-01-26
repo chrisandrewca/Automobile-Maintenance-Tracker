@@ -18,21 +18,21 @@ Database::Database() :
 	// n: users
 	// 0: AddTypeOfVehicle
 	sqlQueryBag.push_back("INSERT INTO VehicleType (Name) VALUES (?)");
-	sqlQueryBindIndices[sqlQueryBag[0]] = std::unordered_map<std::string, int>(
+	sqlQueryBindIndices[sqlQueryBag[0]] = u_map<string, int>(
 	{
 		{ "name", 1 }
 	});
 
 	// 1: UpdateTypesOfVehicles
 	sqlQueryBag.push_back("UPDATE VehicleType SET Name=? WHERE Name=?");
-	sqlQueryBindIndices[sqlQueryBag[1]] = std::unordered_map<std::string, int>(
+	sqlQueryBindIndices[sqlQueryBag[1]] = u_map<string, int>(
 	{
 		{ "newName", 1 }, { "name", 2 }
 	});
 
 	// 2: ListAllTypesOfVehicles
 	sqlQueryBag.push_back("SELECT * FROM VehicleType");
-	sqlQueryResultColumnIndices[sqlQueryBag[2]] = std::unordered_map<std::string, int>(
+	sqlQueryResultColumnIndices[sqlQueryBag[2]] = u_map<string, int>(
 	{
 		{ "name", 0 }
 	});
@@ -56,12 +56,12 @@ Database::~Database()
 	}
 }
 
-bool Database::Open(const std::string& name, std::string& errorMessage)
+bool Database::Open(const string& name, string& errorMessage)
 {
 	return this->Setup(name.data(), errorMessage);
 }
 
-bool Database::Setup(const char* databaseName, std::string& errorMessage)
+bool Database::Setup(const char* databaseName, string& errorMessage)
 {
 	errorMessage.clear();
 
@@ -213,12 +213,12 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 }
 
 bool
-Database::AddTypeOfVehicle(const std::string& name)
+Database::AddTypeOfVehicle(const utf8string& name)
 {
 	bool succeeded = false;
 
 	std::size_t sqlQueryBagStatementIndex = 0;
-	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
 	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
 	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
 
@@ -248,7 +248,7 @@ Database::AddTypeOfVehicle(const std::string& name)
 }
 
 bool
-Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
+Database::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 {
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
@@ -289,7 +289,7 @@ Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newN
 	return succeeded;
 }
 
-std::unique_ptr<std::vector<std::string> >
+std::unique_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfVehicles()
 {
 	/// !!! TODO ERROR CHECKING LOGGING
@@ -300,7 +300,7 @@ Database::ListAllTypesOfVehicles()
 	// std::timed_mutex - succeed || timeout
 	// support C++ library & http nicely
 
-	auto* allVehicleTypes = new std::vector<string>();
+	auto* allVehicleTypes = new std::vector<utf8string>();
 
 	std::size_t sqlQueryBagStatementIndex = 2;
 	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
@@ -323,5 +323,5 @@ Database::ListAllTypesOfVehicles()
 
 	sqlite3_reset(statement);
 
-	return std::unique_ptr<std::vector<string> >(allVehicleTypes);
+	return std::unique_ptr<std::vector<utf8string> >(allVehicleTypes);
 }

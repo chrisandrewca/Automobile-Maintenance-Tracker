@@ -21,18 +21,18 @@ API::~API()
 
 // unique ptr to vector vs copy list?
 bool
-API::AddTypeOfVehicle(const std::string& name)
+API::AddTypeOfVehicle(const utf8string& name)
 {
 	return this->dataStore->AddTypeOfVehicle(name);
 }
 
 bool
-API::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
+API::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 {
 	return this->dataStore->UpdateTypesOfVehicles(name, newName);
 }
 
-std::unique_ptr<std::vector<std::string> >
+std::unique_ptr<std::vector<utf8string> >
 API::ListAllTypesOfVehicles()
 {
 	return this->dataStore->ListAllTypesOfVehicles();
@@ -78,27 +78,27 @@ API::UpdateVehicle(Vehicle& vehicle)
 bool
 API::UpdateVehicle(Vehicle& vehicle,
 VehicleProperties properties,
-const std::vector<std::string>& userDefinedProperties)
+const std::vector<utf8string>& userDefinedProperties)
 {
 	return false;
 }
 
 bool
-API::AddTypeOfMaintenance(const std::string& type)
+API::AddTypeOfMaintenance(const utf8string& type)
 {
 	return false;
 }
 
 bool
-API::UpdateTypesOfMaintenance(const std::string& type, const std::string& newType)
+API::UpdateTypesOfMaintenance(const utf8string& type, const utf8string& newType)
 {
 	return false;
 }
 
-std::vector<std::string>
+std::vector<utf8string>
 API::ListAllTypesOfMaintenance()
 {
-	return std::vector<std::string>();
+	return std::vector<utf8string>();
 }
 
 std::unique_ptr<MaintenanceTask>

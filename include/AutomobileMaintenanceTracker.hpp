@@ -34,11 +34,11 @@ public:
 	// api returns unique ptr to class
 		// class returns reference and cleans up ptr via dtor/smart ptr
 	// onUpdate:: if type not in DataStore add it
-	std::string& GetType();
+	utf8string& GetType();
 
-	std::string& GetMake();
+	utf8string& GetMake();
 
-	std::string& GetModel();
+	utf8string& GetModel();
 
 	int& GetYear();
 
@@ -46,12 +46,12 @@ public:
 
 	int GetID();
 
-	void AddProperty(const std::string& property, const std::string& value);
+	void AddProperty(const utf8string& property, const utf8string& value);
 
 	// onUpdate:: if property not in DataStore add it
-	std::string& GetProperty(const std::string& name);
+	utf8string& GetProperty(const utf8string& name);
 
-	std::vector<std::string>& GetPropertyNames() const;
+	std::vector<utf8string>& GetPropertyNames() const;
 };
 
 enum class MaintenanceTaskProperties
@@ -67,7 +67,7 @@ class MaintenanceTask
 public:
 	MaintenanceTask(); // id -1
 
-	std::string& GetType();
+	utf8string& GetType();
 
 	int& GetDate();
 
@@ -91,19 +91,19 @@ public:
 	/// @param name the new type of vehicle
 	/// @return true if added or already added otherwise false
 	bool
-	AddTypeOfVehicle(const std::string& name);
+	AddTypeOfVehicle(const utf8string& name);
 	
 	/// Update the name of a vehicle type
 	/// @param name the current name
 	/// @param newName the new name of the vehicle type
 	/// @return true if updated or the same otherwise false
 	bool
-	UpdateTypesOfVehicles(const std::string& name, const std::string& newName);
+	UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName);
 	
 	/// !!! unique_ptr vs vectory copy
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	std::unique_ptr<std::vector<std::string> >
+	std::unique_ptr<std::vector<utf8string> >
 	ListAllTypesOfVehicles();
 
 	// !!! use unique ptrs
@@ -128,15 +128,15 @@ public:
 	bool
 	UpdateVehicle(Vehicle& vehicle,
 				  VehicleProperties properties,
-				  const std::vector<std::string>& userDefinedProperties = std::vector<std::string>());
+				  const std::vector<utf8string>& userDefinedProperties = std::vector<utf8string>());
 
 	bool
-	AddTypeOfMaintenance(const std::string& type);
+	AddTypeOfMaintenance(const utf8string& type);
 	
 	bool
-	UpdateTypesOfMaintenance(const std::string& type, const std::string& newType);
+	UpdateTypesOfMaintenance(const utf8string& type, const utf8string& newType);
 	
-	std::vector<std::string>
+	std::vector<utf8string>
 	ListAllTypesOfMaintenance();
 	
 	std::unique_ptr<MaintenanceTask>
