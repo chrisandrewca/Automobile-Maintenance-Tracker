@@ -22,6 +22,7 @@ Database::Database() :
 
 	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
 	{
+		/// !!! TODO ERROR CHECKING
 		sqlite3_stmt* queryStmt;
 		sqlite3_prepare_v2(this->sqlite3,
 			sqlQueryBag[i].data(),
@@ -29,10 +30,7 @@ Database::Database() :
 			&queryStmt,
 			NULL);
 
-		sqlPreparedStatements[sqlQueryBag[i]]
-			.statement = queryStmt;
-		sqlPreparedStatements[sqlQueryBag[i]]
-			.bindIndices = &sqlQueryBindIndices[sqlQueryBag[i]];
+		sqlPreparedStatements[sqlQueryBag[i]] = queryStmt;
 	}
 }
 
@@ -45,9 +43,9 @@ Database::~Database()
 
 	for (auto& statement : sqlPreparedStatements)
 	{
-		if (statement.second.statement)
+		if (statement.second)
 		{
-			sqlite3_finalize(statement.second.statement);
+			sqlite3_finalize(statement.second);
 		}
 	}
 }
@@ -201,11 +199,12 @@ Database::AddTypeOfVehicle(const std::string& name)
 
 	std::size_t sqlQueryBagStatementIndex = 0;
 	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-	SQLitePreparedStatement& statement = sqlPreparedStatements[sqlQueryString];
+	SQLitePreparedStatementPtr statement = sqlPreparedStatements[sqlQueryString];
 	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
 
-	sqlite3_bind_text(statement.statement,
-		statement.bindIndices->at("name"),
+	/// !!! TODO ERROR CHECKING
+	sqlite3_bind_text(statement,
+		bindIndices["name"],
 		name.data(),
 		name.size(),
 		NULL);
@@ -215,6 +214,11 @@ Database::AddTypeOfVehicle(const std::string& name)
 		// API, Datastore errors
 			// std::timed_mutex - succeed || timeout
 				// support C++ library & http nicely
+
+	/// !!! TODO ERROR CHECKING
+	sqlite3_step(statement);
+
+
 
 	return succeeded;
 }

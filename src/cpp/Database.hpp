@@ -25,15 +25,11 @@ public:
 	AddTypeOfVehicle(const std::string& name) override;
 
 private:
-	struct SQLitePreparedStatement
-	{
-		sqlite3_stmt* statement;
-		std::unordered_map<std::string, int>* bindIndices;
-	};
 
+	typedef sqlite3_stmt* SQLitePreparedStatementPtr;
 	typedef std::unordered_map<std::string, int> SQLiteBindIndices;
 
-	std::unordered_map<std::string, SQLitePreparedStatement> sqlPreparedStatements;
+	std::unordered_map<std::string, SQLitePreparedStatementPtr> sqlPreparedStatements;
 	std::unordered_map<std::string, SQLiteBindIndices> sqlQueryBindIndices;
 	std::vector<std::string> sqlQueryBag;
 	sqlite3* sqlite3;
