@@ -16,6 +16,13 @@ public:
 	/// @return true if added or already added otherwise false
 	virtual bool
 	DataStore::AddTypeOfVehicle(const std::string& name) = 0;
+
+	/// Update the name of a vehicle type
+	/// @param name the current name
+	/// @param newName the new name of the vehicle type
+	/// @return true if updated or the same otherwise false
+	virtual bool
+	UpdateTypesOfVehicles(const std::string& name, const std::string& newName) = 0;
 };
 
 }

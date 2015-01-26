@@ -20,10 +20,6 @@ API::~API()
 }
 
 // unique ptr to vector vs copy list?
-
-/// Track a new type of vehicle
-/// @param name the new type of vehicle
-/// @return true if added or already added otherwise false
 bool
 API::AddTypeOfVehicle(const std::string& name)
 {

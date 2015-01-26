@@ -24,6 +24,13 @@ public:
 	bool
 	AddTypeOfVehicle(const std::string& name) override;
 
+	/// Update the name of a vehicle type
+	/// @param name the current name
+	/// @param newName the new name of the vehicle type
+	/// @return true if updated or the same otherwise false
+	bool
+	UpdateTypesOfVehicles(const std::string& name, const std::string& newName) override;
+
 private:
 
 	typedef sqlite3_stmt* SQLitePreparedStatementPtr;

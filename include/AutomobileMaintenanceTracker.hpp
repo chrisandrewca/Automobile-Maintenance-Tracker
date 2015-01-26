@@ -84,12 +84,20 @@ public:
 	API(DataStoreOption dataStore);
 	~API();
 
-	// unique ptr to vector vs copy list?
+	/// !!! unique ptr to vector vs copy list?
+
+	/// Track a new type of vehicle
+	/// @param name the new type of vehicle
+	/// @return true if added or already added otherwise false
 	bool
 	AddTypeOfVehicle(const std::string& name);
 	
+	/// Update the name of a vehicle type
+	/// @param name the current name
+	/// @param newName the new name of the vehicle type
+	/// @return true if updated or the same otherwise false
 	bool
-	UpdateTypesOfVehicles(const std::string& type, const std::string& newType);
+	UpdateTypesOfVehicles(const std::string& name, const std::string& newName);
 	
 	std::vector<std::string>
 	ListAllTypesOfVehicles();
