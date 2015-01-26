@@ -31,17 +31,29 @@ public:
 	bool
 	UpdateTypesOfVehicles(const std::string& name, const std::string& newName) override;
 
+	/// List available types of vehicles
+	/// @return the list of available vehicles
+	std::unique_ptr<std::vector<std::string> >
+	ListAllTypesOfVehicles() override;
+
 private:
+	template<typename K, typename V>
+	using u_map = std::unordered_map<K, V>;
+	
+	typedef std::string string;
+	typedef std::basic_string <unsigned char> ustring;
 
 	typedef sqlite3_stmt* SQLitePreparedStatementPtr;
-	typedef std::unordered_map<std::string, int> SQLiteBindIndices;
+	typedef u_map<string, int> SQLiteBindIndices;
+	typedef u_map<string, int> SQLiteColumnIndices;
 
-	std::unordered_map<std::string, SQLitePreparedStatementPtr> sqlPreparedStatements;
-	std::unordered_map<std::string, SQLiteBindIndices> sqlQueryBindIndices;
-	std::vector<std::string> sqlQueryBag;
+	u_map<string, SQLitePreparedStatementPtr> sqlitePreparedStatements;
+	u_map<string, SQLiteBindIndices> sqlQueryBindIndices;
+	u_map<string, SQLiteColumnIndices> sqlQueryResultColumnIndices;
+	std::vector<string> sqlQueryBag;
 	sqlite3* sqlite3;
 
-	virtual bool Setup(const char* databaseName, std::string& errorMessage);
+	bool Setup(const char* databaseName, std::string& errorMessage);
 };
 
 }

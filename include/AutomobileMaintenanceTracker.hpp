@@ -9,7 +9,8 @@
 
 namespace AMT
 {
-
+	// returning/accept utf8 strings
+typedef std::string utf8string;
 // if vehicle updated its own properties it would need a ref to the datastore, an injected ctor,
 	// and the user would need to call V.save with these flags anyways (because client cant change
 	// a const ref), so the API handles it
@@ -99,7 +100,10 @@ public:
 	bool
 	UpdateTypesOfVehicles(const std::string& name, const std::string& newName);
 	
-	std::vector<std::string>
+	/// !!! unique_ptr vs vectory copy
+	/// List available types of vehicles
+	/// @return the list of available vehicles
+	std::unique_ptr<std::vector<std::string> >
 	ListAllTypesOfVehicles();
 
 	// !!! use unique ptrs

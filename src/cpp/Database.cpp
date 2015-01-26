@@ -3,15 +3,17 @@
 #include <cassert>
 using namespace AMT;
 
-#define SQL_QUERY_BAG_INITIAL_SIZE 50
+#define AMT_SQL_QUERY_BAG_INITIAL_SIZE 50
 
 Database::Database() :
-	sqlPreparedStatements(),
+	sqlQueryBindIndices(),
+	sqlQueryResultColumnIndices(),
+	sqlitePreparedStatements(),
 	sqlQueryBag(),
 	sqlite3(nullptr)
 {
-	sqlPreparedStatements.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
-	sqlQueryBag.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
+	sqlitePreparedStatements.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
+	sqlQueryBag.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
 
 	// n: users
 	// 0: AddTypeOfVehicle
@@ -28,12 +30,19 @@ Database::Database() :
 		{ "newName", 1 }, { "name", 2 }
 	});
 
-	assert(sqlQueryBag.size() < SQL_QUERY_BAG_INITIAL_SIZE);
+	// 2: ListAllTypesOfVehicles
+	sqlQueryBag.push_back("SELECT * FROM VehicleType");
+	sqlQueryResultColumnIndices[sqlQueryBag[2]] = std::unordered_map<std::string, int>(
+	{
+		{ "name", 0 }
+	});
+
+	assert(sqlQueryBag.size() < AMT_SQL_QUERY_BAG_INITIAL_SIZE);
 }
 
 Database::~Database()
 {
-	for (auto& statement : sqlPreparedStatements)
+	for (auto& statement : sqlitePreparedStatements)
 	{
 		if (statement.second)
 		{
@@ -188,7 +197,7 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 
 	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
 	{
-		/// !!! TODO ERROR CHECKING
+		/// !!! TODO ERROR CHECKING LOGGING
 		sqlite3_stmt* queryStmt;
 		int prepResult = sqlite3_prepare_v2(this->sqlite3,
 			sqlQueryBag[i].data(),
@@ -197,7 +206,7 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 			NULL);
 		std::cout << "sqlite_prepare_v2 " << sqlQueryBag[i] << ": " << prepResult;
 		
-		sqlPreparedStatements[sqlQueryBag[i]] = queryStmt;
+		sqlitePreparedStatements[sqlQueryBag[i]] = queryStmt;
 	}
 
 	return (errorMessage.size() == 0);
@@ -210,17 +219,17 @@ Database::AddTypeOfVehicle(const std::string& name)
 
 	std::size_t sqlQueryBagStatementIndex = 0;
 	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-	SQLitePreparedStatementPtr statement = sqlPreparedStatements[sqlQueryString];
+	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
 	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
 
 	/// !!! important
-	// need mutex on SQLITEPreparedStatement
+	// need mutex on SQLitePreparedStatementPtr
 	// for functions which Bind + Step
 		// API, Datastore errors
 			// std::timed_mutex - succeed || timeout
 			// support C++ library & http nicely
 
-	/// !!! TODO ERROR CHECKING
+	/// !!! TODO ERROR CHECKING LOGGING
 	int bindResult = sqlite3_bind_text(statement,
 		bindIndices["name"],
 		name.data(),
@@ -228,7 +237,7 @@ Database::AddTypeOfVehicle(const std::string& name)
 		NULL);
 	std::cout << "AddTypeOfVehicle sqlite3_bind_text: " << bindResult << "\n";
 
-	/// !!! TODO ERROR CHECKING
+	/// !!! TODO ERROR CHECKING LOGGING
 	int stepResult = sqlite3_step(statement);
 	std::cout << "AddTypeOfVehicle sqlite3_step: " << stepResult << "\n";
 
@@ -242,7 +251,7 @@ bool
 Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
 {
 	/// !!! important
-	// need mutex on SQLITEPreparedStatement
+	// need mutex on SQLitePreparedStatementPtr
 	// for functions which Bind + Step
 	// API, Datastore errors
 	// std::timed_mutex - succeed || timeout
@@ -251,11 +260,11 @@ Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newN
 	bool succeeded = false;
 
 	std::size_t sqlQueryBagStatementIndex = 1;
-	const std::string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-	SQLitePreparedStatementPtr statement = sqlPreparedStatements[sqlQueryString];
+	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
 	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
 
-	/// !!! TODO ERROR CHECKING
+	/// !!! TODO ERROR CHECKING LOGGING
 	int bindResult = sqlite3_bind_text(statement,
 		bindIndices["name"],
 		name.data(),
@@ -270,7 +279,7 @@ Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newN
 		NULL);
 	std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
 
-	/// !!! TODO ERROR CHECKING
+	/// !!! TODO ERROR CHECKING LOGGING
 	int stepResult = sqlite3_step(statement);
 	std::cout << "UpdateTypesOfVehicles sqlite3_step: " << stepResult << "\n";
 
@@ -278,4 +287,40 @@ Database::UpdateTypesOfVehicles(const std::string& name, const std::string& newN
 	sqlite3_clear_bindings(statement);
 
 	return succeeded;
+}
+
+std::unique_ptr<std::vector<std::string> >
+Database::ListAllTypesOfVehicles()
+{
+	auto* allVehicleTypes = new std::vector<string>();
+
+	std::size_t sqlQueryBagStatementIndex = 2;
+	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+	SQLitePreparedStatementPtr statement = sqlitePreparedStatements[sqlQueryString];
+	SQLiteColumnIndices columnIndices = sqlQueryResultColumnIndices[sqlQueryString];
+
+	/// !!! TODO ERROR CHECKING LOGGING
+	/// !!! important
+	// need mutex on SQLitePreparedStatementPtr
+	// for functions which Bind, Step
+	// API, Datastore errors
+	// std::timed_mutex - succeed || timeout
+	// support C++ library & http nicely
+	int stepResult = sqlite3_step(statement);
+	while (SQLITE_ROW == stepResult)
+	{
+		std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
+
+		ustring nameBytes = sqlite3_column_text(statement, columnIndices["name"]);
+		int nameSize = sqlite3_column_bytes(statement, columnIndices["name"]);
+
+		string name(nameBytes.data(), nameBytes.data() + nameSize);
+		allVehicleTypes->push_back(name);
+
+		stepResult = sqlite3_step(statement);
+	}
+
+	sqlite3_reset(statement);
+
+	return std::unique_ptr<std::vector<string> >(allVehicleTypes);
 }

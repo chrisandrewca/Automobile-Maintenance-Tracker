@@ -32,10 +32,10 @@ API::UpdateTypesOfVehicles(const std::string& name, const std::string& newName)
 	return this->dataStore->UpdateTypesOfVehicles(name, newName);
 }
 
-std::vector<std::string>
+std::unique_ptr<std::vector<std::string> >
 API::ListAllTypesOfVehicles()
 {
-	return std::vector<std::string>();
+	return this->dataStore->ListAllTypesOfVehicles();
 }
 
 // !!! use unique ptrs

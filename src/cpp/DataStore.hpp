@@ -23,6 +23,11 @@ public:
 	/// @return true if updated or the same otherwise false
 	virtual bool
 	UpdateTypesOfVehicles(const std::string& name, const std::string& newName) = 0;
+
+	/// List available types of vehicles
+	/// @return the list of available vehicles
+	virtual std::unique_ptr<std::vector<std::string> >
+	ListAllTypesOfVehicles() = 0;
 };
 
 }
