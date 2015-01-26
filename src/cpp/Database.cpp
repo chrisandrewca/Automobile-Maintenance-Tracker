@@ -165,5 +165,6 @@ bool
 Database::AddTypeOfVehicle(const std::string& type)
 {
 	bool succeeded = false;
+	// SQL query here
 	return succeeded;
 }

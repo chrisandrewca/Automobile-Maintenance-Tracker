@@ -15,7 +15,7 @@ public:
 	/// @param type the new type of vehicle
 	/// @return true if added or already added otherwise false
 	virtual bool
-		DataStore::AddTypeOfVehicle(const std::string& type) = 0;
+	DataStore::AddTypeOfVehicle(const std::string& type) = 0;
 };
 
 }

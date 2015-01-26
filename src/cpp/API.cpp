@@ -27,8 +27,7 @@ API::~API()
 bool
 API::AddTypeOfVehicle(const std::string& type)
 {
-	bool succeeded = false;
-	return succeeded;
+	return this->dataStore->AddTypeOfVehicle(type);
 }
 
 bool
