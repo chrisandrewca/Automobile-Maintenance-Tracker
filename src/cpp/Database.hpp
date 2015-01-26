@@ -4,7 +4,7 @@
 #include "DataStore.hpp"
 #include "sqlite\sqlite3.h"
 #include <string>
-#include <unordered_map>;
+#include <unordered_map>
 #include <memory>
 
 namespace AMT
@@ -19,7 +19,7 @@ public:
 	bool Open(const std::string& name, std::string& errorMessage) override;
 
 	/// Track a new type of vehicle
-	/// @param type the new type of vehicle
+	/// @param name the new type of vehicle
 	/// @return true if added or already added otherwise false
 	bool
 	AddTypeOfVehicle(const std::string& name) override;

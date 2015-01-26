@@ -6,32 +6,23 @@ using namespace AMT;
 #define SQL_QUERY_BAG_INITIAL_SIZE 50
 
 Database::Database() :
-	sqlPreparedStatements(SQL_QUERY_BAG_INITIAL_SIZE),
-	sqlQueryBag(SQL_QUERY_BAG_INITIAL_SIZE),
+	sqlPreparedStatements(),
+	sqlQueryBag(),
 	sqlite3(nullptr)
 {
+	sqlPreparedStatements.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
+	sqlQueryBag.reserve(SQL_QUERY_BAG_INITIAL_SIZE);
+
 	// 0
 	sqlQueryBag.push_back("INSERT INTO VehicleType (Name) VALUES (?)");
 	sqlQueryBindIndices[sqlQueryBag[0]] = std::unordered_map<std::string, int>(
 	{
-		{ "name", 0 }
+		{ "name", 1 }
 	});
+
 	// 1
 
 	assert(sqlQueryBag.size() < SQL_QUERY_BAG_INITIAL_SIZE);
-
-	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
-	{
-		/// !!! TODO ERROR CHECKING
-		sqlite3_stmt* queryStmt;
-		sqlite3_prepare_v2(this->sqlite3,
-			sqlQueryBag[i].data(),
-			sqlQueryBag[i].size(),
-			&queryStmt,
-			NULL);
-
-		sqlPreparedStatements[sqlQueryBag[i]] = queryStmt;
-	}
 }
 
 Database::~Database()
@@ -189,6 +180,20 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 		errMsg = nullptr;
 	}
 
+	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
+	{
+		/// !!! TODO ERROR CHECKING
+		sqlite3_stmt* queryStmt;
+		int prepResult = sqlite3_prepare_v2(this->sqlite3,
+			sqlQueryBag[i].data(),
+			sqlQueryBag[i].size(),
+			&queryStmt,
+			NULL);
+
+		std::cout << "sqlite_prepare_v2 " << sqlQueryBag[i] << ": " << prepResult;
+		sqlPreparedStatements[sqlQueryBag[i]] = queryStmt;
+	}
+
 	return (errorMessage.size() == 0);
 }
 
@@ -203,11 +208,12 @@ Database::AddTypeOfVehicle(const std::string& name)
 	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
 
 	/// !!! TODO ERROR CHECKING
-	sqlite3_bind_text(statement,
+	int bindResult = sqlite3_bind_text(statement,
 		bindIndices["name"],
 		name.data(),
 		name.size(),
 		NULL);
+	std::cout << "AddTypeOfVehicle sqlite3_bind_text: " << bindResult << "\n";
 
 	// need mutex on SQLITEPreparedStatement
 		// for functions which Bind + Step
@@ -216,9 +222,11 @@ Database::AddTypeOfVehicle(const std::string& name)
 				// support C++ library & http nicely
 
 	/// !!! TODO ERROR CHECKING
-	sqlite3_step(statement);
+	int stepResult = sqlite3_step(statement);
+	std::cout << "AddTypeOfVehicle sqlite3_step: " << stepResult << "\n";
 
-
+	sqlite3_reset(statement);
+	//sqlite3_clear_bindings(statement);
 
 	return succeeded;
 }
