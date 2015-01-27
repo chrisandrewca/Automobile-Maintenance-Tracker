@@ -15,10 +15,27 @@ int main(int argc, char* argv[])
 	db.UpdateTypesOfVehicles("Electric", "Diesel");
 	db.UpdateTypesOfVehicles("Diesel", "Gasoline");
 	db.UpdateTypesOfVehicles("Gasoline", "Electric2");
+	db.AddTypeOfVehicle("Diesel");
+	db.AddTypeOfVehicle("Gasoline");
 	auto vehicleTypes = db.ListAllTypesOfVehicles();
-	for (int i = 0; i < vehicleTypes->size(); i++)
+    for (std::size_t i = 0; i < vehicleTypes->size(); i++)
 	{
 		std::cout << vehicleTypes->at(i) << "\n";
 	}
+
+    auto vehicle = db.CreateVehicle();
+    db.CreateVehicle();
+    db.CreateVehicle();
+    db.CreateVehicle();
+    db.CreateVehicle();
+
+    db.DeleteVehicle(*vehicle);
+
+    auto vehicles = db.ListAllVehicles();
+    for (auto& v : *vehicles)
+    {
+        std::cout << "v id: " << v->GetID() << "\n";
+    }
+
 	return 0;
 }

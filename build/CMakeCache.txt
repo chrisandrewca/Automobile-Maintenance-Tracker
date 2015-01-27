@@ -156,7 +156,7 @@ CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 
-DEBUG:BOOL=ON
+DDEBUG:BOOL=ON
 
 
 ########################
