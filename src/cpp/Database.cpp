@@ -9,10 +9,9 @@ const int Database::TblVehicleType_ColName = 0;
 
 Database::Database() :
     sqlite(nullptr),
-    sqlQueryBag(),
 	sqlQueryBindIndices(),
-    sqlQueryPreparedStatements(),
-    sqlQueryResultColumnIndices()
+	sqlQueryResultColumnIndices(),
+    sqlQueryPreparedStatements()
 {
     sqlQueryPreparedStatements.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
 	sqlQueryBag.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
@@ -273,10 +272,12 @@ Database::AddTypeOfVehicle(const utf8string& name)
 {
 	bool succeeded = false;
 
-	std::size_t sqlQueryBagStatementIndex = 0;
-	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
-	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
+	//std::size_t sqlQueryBagStatementIndex = 0;
+	//const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
+ //   SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
+	//SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
+
+	// local sql!!!!!!!!!!!!!
 
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
