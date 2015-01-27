@@ -13,10 +13,6 @@ add_executable(AutomobileMaintenanceTracker
 	include/AutomobileMaintenanceTracker.hpp
 	src/cpp/utils/Debug.h
 	src/cpp/AMTAPI.cpp
-	src/cpp/AMTAPI_Impl.hpp
-	src/cpp/AMTAPI_Impl.cpp
-	src/cpp/DataStore.hpp
-	src/cpp/DataStore.cpp
 	src/cpp/Database.hpp
 	src/cpp/Database.cpp
 	src/cpp/Vehicle.cpp

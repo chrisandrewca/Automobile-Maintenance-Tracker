@@ -19,38 +19,6 @@ public:
 
 	bool Open(const std::string& name, std::string& errorMessage);
 
-	///// Track a new type of vehicle
-	///// @param name the new type of vehicle
-	///// @return true if added or already added otherwise false
-	//bool
-	//AddTypeOfVehicle(const utf8string& name) override;
-
-	///// Update the name of a vehicle type
-	///// @param name the current name
-	///// @param newName the new name of the vehicle type
-	///// @return true if updated or the same otherwise false
-	//bool
-	//UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName) override;
-
-	///// List available types of vehicles
-	///// @return the list of available vehicles
-	//std::unique_ptr<std::vector<utf8string> >
-	//ListAllTypesOfVehicles() override;
-
- //   /// Create a vehicle with an initialized and valid ID
- //   /// @ return a vehicle with a valid ID
- //   std::unique_ptr<Vehicle>
- //   CreateVehicle() override;
-
- //   /// Remove a vehicle from being persisted
- //   /// @return true if vehicle is removed or already removed else false
- //   bool
- //   DeleteVehicle(Vehicle& vehicle) override;
-
- //   /// List all available vehicles
- //   /// @return the list of all available vehicles
- //   std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
- //   ListAllVehicles() override;
 	/// Track a new type of vehicle
 	/// @param name the new type of vehicle
 	/// @return true if added or already added otherwise false

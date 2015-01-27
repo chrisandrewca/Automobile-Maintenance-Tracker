@@ -1,16 +1,9 @@
 #include "AutomobileMaintenanceTracker.hpp"
 #include "Database.hpp"
-#include "AMTAPI_Impl.hpp"
 using namespace AMT;
 
-class AMTAPI::Implementation
-{
-public:
-	std::shared_ptr<APIBase> api;
-};
-
 AMTAPI::AMTAPI(AMTAPI::DataStoreOption dataStore) :
-	amt(new Implementation)
+	amt()
 {
 	switch (dataStore)
 	{
@@ -18,28 +11,23 @@ AMTAPI::AMTAPI(AMTAPI::DataStoreOption dataStore) :
 		std::string errMsg;
 		auto* database = new Database;
 		database->Open("auto_maintenance_tracker", errMsg);
-		amt->api.reset(database);
+		amt.reset(database);
 		break;
 	}
 }
 
-AMTAPI::~AMTAPI()
-{
-	if (this->amt)
-		delete this->amt;
-}
-
+AMTAPI::~AMTAPI(){}
 
 bool
 AMTAPI::AddTypeOfVehicle(const utf8string& name)
 {
-	return false;
+	return this->amt->AddTypeOfVehicle(name);
 }
 
 bool
 AMTAPI::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 {
-	return false;
+	return this->amt->UpdateTypesOfVehicles(name, newName);
 }
 
 std::unique_ptr<std::vector<utf8string> >

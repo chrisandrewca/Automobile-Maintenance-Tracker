@@ -310,15 +310,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClInclude Include="..\include\AutomobileMaintenanceTracker.hpp" />
     <ClInclude Include="..\src\cpp\utils\Debug.h" />
-    <ClInclude Include="..\src\cpp\AMTAPI_Impl.hpp" />
-    <ClInclude Include="..\src\cpp\DataStore.hpp" />
     <ClInclude Include="..\src\cpp\Database.hpp" />
     <ClInclude Include="..\src\cpp\sqlite\sqlite3.h" />
     <ClInclude Include="..\src\cpp\sqlite\sqlite3ext.h" />
     <ClCompile Include="..\src\cpp\main.cpp"  />
     <ClCompile Include="..\src\cpp\AMTAPI.cpp"  />
-    <ClCompile Include="..\src\cpp\AMTAPI_Impl.cpp"  />
-    <ClCompile Include="..\src\cpp\DataStore.cpp"  />
     <ClCompile Include="..\src\cpp\Database.cpp"  />
     <ClCompile Include="..\src\cpp\Vehicle.cpp"  />
     <ClCompile Include="..\src\cpp\MaintenanceTask.cpp"  />

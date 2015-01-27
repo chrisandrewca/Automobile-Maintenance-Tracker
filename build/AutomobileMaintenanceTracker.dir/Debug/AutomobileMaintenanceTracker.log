@@ -1,26 +1,11 @@
-﻿Build started 1/26/2015 10:47:31 PM.
+﻿Build started 1/26/2015 11:52:54 PM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
-     1>CustomBuild:
-         Building Custom Rule C:/codez/amt/CMakeLists.txt
-         CMake does not need to re-run because C:\codez\amt\build\CMakeFiles\generate.stamp is up-to-date.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\main.cpp ..\src\cpp\AMTAPI.cpp ..\src\cpp\AMTAPI_Impl.cpp ..\src\cpp\DataStore.cpp ..\src\cpp\Database.cpp ..\src\cpp\Vehicle.cpp ..\src\cpp\MaintenanceTask.cpp
-         main.cpp
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\AMTAPI.cpp
          AMTAPI.cpp
-         AMTAPI_Impl.cpp
-         DataStore.cpp
-         Database.cpp
-     1>..\src\cpp\Database.cpp(404): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
-         Vehicle.cpp
-         MaintenanceTask.cpp
-         Generating Code...
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt ..\src\cpp\sqlite\sqlite3.c
-         sqlite3.c
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\Debug\AutomobileMaintenanceTracker.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.lib" /MACHINE:X86 /SAFESEH  /machine:X86 /debug AutomobileMaintenanceTracker.dir\Debug\main.obj
          AutomobileMaintenanceTracker.dir\Debug\AMTAPI.obj
-         AutomobileMaintenanceTracker.dir\Debug\AMTAPI_Impl.obj
-         AutomobileMaintenanceTracker.dir\Debug\DataStore.obj
          AutomobileMaintenanceTracker.dir\Debug\Database.obj
          AutomobileMaintenanceTracker.dir\Debug\Vehicle.obj
          AutomobileMaintenanceTracker.dir\Debug\MaintenanceTask.obj
@@ -30,4 +15,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.44
+Time Elapsed 00:00:00.76

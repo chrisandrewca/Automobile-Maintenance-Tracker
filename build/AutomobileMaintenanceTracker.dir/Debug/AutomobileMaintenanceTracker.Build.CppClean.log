@@ -1,12 +1,13 @@
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\vc120.pdb
+c:\codez\amt\build\automobilemaintenancetracker.dir\debug\maintenancetask.obj
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\vehicle.obj
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\database.obj
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\datastore.obj
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\amtapi_impl.obj
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\amtapi.obj
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\main.obj
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\sqlite3.obj
 c:\codez\amt\build\cmakefiles\generate.stamp
+c:\codez\amt\build\debug\automobilemaintenancetracker.ilk
+c:\codez\amt\build\debug\automobilemaintenancetracker.exe
 c:\codez\amt\build\debug\automobilemaintenancetracker.pdb
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\cl.command.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\cl.read.1.tlog
@@ -14,10 +15,6 @@ c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\custombuild.command.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\custombuild.read.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\custombuild.write.1.tlog
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link-cvtres.read.1.tlog
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link-cvtres.write.1.tlog
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link-rc.read.1.tlog
-c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link-rc.write.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link.command.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link.read.1.tlog
 c:\codez\amt\build\automobilemaintenancetracker.dir\debug\automobi.7bbf170b.tlog\link.write.1.tlog

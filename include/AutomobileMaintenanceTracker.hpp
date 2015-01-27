@@ -296,8 +296,7 @@ public:
 	bool DeleteMaintenanceTask(MaintenanceTask& task) override;
 
 private:
-	class Implementation;
-	Implementation* amt;
+	std::unique_ptr<APIBase> amt;
 };
 
 }
