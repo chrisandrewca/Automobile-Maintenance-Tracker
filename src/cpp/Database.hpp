@@ -5,6 +5,7 @@
 #include "AutomobileMaintenanceTracker.hpp"
 #include "sqlite/sqlite3.h"
 #include <string>
+#include <map>
 #include <unordered_map>
 #include <memory>
 
@@ -112,21 +113,46 @@ public:
 	bool DeleteMaintenanceTask(MaintenanceTask& task) override;
 
 private:
+	static const int TblVehicleType_ColName;
+	static const int TblMaintenanceType_ColName;
+
+	static const int TblVehicle_ColID;
+	static const int TblVehicle_ColType;
+	static const int TblVehicle_ColMake;
+	static const int TblVehicle_ColModel;
+	static const int TblVehicle_ColYear;
+	static const int TblVehicle_ColOdometer;
+
+	static const int TblMaintenance_ColID;
+	static const int TblMaintenance_ColVehicleID;
+	static const int TblMaintenance_ColType;
+	static const int TblMaintenance_ColDate;
+
+	static const int TblVehicleApplicableMaintenance_ColVehicleType;
+	static const int TblVehicleApplicableMaintenance_ColMaintenanceType;
+
+	static const int TblVehicleUserDefinedField_ColName;
+	static const int TblVehicleUserDefinedField_ColApplicableVehicleType;
+
+	static const int TblVehicleUserDefinedFieldValue_ColVehicleID;
+	static const int TblVehicleUserDefinedFieldValue_ColUserDefinedFieldName;
+	static const int TblVehicleUserDefinedFieldValue_ColValue;
+
 	template<typename K, typename V>
-	using u_map = std::unordered_map<K, V>;
-	
+	using map = std::map<K, V>;
+
+	template<typename K, typename V>
+	using umap = std::unordered_map<K, V>;
+
 	typedef std::string string;
 	typedef std::basic_string <unsigned char> ustring;
 
 	typedef sqlite3_stmt* SQLitePreparedStatementPtr;
-	typedef u_map<string, int> SQLiteBindIndices;
-	typedef u_map<string, int> SQLiteColumnIndices;
-
-    sqlite3* sqlite;
-    std::vector<string> sqlQueryBag;
-    u_map<string, SQLiteBindIndices> sqlQueryBindIndices;
-    u_map<string, SQLitePreparedStatementPtr> sqlQueryPreparedStatements;
-    u_map<string, SQLiteColumnIndices> sqlQueryResultColumnIndices;
+	
+	sqlite3* sqlite;
+	umap<string, map<int, int>> sqlQueryBindIndices;
+	umap<string, map<int, int>> sqlQueryResultColumnIndices;
+	umap<string, SQLitePreparedStatementPtr> sqlQueryPreparedStatements;
 
 	bool Setup(const char* databaseName, std::string& errorMessage);
 };

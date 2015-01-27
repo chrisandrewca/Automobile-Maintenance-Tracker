@@ -5,6 +5,8 @@ using namespace AMT;
 
 #define AMT_SQL_QUERY_BAG_INITIAL_SIZE 50
 
+const int Database::TblVehicleType_ColName = 0;
+
 Database::Database() :
     sqlite(nullptr),
     sqlQueryBag(),

@@ -1,8 +1,12 @@
-﻿Build started 1/26/2015 11:52:54 PM.
+﻿Build started 1/27/2015 12:30:48 AM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\AMTAPI.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cpp\AMTAPI.cpp ..\src\cpp\Database.cpp ..\src\cpp\main.cpp
          AMTAPI.cpp
+         Database.cpp
+     1>..\src\cpp\Database.cpp(406): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
+         main.cpp
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\Debug\AutomobileMaintenanceTracker.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.lib" /MACHINE:X86 /SAFESEH  /machine:X86 /debug AutomobileMaintenanceTracker.dir\Debug\main.obj
          AutomobileMaintenanceTracker.dir\Debug\AMTAPI.obj
@@ -15,4 +19,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.76
+Time Elapsed 00:00:02.16
