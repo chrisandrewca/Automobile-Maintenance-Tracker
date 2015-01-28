@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="Windows-1252"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="us-ascii"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{7BBF170B-4733-481E-BA9A-49770A856353}</ProjectGUID>
+    <ProjectGUID>{1FC57BE3-2A37-41B6-962F-E4FB4A25D6A9}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
     <ProjectName>AutomobileMaintenanceTracker</ProjectName>
@@ -29,62 +29,63 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-    <PropertyGroup>
-      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\codez\amt\build\Debug\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutomobileMaintenanceTracker.dir\Debug\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutomobileMaintenanceTracker</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\codez\amt\build\Release\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutomobileMaintenanceTracker.dir\Release\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutomobileMaintenanceTracker</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\codez\amt\build\MinSizeRel\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutomobileMaintenanceTracker.dir\MinSizeRel\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutomobileMaintenanceTracker</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\codez\amt\build\RelWithDebInfo\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutomobileMaintenanceTracker.dir\RelWithDebInfo\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutomobileMaintenanceTracker</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
-    </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\christopher\Desktop\amt\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutomobileMaintenanceTracker.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutomobileMaintenanceTracker</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\christopher\Desktop\amt\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutomobileMaintenanceTracker.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutomobileMaintenanceTracker</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\christopher\Desktop\amt\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutomobileMaintenanceTracker.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutomobileMaintenanceTracker</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\christopher\Desktop\amt\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutomobileMaintenanceTracker.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutomobileMaintenanceTracker</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -101,10 +102,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -116,10 +117,12 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/christopher/Desktop/amt/build/Debug/AutomobileMaintenanceTracker.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/christopher/Desktop/amt/build/Debug/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -127,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -137,16 +140,17 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -155,13 +159,16 @@
     </Midl>
     <Link>
       <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;python27.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Python27\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>C:/codez/amt/build/Release/AutomobileMaintenanceTracker.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/codez/amt/build/Release/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/christopher/Desktop/amt/build/Release/AutomobileMaintenanceTracker.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/christopher/Desktop/amt/build/Release/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
+      <OutputFile>$(OutDir)$(TargetName).pyd</OutputFile>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -169,7 +176,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -179,16 +186,17 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -200,10 +208,12 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>C:/codez/amt/build/MinSizeRel/AutomobileMaintenanceTracker.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/codez/amt/build/MinSizeRel/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/christopher/Desktop/amt/build/MinSizeRel/AutomobileMaintenanceTracker.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/christopher/Desktop/amt/build/MinSizeRel/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -211,7 +221,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -227,10 +237,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\codez\amt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\christopher\Desktop\amt\include;C:\Python27\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -242,20 +252,22 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>C:/codez/amt/build/RelWithDebInfo/AutomobileMaintenanceTracker.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/codez/amt/build/RelWithDebInfo/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/christopher/Desktop/amt/build/RelWithDebInfo/AutomobileMaintenanceTracker.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/christopher/Desktop/amt/build/RelWithDebInfo/AutomobileMaintenanceTracker.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="..\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/codez/amt/CMakeLists.txt</Message>
+    <CustomBuild Include="C:\Users\christopher\Desktop\amt\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/christopher/Desktop/amt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/codez/amt -BC:/codez/amt/build --check-stamp-file C:\codez\amt\build\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/christopher/Desktop/amt -BC:/Users/christopher/Desktop/amt/build --check-stamp-file C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -263,12 +275,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/codez/amt/CMakeLists.txt;C:\codez\amt\CMakeLists.txt;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeSystem.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCCompiler.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\codez\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\codez\amt\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/christopher/Desktop/amt/CMakeLists.txt;C:\Users\christopher\Desktop\amt\CMakeLists.txt;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCCompiler.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\christopher\Desktop\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/codez/amt/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/christopher/Desktop/amt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/codez/amt -BC:/codez/amt/build --check-stamp-file C:\codez\amt\build\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/christopher/Desktop/amt -BC:/Users/christopher/Desktop/amt/build --check-stamp-file C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -276,12 +288,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/codez/amt/CMakeLists.txt;C:\codez\amt\CMakeLists.txt;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeSystem.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCCompiler.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\codez\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\codez\amt\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/christopher/Desktop/amt/CMakeLists.txt;C:\Users\christopher\Desktop\amt\CMakeLists.txt;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCCompiler.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\christopher\Desktop\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/codez/amt/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/christopher/Desktop/amt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/codez/amt -BC:/codez/amt/build --check-stamp-file C:\codez\amt\build\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/christopher/Desktop/amt -BC:/Users/christopher/Desktop/amt/build --check-stamp-file C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -289,12 +301,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/codez/amt/CMakeLists.txt;C:\codez\amt\CMakeLists.txt;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeSystem.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCCompiler.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\codez\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\codez\amt\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/christopher/Desktop/amt/CMakeLists.txt;C:\Users\christopher\Desktop\amt\CMakeLists.txt;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCCompiler.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\christopher\Desktop\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/codez/amt/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/christopher/Desktop/amt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/codez/amt -BC:/codez/amt/build --check-stamp-file C:\codez\amt\build\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/christopher/Desktop/amt -BC:/Users/christopher/Desktop/amt/build --check-stamp-file C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -302,32 +314,33 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/codez/amt/CMakeLists.txt;C:\codez\amt\CMakeLists.txt;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeSystem.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCCompiler.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\codez\amt\build\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\codez\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\codez\amt\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/christopher/Desktop/amt/CMakeLists.txt;C:\Users\christopher\Desktop\amt\CMakeLists.txt;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCCompiler.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\christopher\Desktop\amt\build\CMakeFiles\3.1.1\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\christopher\Desktop\amt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\christopher\Desktop\amt\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\AutomobileMaintenanceTracker.hpp" />
-    <ClInclude Include="..\src\cpp\utils\Debug.h" />
-    <ClInclude Include="..\src\cpp\Database.hpp" />
-    <ClInclude Include="..\src\cpp\sqlite\sqlite3.h" />
-    <ClInclude Include="..\src\cpp\sqlite\sqlite3ext.h" />
-    <ClCompile Include="..\src\cpp\main.cpp"  />
-    <ClCompile Include="..\src\cpp\AMTAPI.cpp"  />
-    <ClCompile Include="..\src\cpp\Database.cpp"  />
-    <ClCompile Include="..\src\cpp\Vehicle.cpp"  />
-    <ClCompile Include="..\src\cpp\MaintenanceTask.cpp"  />
-    <ClCompile Include="..\src\cpp\sqlite\sqlite3.c" >
+    <ClInclude Include="C:\Users\christopher\Desktop\amt\include\AutomobileMaintenanceTracker.hpp" />
+    <ClInclude Include="C:\Users\christopher\Desktop\amt\src\cpp\utils\Debug.h" />
+    <ClInclude Include="C:\Users\christopher\Desktop\amt\src\cpp\Database.hpp" />
+    <ClInclude Include="C:\Users\christopher\Desktop\amt\src\cpp\sqlite\sqlite3.h" />
+    <ClInclude Include="C:\Users\christopher\Desktop\amt\src\cpp\sqlite\sqlite3ext.h" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\main.cpp" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\AMTAPI.cpp" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\Database.cpp" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\Vehicle.cpp" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\MaintenanceTask.cpp" />
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\src\cpp\sqlite\sqlite3.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
     </ClCompile>
+    <ClCompile Include="C:\Users\christopher\Desktop\amt\codegen\AutomobileMaintenanceTracker_wrap.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:/codez/amt/build/ZERO_CHECK.vcxproj">
-      <Project>DF6B385B-029C-4BFF-A51D-7F87ED323A3C</Project>
+    <ProjectReference Include="C:/Users/christopher/Desktop/amt/build/ZERO_CHECK.vcxproj">
+      <Project>BB4616A6-9194-432A-9164-0BFA520F67A5</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

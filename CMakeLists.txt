@@ -8,6 +8,10 @@ endif (${UNIX})
 
 include_directories(include/)
 
+IF (WIN32)
+	include_directories(C:\Python27\include)
+ENDIF()
+
 add_executable(AutomobileMaintenanceTracker
 	src/cpp/main.cpp
 	include/AutomobileMaintenanceTracker.hpp
@@ -20,7 +24,9 @@ add_executable(AutomobileMaintenanceTracker
 
 	src/cpp/sqlite/sqlite3.h
 	src/cpp/sqlite/sqlite3ext.h
-	src/cpp/sqlite/sqlite3.c)
+	src/cpp/sqlite/sqlite3.c
+
+	codegen/AutomobileMaintenanceTracker_wrap.cxx)
 
 if (${UNIX})
 	find_package (Threads)

@@ -1,121 +1,118 @@
 #include "Database.hpp"
 #include "utils/Debug.h"
-#include <cassert>
 using namespace AMT;
-
-#define AMT_SQL_QUERY_BAG_INITIAL_SIZE 50
-
-const int Database::TblVehicleType_ColName = 0;
 
 Database::Database() :
     sqlite(nullptr),
-	sqlQueryBindIndices(),
-	sqlQueryResultColumnIndices(),
-    sqlQueryPreparedStatements()
+    preparedStatements()
 {
-    sqlQueryPreparedStatements.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
-	sqlQueryBag.reserve(AMT_SQL_QUERY_BAG_INITIAL_SIZE);
-
-	// n: users
-	// 0: AddTypeOfVehicle
-	sqlQueryBag.push_back("INSERT INTO VehicleType (Name) VALUES (?)");
-    sqlQueryBindIndices[sqlQueryBag[0]] = u_map<string, int>
-    ({
-		{ "name", 1 }
-	});
-
-	// 1: UpdateTypesOfVehicles
-	sqlQueryBag.push_back("UPDATE VehicleType SET Name=? WHERE Name=?");
-    sqlQueryBindIndices[sqlQueryBag[1]] = u_map<string, int>
-    ({
-		{ "newName", 1 }, { "name", 2 }
-	});
-
-	// 2: ListAllTypesOfVehicles
-	sqlQueryBag.push_back("SELECT * FROM VehicleType");
-    sqlQueryResultColumnIndices[sqlQueryBag[2]] = u_map<string, int>
-    ({
-		{ "name", 0 }
-	});
-
-    // 3: CreateVehicle
-    sqlQueryBag.push_back("INSERT INTO Vehicle (ID) VALUES (NULL)");
-
-    // 4: DeleteVehicle
-    sqlQueryBag.push_back("DELETE FROM Vehicle WHERE ID=?");
-    sqlQueryBindIndices[sqlQueryBag[4]] = u_map<string, int>
-    ({
-        { "id", 1 }
-    });
-
-    // 5: ListAllVehicles
-    sqlQueryBag.push_back("SELECT * FROM Vehicle");
-    sqlQueryResultColumnIndices[sqlQueryBag[5]] = u_map<string, int>
-    ({
-        { "id", 0 }, { "type", 1 }, { "make", 2 }, { "model", 3 }, { "year", 4 },
-        { "odometer", 5 }
-    });
-
-
-    // 6: ListAllVehicles
-    sqlQueryBag.push_back("SELECT (Name) FROM VehicleUserDefinedField WHERE "
-                          "ApplicableVehicleType=?");
-    sqlQueryBindIndices[sqlQueryBag[6]] = u_map<string, int>
-    ({
-        { "vehicleType", 1 }
-    });
-    sqlQueryResultColumnIndices[sqlQueryBag[6]] = u_map<string, int>
-    ({
-        { "fieldName", 0 }
-    });
-
-    // 7: ListAllVehicles
-    // using PK in this query gives us quick access but repeated sqlite_step/clear_bind?/bind
-    sqlQueryBag.push_back("SELECT (Value) FROM VehicleUserDefinedFieldValue WHERE "
-                          "VehicleID=? AND UserDefinedFieldName=?");
-    sqlQueryBindIndices[sqlQueryBag[7]] = u_map<string, int>
-    ({
-         // clunky way to describe SQL info, column identifiers repeated and inconsistent
-         // "this is my sql statement (generally unqiueish)"
-         // "these are the binds (generally uniqueish)"
-         // "these are the columns I'm accessing in this query (unique to statement)
-                // so this way of describing info is not bad we just need a:
-                    // "this is what I call the column in my program regardless of location"
-                        // const string tableColName
-                        // Col names are unique per table
-                            // can use in SQL query and Map
-        { "vehicleId", 1 }, { "fieldName", 2 }
-    });
-    sqlQueryResultColumnIndices[sqlQueryBag[7]] = u_map<string, int>
-    ({
-        { "fieldValue", 0 }
-    });
-
-	assert(sqlQueryBag.size() < AMT_SQL_QUERY_BAG_INITIAL_SIZE);
 }
 
 Database::~Database()
 {
-    for (auto& statement : sqlQueryPreparedStatements)
-	{
-		if (statement.second)
-		{
-			sqlite3_finalize(statement.second);
-		}
-	}
+    for (auto& statement : preparedStatements)
+    {
+        if (statement)
+        {
+            sqlite3_finalize(statement);
+        }
+    }
 
     if (this->sqlite)
-	{
         sqlite3_close_v2(this->sqlite);
-	}
 }
 
-bool Database::Open(const string& name, string& errorMessage)
+bool Database::Open(const std::string& name, std::string& errorMessage)
 {
 	return this->Setup(name.data(), errorMessage);
 }
 
-bool Database::Setup(const char* databaseName, string& errorMessage)
+int Database::PrepareQuery(const std::string& queryText, sqlite3_stmt** preparedQuery)
+{
+    int prepResult = -1;
+    if (!*preparedQuery)
+    {
+        prepResult = sqlite3_prepare_v2(this->sqlite,
+                                        queryText.data(),
+                                        queryText.size(),
+                                        preparedQuery,
+                                        NULL);
+        if (SQLITE_OK == prepResult)
+            preparedStatements.push_back(*preparedQuery);
+
+        std::cout << "sqlite3_prepare_v2: " << prepResult << "\n";
+    }
+
+    return prepResult;
+}
+
+int Database::RetrieveVehiclePropsAndValues(Vehicle &vehicle, std::unordered_map<utf8string, utf8string> &propValMap)
+{
+    //std::cout << "compiling qtxtVehicleProperties" << "\n";
+    static const std::string qtxtVehicleProperties("SELECT Name FROM VehicleUserDefinedField WHERE ApplicableVehicleType=?");
+    static sqlite3_stmt* queryVehicleProperties = nullptr;
+    this->PrepareQuery(qtxtVehicleProperties, &queryVehicleProperties);
+
+    //std::cout << "compiling qtxtVehiclePropertyValue" << "\n";
+    static const std::string qtxtVehiclePropertyValue("SELECT Value FROM VehicleUserDefinedFieldValue WHERE VehicleID=? AND UserDefinedFieldName=?");
+    static sqlite3_stmt* queryVehiclePropertyValue = nullptr;
+    this->PrepareQuery(qtxtVehiclePropertyValue, &queryVehiclePropertyValue);
+
+    int bindResult = sqlite3_bind_text(queryVehicleProperties, 1,
+                                   vehicle.GetType().data(),
+                                   vehicle.GetType().size(),
+                                   NULL);
+    std::cout << "ListAllVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+    int stepResult = sqlite3_step(queryVehicleProperties);
+    std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
+
+    while (SQLITE_ROW == stepResult)
+    {
+        const unsigned char* type = sqlite3_column_text(queryVehicleProperties,
+                                                        0);
+        int typeSize = sqlite3_column_bytes(queryVehicleProperties, 0);
+        std::string vehicleProperty(type, type + typeSize);
+        std::cout << "got vehicle property " << vehicleProperty << "\n";
+
+        bindResult = sqlite3_bind_int(queryVehiclePropertyValue, 1,
+                                      vehicle.GetID());
+        std::cout << "ListAllVehicles sqlite3_bind_int: " << bindResult << "\n";
+
+        bindResult = sqlite3_bind_text(queryVehiclePropertyValue, 2,
+                                       vehicleProperty.data(),
+                                       vehicleProperty.size(),
+                                       NULL);
+        std::cout << "ListAllVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+        stepResult = sqlite3_step(queryVehiclePropertyValue);
+        std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
+
+        if (SQLITE_ROW == stepResult)
+        {
+            const unsigned char* value = sqlite3_column_text(queryVehiclePropertyValue, 0);
+            int valueSize = sqlite3_column_bytes(queryVehiclePropertyValue, 0);
+            std::string vehiclePropertyValue(value, value + valueSize);
+            std::cout << "got vehicle prop value " << vehiclePropertyValue << "\n";
+
+            propValMap[vehicleProperty] = vehiclePropertyValue;
+        }
+
+        sqlite3_reset(queryVehiclePropertyValue);
+        sqlite3_clear_bindings(queryVehiclePropertyValue);
+
+        stepResult = sqlite3_step(queryVehicleProperties);
+        std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
+    }
+
+    sqlite3_reset(queryVehicleProperties);
+    sqlite3_clear_bindings(queryVehicleProperties);
+
+    // TODO error handling / logging
+    return SQLITE_DONE;
+}
+
+bool Database::Setup(const char* databaseName, std::string& errorMessage)
 {
 	errorMessage.clear();
 
@@ -170,7 +167,7 @@ bool Database::Setup(const char* databaseName, string& errorMessage)
     sqlite3_exec(this->sqlite,
 		"CREATE TABLE IF NOT EXISTS Maintenance ("
 			"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"VehicleID INTEGER REFERENCES Vehicle (ID),"
+			"VehicleID INTEGER NOT NULL REFERENCES Vehicle (ID),"
 			"Type TEXT REFERENCES MaintenanceType (Name) ON UPDATE CASCADE,"
 			"Date INTEGER)",
 		NULL, NULL, &errMsg);
@@ -250,35 +247,18 @@ bool Database::Setup(const char* databaseName, string& errorMessage)
 		errMsg = nullptr;
 	}
 
-	for (std::size_t i = 0; i < sqlQueryBag.size(); i++)
-	{
-		/// !!! TODO ERROR CHECKING LOGGING
-		sqlite3_stmt* queryStmt;
-        int prepResult = sqlite3_prepare_v2(this->sqlite,
-                            sqlQueryBag[i].data(),
-                            sqlQueryBag[i].size(),
-                            &queryStmt,
-                            NULL);
-		std::cout << "sqlite_prepare_v2 " << sqlQueryBag[i] << ": " << prepResult;
-		
-        sqlQueryPreparedStatements[sqlQueryBag[i]] = queryStmt;
-	}
-
 	return (errorMessage.size() == 0);
 }
 
 bool
 Database::AddTypeOfVehicle(const utf8string& name)
 {
+    // "register" mechanism
+    static const char* queryText = "INSERT INTO VehicleType (Name) VALUES (?)";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
 	bool succeeded = false;
-
-	//std::size_t sqlQueryBagStatementIndex = 0;
-	//const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
- //   SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
-	//SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
-
-	// local sql!!!!!!!!!!!!!
-
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
 	// for functions which Bind + Step
@@ -287,19 +267,15 @@ Database::AddTypeOfVehicle(const utf8string& name)
 			// support C++ library & http nicely
 
 	/// !!! TODO ERROR CHECKING LOGGING
-	int bindResult = sqlite3_bind_text(statement,
-                        bindIndices["name"],
-                        name.data(),
-                        name.size(),
-                        NULL);
+    int bindResult = sqlite3_bind_text(query, 1, name.data(), name.size(), NULL);
 	std::cout << "AddTypeOfVehicle sqlite3_bind_text: " << bindResult << "\n";
 
 	/// !!! TODO ERROR CHECKING LOGGING
-	int stepResult = sqlite3_step(statement);
+    int stepResult = sqlite3_step(query);
 	std::cout << "AddTypeOfVehicle sqlite3_step: " << stepResult << "\n";
 
-	sqlite3_reset(statement);
-	sqlite3_clear_bindings(statement);
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
 
 	return succeeded;
 }
@@ -314,39 +290,30 @@ Database::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newNam
 	// std::timed_mutex - succeed || timeout
 	// support C++ library & http nicely
 
+    static const char* queryText = "UPDATE VehicleType SET Name=? WHERE Name=?";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
 	bool succeeded = false;
 
-	std::size_t sqlQueryBagStatementIndex = 1;
-	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
-	SQLiteBindIndices bindIndices = sqlQueryBindIndices[sqlQueryString];
-
 	/// !!! TODO ERROR CHECKING LOGGING
-	int bindResult = sqlite3_bind_text(statement,
-                        bindIndices["name"],
-                        name.data(),
-                        name.size(),
-                        NULL);
+    int bindResult = sqlite3_bind_text(query, 1, newName.data(), newName.size(), NULL);
 	std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
 
-	bindResult = sqlite3_bind_text(statement,
-                    bindIndices["newName"],
-                    newName.data(),
-                    newName.size(),
-                    NULL);
+    bindResult = sqlite3_bind_text(query, 2, name.data(), name.size(), NULL);
 	std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
 
 	/// !!! TODO ERROR CHECKING LOGGING
-	int stepResult = sqlite3_step(statement);
+    int stepResult = sqlite3_step(query);
 	std::cout << "UpdateTypesOfVehicles sqlite3_step: " << stepResult << "\n";
 
-	sqlite3_reset(statement);
-	sqlite3_clear_bindings(statement);
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
 
 	return succeeded;
 }
 
-std::unique_ptr<std::vector<utf8string> >
+std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfVehicles()
 {
 	/// !!! TODO ERROR CHECKING LOGGING
@@ -357,33 +324,33 @@ Database::ListAllTypesOfVehicles()
 	// std::timed_mutex - succeed || timeout
 	// support C++ library & http nicely
 
-	auto* allVehicleTypes = new std::vector<utf8string>();
+    static const char* queryText = "SELECT * FROM VehicleType";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
 
-	std::size_t sqlQueryBagStatementIndex = 2;
-	const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
-	SQLiteColumnIndices columnIndices = sqlQueryResultColumnIndices[sqlQueryString];
+    auto* allVehicleTypes = new std::vector<utf8string>();
 
-	int stepResult = sqlite3_step(statement);
+    int stepResult = sqlite3_step(query);
 	std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
 
 	while (SQLITE_ROW == stepResult)
 	{
-		ustring nameBytes = sqlite3_column_text(statement, columnIndices["name"]);
+        const unsigned char* nameBytes = sqlite3_column_text(query, 0);
+        int nameSize = sqlite3_column_bytes(query, 0);
 
-		string name(nameBytes.begin(), nameBytes.end());
+        std::string name(nameBytes, nameBytes + nameSize);
 		allVehicleTypes->push_back(name);
 
-		stepResult = sqlite3_step(statement);
+        stepResult = sqlite3_step(query);
 		std::cout << "ListAllTypesOfVehicles sqlite3_step: " << stepResult << "\n";
 	}
 
-	sqlite3_reset(statement);
+    sqlite3_reset(query);
 
-	return std::unique_ptr<std::vector<utf8string> >(allVehicleTypes);
+	return std::shared_ptr<std::vector<utf8string> >(allVehicleTypes);
 }
 
-std::unique_ptr<Vehicle>
+std::shared_ptr<Vehicle>
 Database::CreateVehicle()
 {
     /// !!! TODO ERROR CHECKING LOGGING
@@ -394,22 +361,22 @@ Database::CreateVehicle()
     // std::timed_mutex - succeed || timeout
     // support C++ library & http nicely
 
-    std::size_t sqlQueryBagStatementIndex = 3;
-    const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = sqlQueryPreparedStatements[sqlQueryString];
+    static const char* queryText = "INSERT INTO Vehicle (ID) VALUES (NULL)";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
 
-    int stepResult = sqlite3_step(statement);
+    int stepResult = sqlite3_step(query);
     std::cout << "CreateVehicle sqlite3_step: " << stepResult << "\n";
-    sqlite3_reset(statement);
+    sqlite3_reset(query);
 
     sqlite3_int64 objectId = sqlite3_last_insert_rowid(this->sqlite);
 
     auto* vehicle = new Vehicle(objectId);
-    return std::unique_ptr<Vehicle>(vehicle);
+    return std::shared_ptr<Vehicle>(vehicle);
 }
 
 bool
-Database::DeleteVehicle(Vehicle& vehicle)
+Database::DeleteVehicle(int vehicleID)
 {
     /// !!! TODO ERROR CHECKING LOGGING
     /// !!! important
@@ -419,28 +386,25 @@ Database::DeleteVehicle(Vehicle& vehicle)
     // std::timed_mutex - succeed || timeout
     // support C++ library & http nicely
 
-    std::size_t sqlQueryBagStatementIndex = 4;
-    const string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = this->sqlQueryPreparedStatements[sqlQueryString];
-    SQLiteBindIndices bindIndices = this->sqlQueryBindIndices[sqlQueryString];
+    static const char* queryText = "DELETE FROM Vehicle WHERE ID=?";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
 
-    int bindResult = sqlite3_bind_int(statement,
-                      bindIndices["id"],
-                      vehicle.GetID());
+    int bindResult = sqlite3_bind_int(query, 1, vehicleID);
     std::cout << "DeleteVehicle sqlite3_bind_int: " << bindResult;
 
-    int stepResult = sqlite3_step(statement);
+    int stepResult = sqlite3_step(query);
     std::cout << "CreateVehicle sqlite3_step: " << stepResult << "\n";
 
-    sqlite3_reset(statement);
-    sqlite3_clear_bindings(statement);
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
 
     return (SQLITE_DONE == stepResult);
 }
 
 /// List all available vehicles
 /// @return the list of all available vehicles
-std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 Database::ListAllVehicles()
 {
     /// !!! TODO ERROR CHECKING LOGGING
@@ -451,69 +415,113 @@ Database::ListAllVehicles()
     // std::timed_mutex - succeed || timeout
     // support C++ library & http nicely
 
-    auto* vehicles = new std::vector<std::unique_ptr<Vehicle>>;
+    std::cout << "inside ListAllVehicles" << "\n";
 
-    std::size_t sqlQueryBagStatementIndex = 5;
-    string& sqlQueryString = this->sqlQueryBag[sqlQueryBagStatementIndex];
-    SQLitePreparedStatementPtr statement = this->sqlQueryPreparedStatements[sqlQueryString];
-    SQLiteColumnIndices columnIndices = this->sqlQueryResultColumnIndices[sqlQueryString];
+    // TODO use column names to show positions rather than *
+    static const std::string queryText("SELECT ID, Type, Make, Model, Year, Odometer FROM Vehicle");
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
 
-    int stepResult = sqlite3_step(statement);
-    std::cout << "ListAllVehicles sqlite3_step: " << stepResult;
+    auto* vehicles = new std::vector<std::shared_ptr<Vehicle>>;
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
     while (SQLITE_ROW == stepResult)
     {
-        int id = sqlite3_column_int(statement, columnIndices["id"]);
+        int id = sqlite3_column_int(query, 0);
 // http://stackoverflow.com/questions/12052997/c-exception-occurred-in-script-basic-string-s-construct-null-not-valid
 //        ustring type = sqlite3_column_text(statement, columnIndices["type"]);
-//        ustring make = sqlite3_column_text(statement, columnIndices["make"]);
-//        ustring model = sqlite3_column_text(statement, columnIndices["model"]);
-        const unsigned char* type = sqlite3_column_text(statement, columnIndices["type"]);
-        int typeSize = sqlite3_column_bytes(statement, columnIndices["type"]);
+        const unsigned char* type = sqlite3_column_text(query, 1);
+        int typeSize = sqlite3_column_bytes(query, 1);
 
-        const unsigned char* make = sqlite3_column_text(statement, columnIndices["make"]);
-        int makeSize = sqlite3_column_bytes(statement, columnIndices["make"]);
+        const unsigned char* make = sqlite3_column_text(query, 2);
+        int makeSize = sqlite3_column_bytes(query, 2);
 
-        const unsigned char* model = sqlite3_column_text(statement, columnIndices["model"]);
-        int modelSize = sqlite3_column_bytes(statement, columnIndices["model"]);
+        const unsigned char* model = sqlite3_column_text(query, 3);
+        int modelSize = sqlite3_column_bytes(query, 3);
 
-        int year = sqlite3_column_int(statement, columnIndices["year"]);
-        int odometer = sqlite3_column_int(statement, columnIndices["odometer"]);
+        int year = sqlite3_column_int(query, 4);
+        int odometer = sqlite3_column_int(query, 5);
 
-        std::unique_ptr<Vehicle> vehicle = std::unique_ptr<Vehicle>(new Vehicle(id));
-        vehicle->GetType() = string(type, type + typeSize);
-        vehicle->GetMake() = string(make, make + makeSize);
-        vehicle->GetModel() = string(model, model + modelSize);
+        std::shared_ptr<Vehicle> vehicle = std::shared_ptr<Vehicle>(new Vehicle(id));
+        vehicle->GetType() = std::string(type, type + typeSize);
+        vehicle->GetMake() = std::string(make, make + makeSize);
+        vehicle->GetModel() = std::string(model, model + modelSize);
         vehicle->GetYear() = year;
         vehicle->GetOdometer() = odometer;
 
         vehicles->push_back(std::move(vehicle));
 
-        stepResult = sqlite3_step(statement);
-        std::cout << "ListAllVehicles sqlite3_step: " << stepResult;
+        stepResult = sqlite3_step(query);
+        std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
     }
 
-    sqlite3_reset(statement);
-    sqlite3_clear_bindings(statement);
+    sqlite3_reset(query);
 
-    return std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>(vehicles);
+    for (auto& vehicle : *vehicles)
+    {
+        std::unordered_map<utf8string, utf8string> propValMap;
+        this->RetrieveVehiclePropsAndValues(*vehicle, propValMap);
+        for (auto& kvp : propValMap)
+        {
+            std::cout << "prop " << kvp.first << "\n";
+            std::cout << "val " << kvp.second << "\n";
+            vehicle->SetProperty(kvp.first, kvp.second);
+        }
+    }
+
+    return std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>(vehicles);
 }
 
 /// Search for vehicles matching the supplied vehicle properties
 /// @param properties the vehicle properties to match
 /// @param values the values of the vehicle properties to match
-std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 Database::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 {
-	auto v = std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>();
+	auto v = std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>();
 	return v;
 }
 
 /// Get the vehicle with the supplied ID
 /// @param vehicleId the vehicle ID to match
 /// @return a vehicle with an ID > -1 if successful otherwise ID == -1
-std::unique_ptr<Vehicle> Database::GetVehicle(int vehicleId)
+std::shared_ptr<Vehicle> Database::GetVehicle(int vehicleID)
 {
-	return std::unique_ptr<Vehicle>(new Vehicle);
+    static const std::string queryText("SELECT Type, Make, Model, Year, Odometer FROM Vehicle "
+									   "WHERE ID=?");
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+	int bindResult = sqlite3_bind_int(query, 1, vehicleID);
+	std::cout << "GetVehicle sqlite3_bind_int: " << bindResult;
+
+	int stepResult = sqlite3_step(query);
+    std::cout << "GetVehicle sqlite3_step: " << stepResult << "\n";
+
+    const unsigned char* type = sqlite3_column_text(query, 0);
+    int typeSize = sqlite3_column_bytes(query, 0);
+
+    const unsigned char* make = sqlite3_column_text(query, 1);
+    int makeSize = sqlite3_column_bytes(query, 1);
+
+    const unsigned char* model = sqlite3_column_text(query, 2);
+    int modelSize = sqlite3_column_bytes(query, 2);
+
+    int year = sqlite3_column_int(query, 3);
+    int odometer = sqlite3_column_int(query, 4);
+
+    std::shared_ptr<Vehicle> vehicle = std::shared_ptr<Vehicle>(new Vehicle(vehicleID));
+    vehicle->GetType() = std::string(type, type + typeSize);
+    vehicle->GetMake() = std::string(make, make + makeSize);
+    vehicle->GetModel() = std::string(model, model + modelSize);
+    vehicle->GetYear() = year;
+    vehicle->GetOdometer() = odometer;
+
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
+
+	return vehicle;
 }
 
 /// Persists the vehicle values to storage
@@ -521,7 +529,80 @@ std::unique_ptr<Vehicle> Database::GetVehicle(int vehicleId)
 /// return true if update/add otherwise false
 bool Database::UpdateVehicle(Vehicle& vehicle)
 {
-	return false;
+    std::cout << "inside UpdateVehicle" << "\n";
+
+    if (vehicle.GetID() < 1)
+    {
+        std::cout << "creating new vehicle" << "\n";
+        auto newVehicle = this->CreateVehicle();
+        vehicle.GetID() = std::move(newVehicle->GetID()); // might not need move
+    }
+
+    static const std::string qtxtUpdateVehicle(
+                                "UPDATE Vehicle SET "
+                                "Type=?, Make=?, Model=?, Year=?, Odometer=? "
+                                "WHERE ID=?");
+    static sqlite3_stmt* queryUpdateVehicle = nullptr;
+    this->PrepareQuery(qtxtUpdateVehicle, &queryUpdateVehicle);
+
+    int bindResult = sqlite3_bind_text(queryUpdateVehicle, 1,
+                                       vehicle.GetType().data(),
+                                       vehicle.GetType().size(),
+                                       NULL);
+    std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+
+    bindResult = sqlite3_bind_text(queryUpdateVehicle, 2,
+                                    vehicle.GetMake().data(),
+                                    vehicle.GetMake().size(),
+                                    NULL);
+    std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+
+    bindResult = sqlite3_bind_text(queryUpdateVehicle, 3,
+                                    vehicle.GetModel().data(),
+                                    vehicle.GetModel().size(),
+                                    NULL);
+    std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+
+    std::cout << "year " << vehicle.GetYear() << "\n";
+    bindResult = sqlite3_bind_int(queryUpdateVehicle, 4, vehicle.GetYear());
+    std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+
+    std::cout << "odometer " << vehicle.GetOdometer() << "\n";
+    bindResult = sqlite3_bind_int(queryUpdateVehicle, 5, vehicle.GetOdometer());
+    std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+
+    bindResult = sqlite3_bind_int(queryUpdateVehicle, 6, vehicle.GetID());
+    std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+
+    int stepResult = sqlite3_step(queryUpdateVehicle);
+    std::cout << "UpdateVehicle sqlite3_step: " << stepResult << "\n";
+
+    sqlite3_reset(queryUpdateVehicle);
+    sqlite3_clear_bindings(queryUpdateVehicle);
+
+    // deleting property names?
+        // get prop keys from DB
+            // if prop.key not in vehicle
+                // remove prop.key from DB
+        // update
+
+    std::unordered_map<utf8string, utf8string> propValMap;
+    this->RetrieveVehiclePropsAndValues(vehicle, propValMap);
+
+    auto& vehicleProperties = vehicle.GetPropertyNames();
+    for (auto& property : vehicleProperties)
+    {
+        if (propValMap.find(property) == propValMap.end())
+        {
+            // remove property from db
+        }
+        else
+        {
+            // update proprty in db
+        }
+    }
+
+    return true;
 }
 
 /// Persists the vehicle values to storage
@@ -533,6 +614,7 @@ bool Database::UpdateVehicle(Vehicle& vehicle,
 	Vehicle::Properties properties,
 	const std::vector<utf8string>& userDefinedProperties)
 {
+    // deleting property names?
 	return false;
 }
 
@@ -541,7 +623,22 @@ bool Database::UpdateVehicle(Vehicle& vehicle,
 /// @return true if added otherwise false
 bool Database::AddTypeOfMaintenance(const utf8string& name)
 {
-	return false;
+    static const char* queryText = "INSERT INTO MaintenanceType (Name) VALUES (?)";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+    bool succeeded = false;
+
+    int bindResult = sqlite3_bind_text(query, 1, name.data(), name.size(), NULL);
+    std::cout << "AddTypeOfMaintenance sqlite3_bind_text: " << bindResult << "\n";
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "AddTypeOfMaintenance sqlite3_step: " << stepResult << "\n";
+
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
+
+    return succeeded;
 }
 
 /// Update the name of a maintenance type
@@ -550,23 +647,92 @@ bool Database::AddTypeOfMaintenance(const utf8string& name)
 /// @return true if updated/same otherwise false
 bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string& newType)
 {
-	return false;
+    static const char* queryText = "UPDATE MaintenanceType SET Name=? WHERE Name=?";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+    bool succeeded = false;
+
+    int bindResult = sqlite3_bind_text(query, 1, newType.data(), newType.size(), NULL);
+    std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+    bindResult = sqlite3_bind_text(query, 2, type.data(), type.size(), NULL);
+    std::cout << "UpdateTypesOfVehicles sqlite3_bind_text: " << bindResult << "\n";
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "UpdateTypesOfVehicles sqlite3_step: " << stepResult << "\n";
+
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
+
+    return succeeded;
 }
 
 /// List available types of maintenance
 /// @return the list of available maintenance types
-std::unique_ptr<std::vector<utf8string>>
+std::shared_ptr<std::vector<utf8string>>
 Database::ListAllTypesOfMaintenance()
 {
-	return std::unique_ptr<std::vector<utf8string>>(new std::vector<utf8string>());
+    std::cout << "inside ListAllTypesOfMaintenance" << "\n";
+
+    // TODO use column names to show positions rather than *
+    static const std::string queryText("SELECT ID, VehicleID, Type, Date FROM Maintenance");
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+    auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask>>;
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+
+    while (SQLITE_ROW == stepResult)
+    {
+        int id = sqlite3_column_int(query, 0);
+        int vehicleId = sqlite3_column_int(query, 1);
+
+        const unsigned char* type = sqlite3_column_text(query, 2);
+        int typeSize = sqlite3_column_bytes(query, 2);
+
+        int date = sqlite3_column_int(query, 3);
+
+        std::shared_ptr<MaintenanceTask> task = std::shared_ptr<MaintenanceTask>(new MaintenanceTask(id));
+        task->VehicleID() = vehicleId;
+        task->GetType() = std::string(type, type + typeSize);
+        task->GetDate() = date;
+
+        maintenanceTasks->push_back(std::move(task));
+
+        stepResult = sqlite3_step(query);
+        std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+    }
+
+    sqlite3_reset(query);
+
+	return std::shared_ptr<std::vector<utf8string>>(new std::vector<utf8string>());
 }
 
 /// Create and persist a new maintenance task
 /// @return a vehicle with a persisted ID
-std::unique_ptr<MaintenanceTask>
+std::shared_ptr<MaintenanceTask>
 Database::CreateMaintenanceTask(int vehicleID)
 {
-	return std::unique_ptr<MaintenanceTask>(new MaintenanceTask);
+    // TODO update DB to have constraint on vehicleID existing
+    static const char* queryText = "INSERT INTO Maintenance (VehicleID) VALUES (?)";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+	int bindResult = sqlite3_bind_int(query, 1, vehicleID);
+	std::cout << "CreateMaintenanceTask sqlite3_bind_int: " << vehicleID;
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "CreateVehicle sqlite3_step: " << stepResult << "\n";
+
+    sqlite3_reset(query);
+	sqlite3_clear_bindings(query);
+
+    sqlite3_int64 objectID = sqlite3_last_insert_rowid(this->sqlite);
+
+    return std::shared_ptr<MaintenanceTask>(new MaintenanceTask(objectID, vehicleID));
 }
 
 /// Persists the maintenance task values to storage
@@ -574,7 +740,32 @@ Database::CreateMaintenanceTask(int vehicleID)
 /// return true if update/add otherwise false
 bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 {
-	return false;
+	static const char* qtxtUpdateTask = "UPDATE Maintenance SET VehicleID=?, Type=?, Date=? "
+										"WHERE ID=?";
+	static sqlite3_stmt* query = nullptr;
+	this->PrepareQuery(qtxtUpdateTask, &query);
+
+	/// TODO !!!! Check if ID is < 1
+
+	int bindResult = sqlite3_bind_int(query, 1, task.VehicleID());
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+
+	bindResult = sqlite3_bind_text(query, 2, task.GetType().data(), task.GetType().size(), NULL);
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+
+	bindResult = sqlite3_bind_int(query, 3, task.GetDate());
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+
+	bindResult = sqlite3_bind_int(query, 4, task.GetID());
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+
+	int stepResult = sqlite3_step(query);
+	std::cout << "UpdateMaintenanceTask sqlite3_step: " << stepResult;
+
+	sqlite3_reset(query);
+	sqlite3_clear_bindings(query);
+
+	return true;
 }
 
 /// Persists the maintenance task values to storage
@@ -589,7 +780,74 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task,
 
 /// Remove and no longer persist a maintenance task
 /// @return true if task removed/not found otherwise false
-bool Database::DeleteMaintenanceTask(MaintenanceTask& task)
+bool Database::DeleteMaintenanceTask(int taskID)
 {
-	return false;
+    static const char* queryText = "DELETE FROM Maintenance WHERE ID=?";
+    static sqlite3_stmt* query = nullptr;
+    this->PrepareQuery(queryText, &query);
+
+    int bindResult = sqlite3_bind_int(query, 1, taskID);
+    std::cout << "DeleteMaintenanceTask sqlite3_bind_int: " << bindResult;
+
+    int stepResult = sqlite3_step(query);
+    std::cout << "DeleteMaintenanceTask sqlite3_step: " << stepResult << "\n";
+
+    sqlite3_reset(query);
+    sqlite3_clear_bindings(query);
+
+    return (SQLITE_DONE == stepResult);
+}
+
+/// List the entire maintenance history of the vehicle
+/// @param vehicleID the vehicle's ID
+/// @return a list of maintenance tasks associated with the vehicle
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+Database::ListVehicleMaintenanceHistory(int vehicleID)
+{
+	static const char* qtxtMaintenanceHistory = "SELECT ID, Type, Date FROM MaintenanceTask "
+												"WHERE VehicleID=?";
+	static sqlite3_stmt* query = nullptr;
+	this->PrepareQuery(qtxtMaintenanceHistory, &query);
+
+	int bindResult = sqlite3_bind_int(query, 1, vehicleID);
+	std::cout << "ListVehicleMaintenanceHistory sqlite3_bind_int: " << bindResult;
+
+	int stepResult = sqlite3_step(query);
+    std::cout << "ListVehicleMaintenanceHistory sqlite3_step: " << stepResult << "\n";
+
+	auto* tasks = new std::vector<std::shared_ptr<MaintenanceTask>>();
+	while (SQLITE_ROW == stepResult)
+	{
+		int objectID = sqlite3_column_int(query, 0);
+		
+		const unsigned char* type = sqlite3_column_text(query, 1);
+		int typeSize = sqlite3_column_bytes(query, 1);
+
+		int date = sqlite3_column_int(query, 2);
+
+		auto* task = new MaintenanceTask(objectID, vehicleID);
+		task->GetType() = std::string(type, type + typeSize);
+		task->GetDate() = date;
+
+		tasks->push_back(std::move(std::shared_ptr<MaintenanceTask>(task)));
+
+		stepResult = sqlite3_step(query);
+		std::cout << "ListVehicleMaintenanceHistory sqlite3_step: " << stepResult << "\n";
+	}
+
+	sqlite3_reset(query);
+	sqlite3_clear_bindings(query);
+
+	return std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>(tasks);
+}
+
+/// List the entire maintenance history of the vehicle
+/// @param vehicleID the vehicle's ID
+/// @param startDate the earliest maintenance history date inclusive
+/// @param endDate the latest maintenance history date inclusive
+/// @return a list of maintenance tasks associated with the vehicle
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+Database::ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate)
+{
+	return nullptr;
 }

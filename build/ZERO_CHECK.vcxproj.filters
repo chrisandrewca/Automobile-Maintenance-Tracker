@@ -1,19 +1,13 @@
 ﻿<?xml version="1.0" encoding="Windows-1252"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="CMakeFiles\1aac9c58b451bfd9db949a9baa1a5d64\generate.stamp.rule">
+    <CustomBuild Include="C:\Users\christopher\Desktop\amt\build\CMakeFiles\e4b85c0732d0263a1aed7ea7ef1272e4\generate.stamp.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="CMakeFiles\1aac9c58b451bfd9db949a9baa1a5d64\ZERO_CHECK.rule">
-      <Filter>CMake Rules</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CMakeFiles\ZERO_CHECK" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{F1726DC1-8FB8-449F-84B8-B59F1E3CC699}</UniqueIdentifier>
+      <UniqueIdentifier>{96411F42-672A-40A0-9310-A27C0D9343DB}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

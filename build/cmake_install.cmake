@@ -1,4 +1,4 @@
-# Install script for directory: C:/codez/amt
+# Install script for directory: C:/Users/christopher/Desktop/amt
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -33,7 +33,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "C:/codez/amt/build/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "C:/Users/christopher/Desktop/amt/build/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "C:/codez/amt/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "C:/Users/christopher/Desktop/amt/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()

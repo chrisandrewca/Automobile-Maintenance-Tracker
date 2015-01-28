@@ -31,25 +31,30 @@ public:
 		UserDefined = 32
 	};
 
-    Vehicle(int id = -1);
+    Vehicle(int ID = -1);
 
 	int& GetID();
+	void SetID(int ID);
 
 	int& GetYear();
+	void SetYear(int year);
 
 	int& GetOdometer();
+	void SetOdometer(int value);
 
 	utf8string& GetType();
+	void SetType(const utf8string& type);
 
 	utf8string& GetMake();
+	void SetMake(const utf8string& make);
 
 	utf8string& GetModel();
+	void SetModel(const utf8string& model);
 
-	void AddProperty(const utf8string& property, const utf8string& value);
+	std::vector<utf8string>& GetPropertyNames();
 
 	utf8string& GetProperty(const utf8string& name);
-
-	std::vector<utf8string>& GetPropertyNames() const;
+	void SetProperty(const utf8string& property, const utf8string& value);
 
 private:
     int id;
@@ -59,6 +64,7 @@ private:
     utf8string make;
     utf8string model;
     std::unordered_map<utf8string, utf8string> properties;
+    std::vector<utf8string> propertyNames;
 };
 
 class MaintenanceTask
@@ -72,15 +78,19 @@ public:
 		VehicleID = 4
 	};
 
-	MaintenanceTask(int id = -1);
+	MaintenanceTask(int ID = -1, int vehicleID = -1);
 
 	int& GetID();
+	void SetID(int ID);
 
 	int& VehicleID();
+	void SetVehicleID(int ID);
 
 	utf8string& GetType();
+	void SetType(const utf8string& type);
 
 	int& GetDate();
+	void SetDate(int date);
 
 private:
 	int id;
@@ -108,32 +118,32 @@ public:
 
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	virtual std::unique_ptr<std::vector<utf8string> >
+	virtual std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfVehicles() = 0;
 
 	/// Create and persist a new vehicle
 	/// @return a vehicle with a persisted ID
-	virtual std::unique_ptr<Vehicle> CreateVehicle() = 0;
+	virtual std::shared_ptr<Vehicle> CreateVehicle() = 0;
 
 	/// Remove and no longer persist a vehicle
 	/// @return true if vehicle removed/not found otherwise false
-	virtual bool DeleteVehicle(Vehicle& vehicle) = 0;
+	virtual bool DeleteVehicle(int vehicleID) = 0;
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	virtual std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		ListAllVehicles() = 0;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	virtual std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) = 0;
 
 	/// Get the vehicle with the supplied ID
 	/// @param vehicleId the vehicle ID to match
 	/// @return a vehicle with an ID > -1 if successful otherwise ID == -1
-	virtual std::unique_ptr<Vehicle> GetVehicle(int vehicleId) = 0;
+    virtual std::shared_ptr<Vehicle> GetVehicle(int vehicleID) = 0;
 
 	/// Persists the vehicle values to storage
 	/// @param vehicle the vehicle to update/add; vehicle ID changes if not constructed through CreateVehicle()
@@ -164,12 +174,12 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	virtual std::unique_ptr<std::vector<utf8string>>
+	virtual std::shared_ptr<std::vector<utf8string>>
 		ListAllTypesOfMaintenance() = 0;
 
 	/// Create and persist a new maintenance task
 	/// @return a vehicle with a persisted ID
-	virtual std::unique_ptr<MaintenanceTask>
+	virtual std::shared_ptr<MaintenanceTask>
 		CreateMaintenanceTask(int vehicleID) = 0;
 
 	/// Persists the maintenance task values to storage
@@ -188,15 +198,30 @@ public:
 
 	/// Remove and no longer persist a maintenance task
 	/// @return true if task removed/not found otherwise false
-	virtual bool DeleteMaintenanceTask(MaintenanceTask& task) = 0;
+	virtual bool DeleteMaintenanceTask(int taskID) = 0;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @return a list of maintenance tasks associated with the vehicle
+	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID) = 0;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @param startDate the earliest maintenance history date inclusive
+	/// @param endDate the latest maintenance history date inclusive
+	/// @return a list of maintenance tasks associated with the vehicle
+	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) = 0;
 };
 
 class AMTAPI : public APIBase
 {
 public:
-	struct Result
-	{
-	};
+    // returning errors?
+//	struct Result
+//	{
+//	};
 
 	enum class DataStoreOption { Database };
 
@@ -216,32 +241,32 @@ public:
 
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	std::unique_ptr<std::vector<utf8string> >
+	std::shared_ptr<std::vector<utf8string>>
 		ListAllTypesOfVehicles() override;
 
 	/// Create and persist a new vehicle
 	/// @return a vehicle with a persisted ID
-	std::unique_ptr<Vehicle> CreateVehicle() override;
+	std::shared_ptr<Vehicle> CreateVehicle() override;
 
 	/// Remove and no longer persist a vehicle
 	/// @return true if vehicle removed/not found otherwise false
-	bool DeleteVehicle(Vehicle& vehicle) override;
+	bool DeleteVehicle(int vehicleID) override;
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		ListAllVehicles() override;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) override;
 
 	/// Get the vehicle with the supplied ID
 	/// @param vehicleId the vehicle ID to match
 	/// @return a vehicle with an ID > -1 if successful otherwise ID == -1
-	std::unique_ptr<Vehicle> GetVehicle(int vehicleId) override;
+    std::shared_ptr<Vehicle> GetVehicle(int vehicleID) override;
 
 	/// Persists the vehicle values to storage
 	/// @param vehicle the vehicle to update/add; vehicle ID changes if not constructed through CreateVehicle()
@@ -271,12 +296,12 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	std::unique_ptr<std::vector<utf8string>>
+	std::shared_ptr<std::vector<utf8string>>
 		ListAllTypesOfMaintenance() override;
 
 	/// Create and persist a new maintenance task
 	/// @return a vehicle with a persisted ID
-	std::unique_ptr<MaintenanceTask>
+	std::shared_ptr<MaintenanceTask>
 		CreateMaintenanceTask(int vehicleID) override;
 
 	/// Persists the maintenance task values to storage
@@ -293,10 +318,24 @@ public:
 
 	/// Remove and no longer persist a maintenance task
 	/// @return true if task removed/not found otherwise false
-	bool DeleteMaintenanceTask(MaintenanceTask& task) override;
+	bool DeleteMaintenanceTask(int taskID) override;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @return a list of maintenance tasks associated with the vehicle
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID) override;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @param startDate the earliest maintenance history date inclusive
+	/// @param endDate the latest maintenance history date inclusive
+	/// @return a list of maintenance tasks associated with the vehicle
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) override;
 
 private:
-	std::unique_ptr<APIBase> amt;
+	std::shared_ptr<APIBase> amt;
 };
 
 }

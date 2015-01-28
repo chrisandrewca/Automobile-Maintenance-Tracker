@@ -30,49 +30,47 @@ AMTAPI::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 	return this->amt->UpdateTypesOfVehicles(name, newName);
 }
 
-std::unique_ptr<std::vector<utf8string> >
+std::shared_ptr<std::vector<utf8string>>
 AMTAPI::ListAllTypesOfVehicles()
 {
-	auto* v = new std::vector<utf8string>();
-	return std::unique_ptr<std::vector<utf8string>>(v);
+    return this->amt->ListAllTypesOfVehicles();
 }
 
-std::unique_ptr<Vehicle>
+std::shared_ptr<Vehicle>
 AMTAPI::CreateVehicle()
 {
-	return std::unique_ptr<Vehicle>(new Vehicle);
+    return this->amt->CreateVehicle();
 }
 
 bool
-AMTAPI::DeleteVehicle(Vehicle& vehicle)
+AMTAPI::DeleteVehicle(int vehicleID)
 {
-	return true;
+    return this->amt->DeleteVehicle(vehicleID);
 }
 
 /// List all available vehicles
 /// @return the list of all available vehicles
-std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 AMTAPI::ListAllVehicles()
 {
-	return std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>();
+    return this->amt->ListAllVehicles();
 }
 
 /// Search for vehicles matching the supplied vehicle properties
 /// @param properties the vehicle properties to match
 /// @param values the values of the vehicle properties to match
-std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 AMTAPI::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 {
-	auto v = std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>();
-	return v;
+    return this->amt->FindVehicles(properties, values);
 }
 
 /// Get the vehicle with the supplied ID
 /// @param vehicleId the vehicle ID to match
 /// @return a vehicle with an ID > -1 if successful otherwise ID == -1
-std::unique_ptr<Vehicle> AMTAPI::GetVehicle(int vehicleId)
+std::shared_ptr<Vehicle> AMTAPI::GetVehicle(int vehicleID)
 {
-	return std::unique_ptr<Vehicle>(new Vehicle);
+    return this->amt->GetVehicle(vehicleID);
 }
 
 /// Persists the vehicle values to storage
@@ -80,7 +78,7 @@ std::unique_ptr<Vehicle> AMTAPI::GetVehicle(int vehicleId)
 /// return true if update/add otherwise false
 bool AMTAPI::UpdateVehicle(Vehicle& vehicle)
 {
-	return false;
+    return this->amt->UpdateVehicle(vehicle);
 }
 
 /// Persists the vehicle values to storage
@@ -92,7 +90,7 @@ bool AMTAPI::UpdateVehicle(Vehicle& vehicle,
 	Vehicle::Properties properties,
 	const std::vector<utf8string>& userDefinedProperties)
 {
-	return false;
+    return this->amt->UpdateVehicle(vehicle, properties, userDefinedProperties);
 }
 
 /// Track a new type of maintenance
@@ -100,7 +98,7 @@ bool AMTAPI::UpdateVehicle(Vehicle& vehicle,
 /// @return true if added otherwise false
 bool AMTAPI::AddTypeOfMaintenance(const utf8string& name)
 {
-	return false;
+    return this->amt->AddTypeOfMaintenance(name);
 }
 
 /// Update the name of a maintenance type
@@ -109,23 +107,23 @@ bool AMTAPI::AddTypeOfMaintenance(const utf8string& name)
 /// @return true if updated/same otherwise false
 bool AMTAPI::UpdateTypesOfMaintenance(const utf8string& type, const utf8string& newType)
 {
-	return false;
+    return this->amt->UpdateTypesOfMaintenance(type, newType);
 }
 
 /// List available types of maintenance
 /// @return the list of available maintenance types
-std::unique_ptr<std::vector<utf8string>>
+std::shared_ptr<std::vector<utf8string>>
 AMTAPI::ListAllTypesOfMaintenance()
 {
-	return std::unique_ptr<std::vector<utf8string>>(new std::vector<utf8string>());
+    return this->amt->ListAllTypesOfMaintenance();
 }
 
 /// Create and persist a new maintenance task
 /// @return a vehicle with a persisted ID
-std::unique_ptr<MaintenanceTask>
+std::shared_ptr<MaintenanceTask>
 AMTAPI::CreateMaintenanceTask(int vehicleID)
 {
-	return std::unique_ptr<MaintenanceTask>(new MaintenanceTask);
+    return this->amt->CreateMaintenanceTask(vehicleID);
 }
 
 /// Persists the maintenance task values to storage
@@ -133,7 +131,7 @@ AMTAPI::CreateMaintenanceTask(int vehicleID)
 /// return true if update/add otherwise false
 bool AMTAPI::UpdateMaintenanceTask(MaintenanceTask& task)
 {
-	return false;
+    return this->amt->UpdateMaintenanceTask(task);
 }
 
 /// Persists the maintenance task values to storage
@@ -143,12 +141,32 @@ bool AMTAPI::UpdateMaintenanceTask(MaintenanceTask& task)
 bool AMTAPI::UpdateMaintenanceTask(MaintenanceTask& task,
 	MaintenanceTask::Properties properties)
 {
-	return false;
+    return this->amt->UpdateMaintenanceTask(task, properties);
 }
 
 /// Remove and no longer persist a maintenance task
 /// @return true if task removed/not found otherwise false
-bool AMTAPI::DeleteMaintenanceTask(MaintenanceTask& task)
+bool AMTAPI::DeleteMaintenanceTask(int taskID)
 {
-	return false;
+    return this->amt->DeleteMaintenanceTask(taskID);
+}
+
+/// List the entire maintenance history of the vehicle
+/// @param vehicleID the vehicle's ID
+/// @return a list of maintenance tasks associated with the vehicle
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+AMTAPI::ListVehicleMaintenanceHistory(int vehicleID)
+{
+	return this->amt->ListVehicleMaintenanceHistory(vehicleID);
+}
+
+/// List the entire maintenance history of the vehicle
+/// @param vehicleID the vehicle's ID
+/// @param startDate the earliest maintenance history date inclusive
+/// @param endDate the latest maintenance history date inclusive
+/// @return a list of maintenance tasks associated with the vehicle
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+AMTAPI::ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate)
+{
+	return this->amt->ListVehicleMaintenanceHistory(vehicleID, startDate, endDate);
 }

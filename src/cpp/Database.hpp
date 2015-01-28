@@ -1,13 +1,8 @@
 #ifndef _AMT_DATABASE_HPP_
 #define _AMT_DATABASE_HPP_
 
-//#include "DataStore.hpp"
 #include "AutomobileMaintenanceTracker.hpp"
 #include "sqlite/sqlite3.h"
-#include <string>
-#include <map>
-#include <unordered_map>
-#include <memory>
 
 namespace AMT
 {
@@ -33,32 +28,32 @@ public:
 
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	std::unique_ptr<std::vector<utf8string> >
+	std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfVehicles() override;
 
 	/// Create and persist a new vehicle
 	/// @return a vehicle with a persisted ID
-	std::unique_ptr<Vehicle> CreateVehicle() override;
+	std::shared_ptr<Vehicle> CreateVehicle() override;
 
 	/// Remove and no longer persist a vehicle
 	/// @return true if vehicle removed/not found otherwise false
-	bool DeleteVehicle(Vehicle& vehicle) override;
+	bool DeleteVehicle(int vehicleID) override;
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		ListAllVehicles() override;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	std::unique_ptr<std::vector<std::unique_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) override;
 
 	/// Get the vehicle with the supplied ID
 	/// @param vehicleId the vehicle ID to match
 	/// @return a vehicle with an ID > -1 if successful otherwise ID == -1
-	std::unique_ptr<Vehicle> GetVehicle(int vehicleId) override;
+    std::shared_ptr<Vehicle> GetVehicle(int vehicleID) override;
 
 	/// Persists the vehicle values to storage
 	/// @param vehicle the vehicle to update/add; vehicle ID changes if not constructed through CreateVehicle()
@@ -88,12 +83,12 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	std::unique_ptr<std::vector<utf8string>>
+	std::shared_ptr<std::vector<utf8string>>
 		ListAllTypesOfMaintenance() override;
 
 	/// Create and persist a new maintenance task
 	/// @return a vehicle with a persisted ID
-	std::unique_ptr<MaintenanceTask>
+	std::shared_ptr<MaintenanceTask>
 		CreateMaintenanceTask(int vehicleID) override;
 
 	/// Persists the maintenance task values to storage
@@ -110,54 +105,29 @@ public:
 
 	/// Remove and no longer persist a maintenance task
 	/// @return true if task removed/not found otherwise false
-	bool DeleteMaintenanceTask(MaintenanceTask& task) override;
+	bool DeleteMaintenanceTask(int maintenanceID) override;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @return a list of maintenance tasks associated with the vehicle
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID) override;
+
+	/// List the entire maintenance history of the vehicle
+	/// @param vehicleID the vehicle's ID
+	/// @param startDate the earliest maintenance history date inclusive
+	/// @param endDate the latest maintenance history date inclusive
+	/// @return a list of maintenance tasks associated with the vehicle
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) override;
 
 private:
-	//static const int TblVehicleType_ColName;
-	//static const int TblMaintenanceType_ColName;
+    sqlite3* sqlite;
+    // per function -- takeout anythin really common
+    std::vector<sqlite3_stmt*> preparedStatements;
 
-	//static const int TblVehicle_ColID;
-	//static const int TblVehicle_ColType;
-	//static const int TblVehicle_ColMake;
-	//static const int TblVehicle_ColModel;
-	//static const int TblVehicle_ColYear;
-	//static const int TblVehicle_ColOdometer;
-
-	//static const int TblMaintenance_ColID;
-	//static const int TblMaintenance_ColVehicleID;
-	//static const int TblMaintenance_ColType;
-	//static const int TblMaintenance_ColDate;
-
-	//static const int TblVehicleApplicableMaintenance_ColVehicleType;
-	//static const int TblVehicleApplicableMaintenance_ColMaintenanceType;
-
-	//static const int TblVehicleUserDefinedField_ColName;
-	//static const int TblVehicleUserDefinedField_ColApplicableVehicleType;
-
-	//static const int TblVehicleUserDefinedFieldValue_ColVehicleID;
-	//static const int TblVehicleUserDefinedFieldValue_ColUserDefinedFieldName;
-	//static const int TblVehicleUserDefinedFieldValue_ColValue;
-
-	//typedef std::string string;
-	//typedef std::basic_string <unsigned char> ustring;
-
-	//static const string QueryTxt_AddT
-
-	//template<typename K, typename V>
-	//using map = std::map<K, V>;
-
-	//template<typename K, typename V>
-	//using umap = std::unordered_map<K, V>;
-
-	//typedef sqlite3_stmt* SQLitePreparedStatementPtr;
-	//
-	//sqlite3* sqlite;
-	//umap<string, map<int, int>> sqlQueryBindIndices;
-	//umap<string, map<int, int>> sqlQueryResultColumnIndices;
-	//umap<string, SQLitePreparedStatementPtr> sqlQueryPreparedStatements;
-
-	// per function -- takeout anythin really common
-
+    int PrepareQuery(const std::string& queryText, sqlite3_stmt** preparedQuery);
+    int RetrieveVehiclePropsAndValues(Vehicle& vehicle, std::unordered_map<utf8string, utf8string>& propValMap);
 	bool Setup(const char* databaseName, std::string& errorMessage);
 };
 
