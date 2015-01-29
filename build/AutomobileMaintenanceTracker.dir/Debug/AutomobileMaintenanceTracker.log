@@ -1,10 +1,44 @@
-﻿Build started 1/28/2015 5:30:34 PM.
+﻿Build started 1/29/2015 8:54:42 AM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\codez\amt\build\Debug\AutomobileMaintenanceTracker.exe) does not match the Linker's OutputFile property value (C:\codez\amt\build\Debug\_AutomobileMaintenanceTracker.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1194,5): warning MSB8012: TargetExt(.exe) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(AutomobileMaintenanceTracker) does not match the Linker's OutputFile property value (_AutomobileMaintenanceTracker). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-     1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\Debug\_AutomobileMaintenanceTracker.pyd" /INCREMENTAL /NOLOGO /LIBPATH:C:\Python27\libs kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib python27.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/Debug/AutomobileMaintenanceTracker.lib" /MACHINE:X64  /machine:x64 /debug /DLL AutomobileMaintenanceTracker.dir\Debug\main.obj
+     1>CustomBuild:
+         Building Custom Rule C:/codez/amt/CMakeLists.txt
+         CMake does not need to re-run because C:\codez\amt\build\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\Python27\include /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D AutomobileMaintenanceTracker_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\src\cpp\main.cpp ..\src\cpp\AMTAPI.cpp ..\src\cpp\Database.cpp ..\src\cpp\Vehicle.cpp ..\src\cpp\MaintenanceTask.cpp ..\codegen\AutomobileMaintenanceTracker_wrap.cxx
+         main.cpp
+         AMTAPI.cpp
+         Database.cpp
+     1>..\src\cpp\Database.cpp(40): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(69): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(87): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(239): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(257): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(258): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(308): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(465): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(470): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(475): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(517): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(522): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(534): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(539): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(632): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(640): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(648): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(680): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(698): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(699): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(753): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(768): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(788): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+         Vehicle.cpp
+         MaintenanceTask.cpp
+         AutomobileMaintenanceTracker_wrap.cxx
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\Python27\include /IC:\codez\amt\include /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D AutomobileMaintenanceTracker_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Debug\\" /Fd"AutomobileMaintenanceTracker.dir\Debug\vc120.pdb" /Gd /TC /errorReport:prompt ..\src\cpp\sqlite\sqlite3.c
+         sqlite3.c
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\lib\Debug\AutomobileMaintenanceTracker.pyd" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib C:\Python27\libs\python27.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/codez/amt/build/lib/Debug/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/lib/Debug/AutomobileMaintenanceTracker.lib" /MACHINE:X64  /machine:x64 /debug /DLL AutomobileMaintenanceTracker.dir\Debug\main.obj
          AutomobileMaintenanceTracker.dir\Debug\AMTAPI.obj
          AutomobileMaintenanceTracker.dir\Debug\Database.obj
          AutomobileMaintenanceTracker.dir\Debug\Vehicle.obj
@@ -16,4 +50,4 @@
 
 Build FAILED.
 
-Time Elapsed 00:00:00.21
+Time Elapsed 00:00:04.15

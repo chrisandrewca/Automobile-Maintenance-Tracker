@@ -17,3 +17,9 @@ C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/CMakeCXXInformation.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC-CXX.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/FindPythonLibs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/CMakeFindFrameworks.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/SelectLibraryConfigurations.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/FindPackageMessage.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.0/Modules/CMakeParseArguments.cmake
