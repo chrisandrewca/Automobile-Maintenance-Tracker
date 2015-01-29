@@ -13,7 +13,6 @@ vehicle.SetMake("Tesla")
 vehicle.SetModel("Model S")
 vehicle.SetProperty("Color", "Black")
 vehicle.SetProperty("Price", "99999.99")
-
 api.UpdateVehicle(vehicle)
 
 response = api.GetVehicle(vehicle.GetID())
@@ -22,3 +21,15 @@ assert response.GetMake() == "Tesla"
 assert response.GetModel() == "Model S"
 assert response.GetProperty("Color") == "Black"
 assert response.GetProperty("Price") == "99999.99"
+
+task = api.CreateMaintenanceTask(vehicle.GetID())
+assert task.GetID() > -1
+
+task.SetType("Oil Change")
+task.SetVehicleID(vehicle.GetID())
+task.SetDate(1234)
+api.UpdateMaintenanceTask(task)
+
+response = api.ListVehicleMaintenanceHistory(task.VehicleID())
+assert len(response) == 1
+assert response[0].GetID() == task.GetID()

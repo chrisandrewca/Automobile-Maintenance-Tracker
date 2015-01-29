@@ -740,40 +740,40 @@ bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string
 std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfMaintenance()
 {
-    std::cout << "inside ListAllTypesOfMaintenance" << "\n";
+    //std::cout << "inside ListAllTypesOfMaintenance" << "\n";
 
-    // TODO use column names to show positions rather than *
-    static const std::string queryText("SELECT ID, VehicleID, Type, Date FROM Maintenance");
-    static sqlite3_stmt* query = nullptr;
-    this->PrepareQuery(queryText, &query);
+    //// TODO use column names to show positions rather than *
+    //static const std::string queryText("SELECT ID, VehicleID, Type, Date FROM Maintenance");
+    //static sqlite3_stmt* query = nullptr;
+    //this->PrepareQuery(queryText, &query);
 
-    auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask> >;
+    //auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask> >;
 
-    int stepResult = sqlite3_step(query);
-    std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+    //int stepResult = sqlite3_step(query);
+    //std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
 
-    while (SQLITE_ROW == stepResult)
-    {
-        int id = sqlite3_column_int(query, 0);
-        int vehicleId = sqlite3_column_int(query, 1);
+    //while (SQLITE_ROW == stepResult)
+    //{
+    //    int id = sqlite3_column_int(query, 0);
+    //    int vehicleId = sqlite3_column_int(query, 1);
 
-        const unsigned char* type = sqlite3_column_text(query, 2);
-        int typeSize = sqlite3_column_bytes(query, 2);
+    //    const unsigned char* type = sqlite3_column_text(query, 2);
+    //    int typeSize = sqlite3_column_bytes(query, 2);
 
-        int date = sqlite3_column_int(query, 3);
+    //    int date = sqlite3_column_int(query, 3);
 
-        std::shared_ptr<MaintenanceTask> task = std::shared_ptr<MaintenanceTask>(new MaintenanceTask(id));
-        task->VehicleID() = vehicleId;
-        task->GetType() = std::string(type, type + typeSize);
-        task->GetDate() = date;
+    //    std::shared_ptr<MaintenanceTask> task = std::shared_ptr<MaintenanceTask>(new MaintenanceTask(id));
+    //    task->VehicleID() = vehicleId;
+    //    task->GetType() = std::string(type, type + typeSize);
+    //    task->GetDate() = date;
 
-        maintenanceTasks->push_back(std::move(task));
+    //    maintenanceTasks->push_back(std::move(task));
 
-        stepResult = sqlite3_step(query);
-        std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
-    }
+    //    stepResult = sqlite3_step(query);
+    //    std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+    //}
 
-    sqlite3_reset(query);
+    //sqlite3_reset(query);
 
 	return std::shared_ptr<std::vector<utf8string> >(new std::vector<utf8string>());
 }
@@ -789,10 +789,10 @@ Database::CreateMaintenanceTask(int vehicleID)
     this->PrepareQuery(queryText, &query);
 
 	int bindResult = sqlite3_bind_int(query, 1, vehicleID);
-	std::cout << "CreateMaintenanceTask sqlite3_bind_int: " << vehicleID;
+	std::cout << "CreateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
     int stepResult = sqlite3_step(query);
-    std::cout << "CreateVehicle sqlite3_step: " << stepResult << "\n";
+    std::cout << "CreateMaintenanceTask sqlite3_step: " << stepResult << "\n";
 
     sqlite3_reset(query);
 	sqlite3_clear_bindings(query);
@@ -815,19 +815,19 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 	/// TODO !!!! Check if ID is < 1
 
 	int bindResult = sqlite3_bind_int(query, 1, task.VehicleID());
-	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
 	bindResult = sqlite3_bind_text(query, 2, task.GetType().data(), task.GetType().size(), NULL);
-	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
 	bindResult = sqlite3_bind_int(query, 3, task.GetDate());
-	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
 	bindResult = sqlite3_bind_int(query, 4, task.GetID());
-	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult;
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
 	int stepResult = sqlite3_step(query);
-	std::cout << "UpdateMaintenanceTask sqlite3_step: " << stepResult;
+	std::cout << "UpdateMaintenanceTask sqlite3_step: " << stepResult << "\n";
 
 	sqlite3_reset(query);
 	sqlite3_clear_bindings(query);
@@ -854,7 +854,7 @@ bool Database::DeleteMaintenanceTask(int taskID)
     this->PrepareQuery(queryText, &query);
 
     int bindResult = sqlite3_bind_int(query, 1, taskID);
-    std::cout << "DeleteMaintenanceTask sqlite3_bind_int: " << bindResult;
+	std::cout << "DeleteMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
     int stepResult = sqlite3_step(query);
     std::cout << "DeleteMaintenanceTask sqlite3_step: " << stepResult << "\n";
@@ -871,13 +871,14 @@ bool Database::DeleteMaintenanceTask(int taskID)
 std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 Database::ListVehicleMaintenanceHistory(int vehicleID)
 {
-	static const char* qtxtMaintenanceHistory = "SELECT ID, Type, Date FROM MaintenanceTask "
+	std::cout << "Inside ListVehicleMaintenanceHistory" << "\n";
+	static const char* qtxtMaintenanceHistory = "SELECT ID, Type, Date FROM Maintenance "
 												"WHERE VehicleID=?";
 	static sqlite3_stmt* query = nullptr;
 	this->PrepareQuery(qtxtMaintenanceHistory, &query);
 
 	int bindResult = sqlite3_bind_int(query, 1, vehicleID);
-	std::cout << "ListVehicleMaintenanceHistory sqlite3_bind_int: " << bindResult;
+	std::cout << "ListVehicleMaintenanceHistory sqlite3_bind_int: " << bindResult << "\n";
 
 	int stepResult = sqlite3_step(query);
     std::cout << "ListVehicleMaintenanceHistory sqlite3_step: " << stepResult << "\n";
