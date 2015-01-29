@@ -807,14 +807,33 @@ Database::CreateMaintenanceTask(int vehicleID)
 /// return true if update/add otherwise false
 bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 {
+	static const std::string qtxt_Insert_or_Ignore_Maintenance_Type(
+		"INSERT OR IGNORE INTO MaintenanceType (Name) VALUES (?)");
+	static sqlite3_stmt* queryInsertOrIgnoreMaintenanceType = nullptr;
+	this->PrepareQuery(qtxt_Insert_or_Ignore_Maintenance_Type, &queryInsertOrIgnoreMaintenanceType);
+
+	int bindResult = sqlite3_bind_text(queryInsertOrIgnoreMaintenanceType, 1,
+		task.GetType().data(),
+		task.GetType().size(),
+		NULL);
+	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
+
+	int stepResult = sqlite3_step(queryInsertOrIgnoreMaintenanceType);
+	std::cout << "UpdateMaintenanceTask sqlite3_step: " << stepResult << "\n";
+
 	static const char* qtxtUpdateTask = "UPDATE Maintenance SET VehicleID=?, Type=?, Date=? "
 										"WHERE ID=?";
 	static sqlite3_stmt* query = nullptr;
 	this->PrepareQuery(qtxtUpdateTask, &query);
 
-	/// TODO !!!! Check if ID is < 1
+	if (task.GetID() < 1)
+	{
+		std::cout << "creating new task" << "\n";
+		auto newTask = this->CreateMaintenanceTask(task.VehicleID());
+		task.GetID() = std::move(newTask->GetID()); // might not need move
+	}
 
-	int bindResult = sqlite3_bind_int(query, 1, task.VehicleID());
+	bindResult = sqlite3_bind_int(query, 1, task.VehicleID());
 	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
 	bindResult = sqlite3_bind_text(query, 2, task.GetType().data(), task.GetType().size(), NULL);
@@ -826,7 +845,7 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 	bindResult = sqlite3_bind_int(query, 4, task.GetID());
 	std::cout << "UpdateMaintenanceTask sqlite3_bind_int: " << bindResult << "\n";
 
-	int stepResult = sqlite3_step(query);
+	stepResult = sqlite3_step(query);
 	std::cout << "UpdateMaintenanceTask sqlite3_step: " << stepResult << "\n";
 
 	sqlite3_reset(query);

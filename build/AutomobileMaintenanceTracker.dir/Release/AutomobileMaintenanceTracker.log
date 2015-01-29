@@ -1,4 +1,4 @@
-﻿Build started 1/29/2015 2:36:40 AM.
+﻿Build started 1/29/2015 3:03:51 AM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\codez\amt\include /IC:\Python27\include /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Release\\" /Fd"AutomobileMaintenanceTracker.dir\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\src\cpp\Database.cpp
@@ -21,7 +21,8 @@
      1>..\src\cpp\Database.cpp(723): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>..\src\cpp\Database.cpp(726): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>..\src\cpp\Database.cpp(802): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(820): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(818): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(839): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\codez\amt\build\Release\AutomobileMaintenanceTracker.exe) does not match the Linker's OutputFile property value (C:\codez\amt\build\Release\_AutomobileMaintenanceTracker.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1194,5): warning MSB8012: TargetExt(.exe) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(AutomobileMaintenanceTracker) does not match the Linker's OutputFile property value (_AutomobileMaintenanceTracker). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
@@ -39,4 +40,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.19
+Time Elapsed 00:00:01.14
