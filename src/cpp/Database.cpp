@@ -521,6 +521,13 @@ std::shared_ptr<Vehicle> Database::GetVehicle(int vehicleID)
     sqlite3_reset(query);
     sqlite3_clear_bindings(query);
 
+	std::unordered_map<utf8string, utf8string> propValMap;
+	this->RetrieveVehiclePropsAndValues(*vehicle, propValMap);
+	for (auto& kvp : propValMap)
+	{
+		vehicle->SetProperty(kvp.first, kvp.second);
+	}
+
 	return vehicle;
 }
 
@@ -580,27 +587,87 @@ bool Database::UpdateVehicle(Vehicle& vehicle)
     sqlite3_reset(queryUpdateVehicle);
     sqlite3_clear_bindings(queryUpdateVehicle);
 
-    // deleting property names?
-        // get prop keys from DB
-            // if prop.key not in vehicle
-                // remove prop.key from DB
-        // update
+	//upsert
+	//TODO add Transaction
+	static const std::string qtxt_Insert_or_Ignore_Property_Name(
+		"INSERT OR IGNORE INTO VehicleUserDefinedField (Name, ApplicableVehicleType) "
+		"VALUES (?, ?)");
+	static sqlite3_stmt* queryInsertOrIgnorePropertyName = nullptr;
+	this->PrepareQuery(qtxt_Insert_or_Ignore_Property_Name, &queryInsertOrIgnorePropertyName);
 
-    std::unordered_map<utf8string, utf8string> propValMap;
-    this->RetrieveVehiclePropsAndValues(vehicle, propValMap);
+	static const std::string qtxt_Insert_or_Ignore_Property_Value(
+		"INSERT OR IGNORE INTO VehicleUserDefinedFieldValue "
+		"(VehicleID, UserDefinedFieldName, Value) VALUES (?, ?, ?)");
+	static sqlite3_stmt* queryInsertOrIgnorePropertyValue = nullptr;
+	this->PrepareQuery(qtxt_Insert_or_Ignore_Property_Value, &queryInsertOrIgnorePropertyValue);
+
+	static const std::string qtxt_Update_Property_Value(
+		"UPDATE VehicleUserDefinedFieldValue SET Value=? WHERE "
+		"VehicleID=? AND UserDefinedFieldName=?");
+	static sqlite3_stmt* queryUpdatePropertyValue = nullptr;
+	this->PrepareQuery(qtxt_Update_Property_Value, &queryUpdatePropertyValue);
+
+	std::unordered_map<utf8string, utf8string> propValMap;
+	this->RetrieveVehiclePropsAndValues(vehicle, propValMap);
 
     auto& vehicleProperties = vehicle.GetPropertyNames();
     for (auto& property : vehicleProperties)
-    {
-        if (propValMap.find(property) == propValMap.end())
-        {
-            // remove property from db
-        }
-        else
-        {
-            // update proprty in db
-        }
+	{
+		auto& value = vehicle.GetProperty(property);
+
+		int bindResult = sqlite3_bind_text(queryInsertOrIgnorePropertyName, 1,
+			property.data(),
+			property.size(),
+			NULL);
+		std::cout << "UpdateVehicle bind_text: " << bindResult;
+
+		bindResult = sqlite3_bind_text(queryInsertOrIgnorePropertyName, 2,
+			vehicle.GetType().data(),
+			vehicle.GetType().size(),
+			NULL);
+		std::cout << "UpdateVehicle bind_text: " << bindResult;
+
+		int stepResult = sqlite3_step(queryInsertOrIgnorePropertyName);
+		std::cout << "UpdateVehicle step: " << stepResult;
+
+		sqlite3_reset(queryInsertOrIgnorePropertyName);
+		sqlite3_clear_bindings(queryInsertOrIgnorePropertyName);
+
+		bindResult = sqlite3_bind_int(queryInsertOrIgnorePropertyValue, 1, vehicle.GetID());
+		std::cout << "UpdateVehicle bind_int: " << bindResult;
+
+		bindResult = sqlite3_bind_text(queryInsertOrIgnorePropertyValue, 2,
+			property.data(),
+			property.size(),
+			NULL);
+		std::cout << "UpdateVehicle bind_text: " << bindResult;
+
+		bindResult = sqlite3_bind_text(queryInsertOrIgnorePropertyValue, 3,
+			value.data(),
+			value.size(),
+			NULL);
+		std::cout << "UpdateVehicle bind_text: " << bindResult;
+
+		stepResult = sqlite3_step(queryInsertOrIgnorePropertyValue);
+		std::cout << "UpdateVehicle step: " << stepResult;
+
+		sqlite3_reset(queryInsertOrIgnorePropertyValue);
+		sqlite3_clear_bindings(queryInsertOrIgnorePropertyValue);
     }
+
+	static const std::string qtxt_Delete_Property_Value(
+		"DELETE FROM VehicleUserDefinedFieldValue "
+		"WHERE VehicleID=? AND UserDefinedFieldName=?");
+	static sqlite3_stmt* queryDeletePropertyValue = nullptr;
+	this->PrepareQuery(qtxt_Delete_Property_Value, &queryDeletePropertyValue);
+
+	// TODO: add interface to AMT::Vehicle for removing a property
+	// remove property from db
+	// foreach dbPropValue
+		// if dbPropValue not in vPropValues
+			// delete dbPropValue value 
+			// TODO: Add AMT::APIBase to delete PropertyName->VehicleType association
+					// as it is an expensive operation
 
     return true;
 }

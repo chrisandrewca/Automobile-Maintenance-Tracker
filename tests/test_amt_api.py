@@ -3,7 +3,6 @@ api = AMT.AMTAPI(AMT.AMTAPI.DataStoreOption_Database)
 
 api.AddTypeOfVehicle("Electric")
 vehicleTypes = api.ListAllTypesOfVehicles()
-
 assert "Electric" in vehicleTypes
 
 vehicle = api.CreateVehicle()
