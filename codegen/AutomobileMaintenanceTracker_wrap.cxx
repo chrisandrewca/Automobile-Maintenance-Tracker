@@ -12165,14 +12165,12 @@ SWIG_init(void) {
   SWIG_InstallConstants(d,swig_const_table);
   
   SWIG_Python_SetConstant(d, "SHARED_PTR_DISOWN",SWIG_From_int(static_cast< int >(0)));
-  SWIG_Python_SetConstant(d, "Vehicle_Properties_All",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::All)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_Type",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::Type)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_Make",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::Make)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_Model",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::Model)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_Year",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::Year)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_Odometer",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::Odometer)));
   SWIG_Python_SetConstant(d, "Vehicle_Properties_UserDefined",SWIG_From_int(static_cast< int >(AMT::Vehicle::Properties::UserDefined)));
-  SWIG_Python_SetConstant(d, "MaintenanceTask_Properties_All",SWIG_From_int(static_cast< int >(AMT::MaintenanceTask::Properties::All)));
   SWIG_Python_SetConstant(d, "MaintenanceTask_Properties_Type",SWIG_From_int(static_cast< int >(AMT::MaintenanceTask::Properties::Type)));
   SWIG_Python_SetConstant(d, "MaintenanceTask_Properties_Date",SWIG_From_int(static_cast< int >(AMT::MaintenanceTask::Properties::Date)));
   SWIG_Python_SetConstant(d, "MaintenanceTask_Properties_VehicleID",SWIG_From_int(static_cast< int >(AMT::MaintenanceTask::Properties::VehicleID)));

@@ -361,7 +361,6 @@ class Vehicle(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Vehicle, name)
     __repr__ = _swig_repr
-    Properties_All = _AutomobileMaintenanceTracker.Vehicle_Properties_All
     Properties_Type = _AutomobileMaintenanceTracker.Vehicle_Properties_Type
     Properties_Make = _AutomobileMaintenanceTracker.Vehicle_Properties_Make
     Properties_Model = _AutomobileMaintenanceTracker.Vehicle_Properties_Model
@@ -431,7 +430,6 @@ class MaintenanceTask(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, MaintenanceTask, name)
     __repr__ = _swig_repr
-    Properties_All = _AutomobileMaintenanceTracker.MaintenanceTask_Properties_All
     Properties_Type = _AutomobileMaintenanceTracker.MaintenanceTask_Properties_Type
     Properties_Date = _AutomobileMaintenanceTracker.MaintenanceTask_Properties_Date
     Properties_VehicleID = _AutomobileMaintenanceTracker.MaintenanceTask_Properties_VehicleID

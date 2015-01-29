@@ -53,6 +53,27 @@ namespace AMT {
 	}
 }
 
+%typemap(in) std::vector<AMT::utf8string>& {
+	if (!PyList_Check($input))
+	{
+		SWIG_exception(SWIG_TypeError, "Expecting a PyList");
+		return NULL;
+	}
+
+	const unsigned int listSize = PyList_Size($input);
+	$1 = std::vector<AMT::utf8string>;
+	$1.reserve(listSize);
+	
+	for (unsigned int i = 0; i < listSize; i++)
+	{
+		PyObject* o = PyList_GetItem($input, i);
+		unsigned int strSize = PyString_Size(o);
+		char* str = PyString_AsString(o);
+		AMT::utf8string localStr(str, str + strSize);
+		$1.push_back(localStr);
+	}
+}
+
 %typemap(out) std::shared_ptr<std::vector<AMT::utf8string> > {
 	$result = PyList_New((*$1).size());
 

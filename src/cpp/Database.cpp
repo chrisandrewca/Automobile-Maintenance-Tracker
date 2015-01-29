@@ -710,7 +710,113 @@ bool Database::UpdateVehicle(Vehicle& vehicle,
 {
 	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
 
-    // deleting property names?
+	if (vehicle.GetID() < 1)
+	{
+		std::cout << "creating new vehicle" << "\n";
+		auto newVehicle = this->CreateVehicle();
+		vehicle.GetID() = std::move(newVehicle->GetID()); // might not need move
+	}
+
+	std::string qtxtUpdateVehicle("UPDATE Vehicle SET "); // if id doesnt exist return helpful error
+
+	int colCount = 1, typeIndex = 0, makeIndex = 0, modelIndex = 0, yearIndex = 0,
+		odometerIndex = 0, IDIndex = 0, bindResult = 0;
+
+	if ((int)properties & (int)Vehicle::Properties::Type)
+	{
+		typeIndex = colCount++;
+		if (typeIndex > 1)
+			qtxtUpdateVehicle.append(",");
+		qtxtUpdateVehicle.append("Type=? ");
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Make)
+	{
+		makeIndex = colCount++;
+		if (makeIndex > 1)
+			qtxtUpdateVehicle.append(",");
+		qtxtUpdateVehicle.append("Make=? ");
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Model)
+	{
+		modelIndex = colCount++;
+		if (modelIndex > 1)
+			qtxtUpdateVehicle.append(",");
+		qtxtUpdateVehicle.append("Model=? ");
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Year)
+	{
+		yearIndex = colCount++;
+		if (yearIndex > 1)
+			qtxtUpdateVehicle.append(",");
+		qtxtUpdateVehicle.append("Year=? ");
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Odometer)
+	{
+		odometerIndex = colCount++;
+		if (odometerIndex > 1)
+			qtxtUpdateVehicle.append(",");
+		qtxtUpdateVehicle.append("Odometer=? ");
+	}
+
+	qtxtUpdateVehicle.append("WHERE ID=?");
+	IDIndex = colCount++;
+
+	std::cout << "about to prep \n\t" << qtxtUpdateVehicle << "\n\n";
+	sqlite3_stmt* queryUpdateVehicle = nullptr;
+	this->PrepareQuery(qtxtUpdateVehicle, &queryUpdateVehicle);
+
+	if ((int)properties & (int)Vehicle::Properties::Type)
+	{
+		bindResult = sqlite3_bind_text(queryUpdateVehicle, typeIndex,
+			vehicle.GetType().data(),
+			vehicle.GetType().size(),
+			NULL);
+		std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Make)
+	{
+		bindResult = sqlite3_bind_text(queryUpdateVehicle, makeIndex,
+			vehicle.GetMake().data(),
+			vehicle.GetMake().size(),
+			NULL);
+		std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Model)
+	{
+		bindResult = sqlite3_bind_text(queryUpdateVehicle, modelIndex,
+			vehicle.GetModel().data(),
+			vehicle.GetModel().size(),
+			NULL);
+		std::cout << "UpdateVehicle sqlite3_bind_text: " << bindResult << "\n";
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Year)
+	{
+		bindResult = sqlite3_bind_int(queryUpdateVehicle, yearIndex, vehicle.GetYear());
+		std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+	}
+
+	if ((int)properties & (int)Vehicle::Properties::Odometer)
+	{
+		bindResult = sqlite3_bind_int(queryUpdateVehicle, odometerIndex, vehicle.GetOdometer());
+		std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+	}
+
+	bindResult = sqlite3_bind_int(queryUpdateVehicle, IDIndex, vehicle.GetID());
+	std::cout << "UpdateVehicle sqlite3_bind_int: " << bindResult << "\n";
+
+	int stepResult = sqlite3_step(queryUpdateVehicle);
+	std::cout << "UpdateVehicle sqlite3_step: " << stepResult << "\n";
+
+	sqlite3_reset(queryUpdateVehicle);
+	sqlite3_clear_bindings(queryUpdateVehicle);
+
 	return false;
 }
 

@@ -22,12 +22,11 @@ class Vehicle
 public:
 	enum class Properties
 	{
-		All = 0,
-		Type = 1,
-		Make = 2,
-		Model = 4, // re-org
-		Year = 8,
-		Odometer = 16,
+		Type		=  1,
+		Make		=  2,
+		Model		=  4,
+		Year		=  8,
+		Odometer	= 16,
 		UserDefined = 32
 	};
 
@@ -72,9 +71,8 @@ class MaintenanceTask
 public:
 	enum class Properties
 	{
-		All = 0,
-		Type = 1, // re-org
-		Date = 2,
+		Type	  = 1,
+		Date	  = 2,
 		VehicleID = 4
 	};
 

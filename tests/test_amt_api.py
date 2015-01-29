@@ -36,3 +36,19 @@ assert response[0].GetID() == task.GetID()
 
 taskTypes = api.ListAllTypesOfMaintenance()
 assert "Oil Change" in taskTypes
+
+vehicle = api.CreateVehicle()
+vehicle.SetType("Gasoline")
+vehicle.SetMake("Volkswagon")
+vehicle.SetModel("Jetta")
+vehicle.SetYear(2014)
+
+api.UpdateVehicle(vehicle, AMT.Vehicle.Properties_Type
+							| AMT.Vehicle.Properties_Make
+							| AMT.Vehicle.Properties_Year)
+
+response = api.GetVehicle(vehicle.GetID())
+assert response.GetType() == "Gasoline"
+assert response.GetMake() == "Volkswagon"
+assert response.GetYear() == 2014
+assert not response.GetModel()
