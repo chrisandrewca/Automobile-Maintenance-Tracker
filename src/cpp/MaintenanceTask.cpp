@@ -16,7 +16,7 @@ int& MaintenanceTask::GetID()
 
 void MaintenanceTask::SetID(int ID)
 {
-	this->id = id;
+	this->id = ID;
 }
 
 int& MaintenanceTask::VehicleID()
