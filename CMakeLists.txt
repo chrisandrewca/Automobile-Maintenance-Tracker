@@ -9,7 +9,7 @@ endif (${UNIX})
 include_directories(include/)
 
 IF (WIN32)
-	include_directories(C:\Python27\include)
+	include_directories(C:/Python27/include)
 ENDIF()
 
 add_executable(AutomobileMaintenanceTracker

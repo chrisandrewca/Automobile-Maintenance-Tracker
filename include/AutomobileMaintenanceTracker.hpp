@@ -131,13 +131,13 @@ public:
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		ListAllVehicles() = 0;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) = 0;
 
 	/// Get the vehicle with the supplied ID
@@ -174,7 +174,7 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	virtual std::shared_ptr<std::vector<utf8string>>
+	virtual std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfMaintenance() = 0;
 
 	/// Create and persist a new maintenance task
@@ -203,7 +203,7 @@ public:
 	/// List the entire maintenance history of the vehicle
 	/// @param vehicleID the vehicle's ID
 	/// @return a list of maintenance tasks associated with the vehicle
-	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID) = 0;
 
 	/// List the entire maintenance history of the vehicle
@@ -211,7 +211,7 @@ public:
 	/// @param startDate the earliest maintenance history date inclusive
 	/// @param endDate the latest maintenance history date inclusive
 	/// @return a list of maintenance tasks associated with the vehicle
-	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	virtual std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) = 0;
 };
 
@@ -241,7 +241,7 @@ public:
 
 	/// List available types of vehicles
 	/// @return the list of available vehicles
-	std::shared_ptr<std::vector<utf8string>>
+	std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfVehicles() override;
 
 	/// Create and persist a new vehicle
@@ -254,13 +254,13 @@ public:
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		ListAllVehicles() override;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) override;
 
 	/// Get the vehicle with the supplied ID
@@ -296,7 +296,7 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	std::shared_ptr<std::vector<utf8string>>
+	std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfMaintenance() override;
 
 	/// Create and persist a new maintenance task
@@ -323,7 +323,7 @@ public:
 	/// List the entire maintenance history of the vehicle
 	/// @param vehicleID the vehicle's ID
 	/// @return a list of maintenance tasks associated with the vehicle
-	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID) override;
 
 	/// List the entire maintenance history of the vehicle
@@ -331,7 +331,7 @@ public:
 	/// @param startDate the earliest maintenance history date inclusive
 	/// @param endDate the latest maintenance history date inclusive
 	/// @return a list of maintenance tasks associated with the vehicle
-	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) override;
 
 private:

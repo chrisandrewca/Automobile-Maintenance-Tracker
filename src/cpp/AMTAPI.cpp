@@ -30,7 +30,7 @@ AMTAPI::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 	return this->amt->UpdateTypesOfVehicles(name, newName);
 }
 
-std::shared_ptr<std::vector<utf8string>>
+std::shared_ptr<std::vector<utf8string> >
 AMTAPI::ListAllTypesOfVehicles()
 {
     return this->amt->ListAllTypesOfVehicles();
@@ -50,7 +50,7 @@ AMTAPI::DeleteVehicle(int vehicleID)
 
 /// List all available vehicles
 /// @return the list of all available vehicles
-std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 AMTAPI::ListAllVehicles()
 {
     return this->amt->ListAllVehicles();
@@ -59,7 +59,7 @@ AMTAPI::ListAllVehicles()
 /// Search for vehicles matching the supplied vehicle properties
 /// @param properties the vehicle properties to match
 /// @param values the values of the vehicle properties to match
-std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 AMTAPI::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 {
     return this->amt->FindVehicles(properties, values);
@@ -112,7 +112,7 @@ bool AMTAPI::UpdateTypesOfMaintenance(const utf8string& type, const utf8string& 
 
 /// List available types of maintenance
 /// @return the list of available maintenance types
-std::shared_ptr<std::vector<utf8string>>
+std::shared_ptr<std::vector<utf8string> >
 AMTAPI::ListAllTypesOfMaintenance()
 {
     return this->amt->ListAllTypesOfMaintenance();
@@ -154,7 +154,7 @@ bool AMTAPI::DeleteMaintenanceTask(int taskID)
 /// List the entire maintenance history of the vehicle
 /// @param vehicleID the vehicle's ID
 /// @return a list of maintenance tasks associated with the vehicle
-std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 AMTAPI::ListVehicleMaintenanceHistory(int vehicleID)
 {
 	return this->amt->ListVehicleMaintenanceHistory(vehicleID);
@@ -165,7 +165,7 @@ AMTAPI::ListVehicleMaintenanceHistory(int vehicleID)
 /// @param startDate the earliest maintenance history date inclusive
 /// @param endDate the latest maintenance history date inclusive
 /// @return a list of maintenance tasks associated with the vehicle
-std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 AMTAPI::ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate)
 {
 	return this->amt->ListVehicleMaintenanceHistory(vehicleID, startDate, endDate);

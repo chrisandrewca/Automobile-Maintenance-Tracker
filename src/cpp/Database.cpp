@@ -404,7 +404,7 @@ Database::DeleteVehicle(int vehicleID)
 
 /// List all available vehicles
 /// @return the list of all available vehicles
-std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 Database::ListAllVehicles()
 {
     /// !!! TODO ERROR CHECKING LOGGING
@@ -422,7 +422,7 @@ Database::ListAllVehicles()
     static sqlite3_stmt* query = nullptr;
     this->PrepareQuery(queryText, &query);
 
-    auto* vehicles = new std::vector<std::shared_ptr<Vehicle>>;
+    auto* vehicles = new std::vector<std::shared_ptr<Vehicle> >;
 
     int stepResult = sqlite3_step(query);
     std::cout << "ListAllVehicles sqlite3_step: " << stepResult << "\n";
@@ -470,16 +470,16 @@ Database::ListAllVehicles()
         }
     }
 
-    return std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>(vehicles);
+    return std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >(vehicles);
 }
 
 /// Search for vehicles matching the supplied vehicle properties
 /// @param properties the vehicle properties to match
 /// @param values the values of the vehicle properties to match
-std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 Database::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 {
-	auto v = std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>();
+	auto v = std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >();
 	return v;
 }
 
@@ -541,7 +541,7 @@ bool Database::UpdateVehicle(Vehicle& vehicle)
     static const std::string qtxtUpdateVehicle(
                                 "UPDATE Vehicle SET "
                                 "Type=?, Make=?, Model=?, Year=?, Odometer=? "
-                                "WHERE ID=?");
+                                "WHERE ID=?"); // if id doesnt exist return helpful error
     static sqlite3_stmt* queryUpdateVehicle = nullptr;
     this->PrepareQuery(qtxtUpdateVehicle, &queryUpdateVehicle);
 
@@ -670,7 +670,7 @@ bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string
 
 /// List available types of maintenance
 /// @return the list of available maintenance types
-std::shared_ptr<std::vector<utf8string>>
+std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfMaintenance()
 {
     std::cout << "inside ListAllTypesOfMaintenance" << "\n";
@@ -680,7 +680,7 @@ Database::ListAllTypesOfMaintenance()
     static sqlite3_stmt* query = nullptr;
     this->PrepareQuery(queryText, &query);
 
-    auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask>>;
+    auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask> >;
 
     int stepResult = sqlite3_step(query);
     std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
@@ -708,7 +708,7 @@ Database::ListAllTypesOfMaintenance()
 
     sqlite3_reset(query);
 
-	return std::shared_ptr<std::vector<utf8string>>(new std::vector<utf8string>());
+	return std::shared_ptr<std::vector<utf8string> >(new std::vector<utf8string>());
 }
 
 /// Create and persist a new maintenance task
@@ -801,7 +801,7 @@ bool Database::DeleteMaintenanceTask(int taskID)
 /// List the entire maintenance history of the vehicle
 /// @param vehicleID the vehicle's ID
 /// @return a list of maintenance tasks associated with the vehicle
-std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 Database::ListVehicleMaintenanceHistory(int vehicleID)
 {
 	static const char* qtxtMaintenanceHistory = "SELECT ID, Type, Date FROM MaintenanceTask "
@@ -815,7 +815,7 @@ Database::ListVehicleMaintenanceHistory(int vehicleID)
 	int stepResult = sqlite3_step(query);
     std::cout << "ListVehicleMaintenanceHistory sqlite3_step: " << stepResult << "\n";
 
-	auto* tasks = new std::vector<std::shared_ptr<MaintenanceTask>>();
+	auto* tasks = new std::vector<std::shared_ptr<MaintenanceTask> >();
 	while (SQLITE_ROW == stepResult)
 	{
 		int objectID = sqlite3_column_int(query, 0);
@@ -838,7 +838,7 @@ Database::ListVehicleMaintenanceHistory(int vehicleID)
 	sqlite3_reset(query);
 	sqlite3_clear_bindings(query);
 
-	return std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>(tasks);
+	return std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >(tasks);
 }
 
 /// List the entire maintenance history of the vehicle
@@ -846,7 +846,7 @@ Database::ListVehicleMaintenanceHistory(int vehicleID)
 /// @param startDate the earliest maintenance history date inclusive
 /// @param endDate the latest maintenance history date inclusive
 /// @return a list of maintenance tasks associated with the vehicle
-std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 Database::ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate)
 {
 	return nullptr;

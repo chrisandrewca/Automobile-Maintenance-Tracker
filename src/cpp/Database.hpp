@@ -41,13 +41,13 @@ public:
 
 	/// List all available vehicles
 	/// @return the list of all available vehicles
-	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		ListAllVehicles() override;
 
 	/// Search for vehicles matching the supplied vehicle properties
 	/// @param properties the vehicle properties to match
 	/// @param values the values of the vehicle properties to match
-	std::shared_ptr<std::vector<std::shared_ptr<Vehicle>>>
+	std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 		FindVehicles(Vehicle::Properties properties, const Vehicle& values) override;
 
 	/// Get the vehicle with the supplied ID
@@ -83,7 +83,7 @@ public:
 
 	/// List available types of maintenance
 	/// @return the list of available maintenance types
-	std::shared_ptr<std::vector<utf8string>>
+	std::shared_ptr<std::vector<utf8string> >
 		ListAllTypesOfMaintenance() override;
 
 	/// Create and persist a new maintenance task
@@ -110,7 +110,7 @@ public:
 	/// List the entire maintenance history of the vehicle
 	/// @param vehicleID the vehicle's ID
 	/// @return a list of maintenance tasks associated with the vehicle
-	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID) override;
 
 	/// List the entire maintenance history of the vehicle
@@ -118,7 +118,7 @@ public:
 	/// @param startDate the earliest maintenance history date inclusive
 	/// @param endDate the latest maintenance history date inclusive
 	/// @return a list of maintenance tasks associated with the vehicle
-	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask>>>
+	std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 		ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate) override;
 
 private:
