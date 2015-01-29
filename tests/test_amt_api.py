@@ -33,3 +33,6 @@ api.UpdateMaintenanceTask(task)
 response = api.ListVehicleMaintenanceHistory(task.VehicleID())
 assert len(response) == 1
 assert response[0].GetID() == task.GetID()
+
+taskTypes = api.ListAllTypesOfMaintenance()
+assert "Oil Change" in taskTypes

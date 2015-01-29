@@ -740,42 +740,30 @@ bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string
 std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfMaintenance()
 {
-    //std::cout << "inside ListAllTypesOfMaintenance" << "\n";
+	static const char* queryText = "SELECT * FROM MaintenanceType";
+	static sqlite3_stmt* query = nullptr;
+	this->PrepareQuery(queryText, &query);
 
-    //// TODO use column names to show positions rather than *
-    //static const std::string queryText("SELECT ID, VehicleID, Type, Date FROM Maintenance");
-    //static sqlite3_stmt* query = nullptr;
-    //this->PrepareQuery(queryText, &query);
+	auto* allTaskTypes = new std::vector<utf8string>();
 
-    //auto* maintenanceTasks = new std::vector<std::shared_ptr<MaintenanceTask> >;
+	int stepResult = sqlite3_step(query);
+	std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
 
-    //int stepResult = sqlite3_step(query);
-    //std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+	while (SQLITE_ROW == stepResult)
+	{
+		const unsigned char* nameBytes = sqlite3_column_text(query, 0);
+		int nameSize = sqlite3_column_bytes(query, 0);
 
-    //while (SQLITE_ROW == stepResult)
-    //{
-    //    int id = sqlite3_column_int(query, 0);
-    //    int vehicleId = sqlite3_column_int(query, 1);
+		std::string name(nameBytes, nameBytes + nameSize);
+		allTaskTypes->push_back(name);
 
-    //    const unsigned char* type = sqlite3_column_text(query, 2);
-    //    int typeSize = sqlite3_column_bytes(query, 2);
+		stepResult = sqlite3_step(query);
+		std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
+	}
 
-    //    int date = sqlite3_column_int(query, 3);
+	sqlite3_reset(query);
 
-    //    std::shared_ptr<MaintenanceTask> task = std::shared_ptr<MaintenanceTask>(new MaintenanceTask(id));
-    //    task->VehicleID() = vehicleId;
-    //    task->GetType() = std::string(type, type + typeSize);
-    //    task->GetDate() = date;
-
-    //    maintenanceTasks->push_back(std::move(task));
-
-    //    stepResult = sqlite3_step(query);
-    //    std::cout << "ListAllTypesOfMaintenance sqlite3_step: " << stepResult << "\n";
-    //}
-
-    //sqlite3_reset(query);
-
-	return std::shared_ptr<std::vector<utf8string> >(new std::vector<utf8string>());
+	return std::shared_ptr<std::vector<utf8string> >(allTaskTypes);
 }
 
 /// Create and persist a new maintenance task
