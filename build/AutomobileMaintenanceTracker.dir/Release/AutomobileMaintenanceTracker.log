@@ -1,31 +1,31 @@
-﻿Build started 1/29/2015 4:45:50 AM.
+﻿Build started 1/29/2015 5:30:46 AM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\codez\amt\include /IC:\Python27\include /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Release\\" /Fd"AutomobileMaintenanceTracker.dir\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\src\cpp\Database.cpp
          Database.cpp
      1>..\src\cpp\Database.cpp(40): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(66): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(69): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>..\src\cpp\Database.cpp(87): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(281): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(313): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(316): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(391): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(585): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(591): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(597): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(648): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(654): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(669): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(675): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(777): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(786): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(795): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(836): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(862): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(865): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(933): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(951): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>..\src\cpp\Database.cpp(972): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(239): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(257): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(258): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(308): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(461): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(466): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(471): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(513): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(518): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(530): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(535): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(628): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(636): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(644): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(676): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(694): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(695): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(749): warning C4244: 'argument' : conversion from 'sqlite3_int64' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(764): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\src\cpp\Database.cpp(785): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\codez\amt\build\Release\AutomobileMaintenanceTracker.exe) does not match the Linker's OutputFile property value (C:\codez\amt\build\Release\_AutomobileMaintenanceTracker.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1194,5): warning MSB8012: TargetExt(.exe) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(AutomobileMaintenanceTracker) does not match the Linker's OutputFile property value (_AutomobileMaintenanceTracker). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
@@ -43,4 +43,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.21
+Time Elapsed 00:00:01.18
