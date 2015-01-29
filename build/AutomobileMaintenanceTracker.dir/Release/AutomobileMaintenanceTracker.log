@@ -1,9 +1,12 @@
-﻿Build started 1/28/2015 10:14:17 PM.
+﻿Build started 1/28/2015 10:39:21 PM.
      1>Project "C:\codez\amt\build\AutomobileMaintenanceTracker.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\codez\amt\include /IC:\Python27\include /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"AutomobileMaintenanceTracker.dir\Release\\" /Fd"AutomobileMaintenanceTracker.dir\Release\vc120.pdb" /Gd /TP /errorReport:prompt ..\codegen\AutomobileMaintenanceTracker_wrap.cxx
+         AutomobileMaintenanceTracker_wrap.cxx
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(C:\codez\amt\build\Release\AutomobileMaintenanceTracker.exe) does not match the Linker's OutputFile property value (C:\codez\amt\build\Release\_AutomobileMaintenanceTracker.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1194,5): warning MSB8012: TargetExt(.exe) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(AutomobileMaintenanceTracker) does not match the Linker's OutputFile property value (_AutomobileMaintenanceTracker). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-     1>Link:
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\codez\amt\build\Release\_AutomobileMaintenanceTracker.pyd" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Python27\libs kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/codez/amt/build/Release/AutomobileMaintenanceTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/codez/amt/build/Release/AutomobileMaintenanceTracker.lib" /MACHINE:X64  /machine:x64 /DLL AutomobileMaintenanceTracker.dir\Release\main.obj
          AutomobileMaintenanceTracker.dir\Release\AMTAPI.obj
          AutomobileMaintenanceTracker.dir\Release\Database.obj
@@ -17,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.25
+Time Elapsed 00:00:01.36

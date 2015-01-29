@@ -3447,9 +3447,9 @@ SWIGINTERNINLINE PyObject*
 #include "AutomobileMaintenanceTracker.hpp"
 
 
-	namespace AMT {
-		typedef std::string utf8string;
-	}
+namespace AMT {
+	typedef std::string utf8string;
+}
 
 
 namespace swig {  
@@ -4717,6 +4717,126 @@ struct SWIG_null_deleter {
 
 
 #define SWIG_NO_NULL_DELETER_SWIG_BUILTIN_INIT
+
+
+SWIGINTERN swig_type_info*
+SWIG_pchar_descriptor(void)
+{
+  static int init = 0;
+  static swig_type_info* info = 0;
+  if (!init) {
+    info = SWIG_TypeQuery("_p_char");
+    init = 1;
+  }
+  return info;
+}
+
+
+SWIGINTERN int
+SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
+{
+#if PY_VERSION_HEX>=0x03000000
+  if (PyUnicode_Check(obj))
+#else  
+  if (PyString_Check(obj))
+#endif
+  {
+    char *cstr; Py_ssize_t len;
+#if PY_VERSION_HEX>=0x03000000
+    if (!alloc && cptr) {
+        /* We can't allow converting without allocation, since the internal
+           representation of string in Python 3 is UCS-2/UCS-4 but we require
+           a UTF-8 representation.
+           TODO(bhy) More detailed explanation */
+        return SWIG_RuntimeError;
+    }
+    obj = PyUnicode_AsUTF8String(obj);
+    PyBytes_AsStringAndSize(obj, &cstr, &len);
+    if(alloc) *alloc = SWIG_NEWOBJ;
+#else
+    PyString_AsStringAndSize(obj, &cstr, &len);
+#endif
+    if (cptr) {
+      if (alloc) {
+	/* 
+	   In python the user should not be able to modify the inner
+	   string representation. To warranty that, if you define
+	   SWIG_PYTHON_SAFE_CSTRINGS, a new/copy of the python string
+	   buffer is always returned.
+
+	   The default behavior is just to return the pointer value,
+	   so, be careful.
+	*/ 
+#if defined(SWIG_PYTHON_SAFE_CSTRINGS)
+	if (*alloc != SWIG_OLDOBJ) 
+#else
+	if (*alloc == SWIG_NEWOBJ) 
+#endif
+	  {
+	    *cptr = reinterpret_cast< char* >(memcpy((new char[len + 1]), cstr, sizeof(char)*(len + 1)));
+	    *alloc = SWIG_NEWOBJ;
+	  }
+	else {
+	  *cptr = cstr;
+	  *alloc = SWIG_OLDOBJ;
+	}
+      } else {
+        #if PY_VERSION_HEX>=0x03000000
+        assert(0); /* Should never reach here in Python 3 */
+        #endif
+	*cptr = SWIG_Python_str_AsChar(obj);
+      }
+    }
+    if (psize) *psize = len + 1;
+#if PY_VERSION_HEX>=0x03000000
+    Py_XDECREF(obj);
+#endif
+    return SWIG_OK;
+  } else {
+    swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+    if (pchar_descriptor) {
+      void* vptr = 0;
+      if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
+	if (cptr) *cptr = (char *) vptr;
+	if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
+	if (alloc) *alloc = SWIG_OLDOBJ;
+	return SWIG_OK;
+      }
+    }
+  }
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsPtr_std_string (PyObject * obj, std::string **val) 
+{
+  char* buf = 0 ; size_t size = 0; int alloc = SWIG_OLDOBJ;
+  if (SWIG_IsOK((SWIG_AsCharPtrAndSize(obj, &buf, &size, &alloc)))) {
+    if (buf) {
+      if (val) *val = new std::string(buf, size - 1);
+      if (alloc == SWIG_NEWOBJ) delete[] buf;
+      return SWIG_NEWOBJ;
+    } else {
+      if (val) *val = 0;
+      return SWIG_OLDOBJ;
+    }
+  } else {
+    static int init = 0;
+    static swig_type_info* descriptor = 0;
+    if (!init) {
+      descriptor = SWIG_TypeQuery("std::string" " *");
+      init = 1;
+    }
+    if (descriptor) {
+      std::string *vptr;
+      int res = SWIG_ConvertPtr(obj, (void**)&vptr, descriptor, 0);
+      if (SWIG_IsOK(res) && val) *val = vptr;
+      return res;
+    }
+  }
+  return SWIG_ERROR;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -8002,7 +8122,9 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetType(PyObject *SWIGUNUSEDPARM(self), PyObj
     }
   }
   result = (AMT::utf8string *) &(arg1)->GetType();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
+  {
+    resultobj = PyString_FromStringAndSize((*result).data(), (*result).size());
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8017,8 +8139,7 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetType(PyObject *SWIGUNUSEDPARM(self), PyObj
   int res1 = 0 ;
   std::shared_ptr< AMT::Vehicle > tempshared1 ;
   std::shared_ptr< AMT::Vehicle > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -8038,18 +8159,23 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetType(PyObject *SWIGUNUSEDPARM(self), PyObj
       arg1 = const_cast< AMT::Vehicle * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   (arg1)->SetType((AMT::utf8string const &)*arg2);
   resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8081,7 +8207,9 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetMake(PyObject *SWIGUNUSEDPARM(self), PyObj
     }
   }
   result = (AMT::utf8string *) &(arg1)->GetMake();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
+  {
+    resultobj = PyString_FromStringAndSize((*result).data(), (*result).size());
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8096,8 +8224,7 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetMake(PyObject *SWIGUNUSEDPARM(self), PyObj
   int res1 = 0 ;
   std::shared_ptr< AMT::Vehicle > tempshared1 ;
   std::shared_ptr< AMT::Vehicle > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -8117,18 +8244,23 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetMake(PyObject *SWIGUNUSEDPARM(self), PyObj
       arg1 = const_cast< AMT::Vehicle * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetMake" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetMake" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetMake" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetMake" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   (arg1)->SetMake((AMT::utf8string const &)*arg2);
   resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8160,7 +8292,9 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetModel(PyObject *SWIGUNUSEDPARM(self), PyOb
     }
   }
   result = (AMT::utf8string *) &(arg1)->GetModel();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
+  {
+    resultobj = PyString_FromStringAndSize((*result).data(), (*result).size());
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8175,8 +8309,7 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetModel(PyObject *SWIGUNUSEDPARM(self), PyOb
   int res1 = 0 ;
   std::shared_ptr< AMT::Vehicle > tempshared1 ;
   std::shared_ptr< AMT::Vehicle > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -8196,18 +8329,23 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetModel(PyObject *SWIGUNUSEDPARM(self), PyOb
       arg1 = const_cast< AMT::Vehicle * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetModel" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetModel" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetModel" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetModel" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   (arg1)->SetModel((AMT::utf8string const &)*arg2);
   resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8257,8 +8395,7 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetProperty(PyObject *SWIGUNUSEDPARM(self), P
   int res1 = 0 ;
   std::shared_ptr< AMT::Vehicle > tempshared1 ;
   std::shared_ptr< AMT::Vehicle > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   AMT::utf8string *result = 0 ;
@@ -8279,18 +8416,25 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetProperty(PyObject *SWIGUNUSEDPARM(self), P
       arg1 = const_cast< AMT::Vehicle * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_GetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_GetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_GetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_GetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   result = (AMT::utf8string *) &(arg1)->GetProperty((AMT::utf8string const &)*arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
+  {
+    resultobj = PyString_FromStringAndSize((*result).data(), (*result).size());
+  }
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8304,10 +8448,8 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetProperty(PyObject *SWIGUNUSEDPARM(self), P
   int res1 = 0 ;
   std::shared_ptr< AMT::Vehicle > tempshared1 ;
   std::shared_ptr< AMT::Vehicle > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -8328,26 +8470,36 @@ SWIGINTERN PyObject *_wrap_Vehicle_SetProperty(PyObject *SWIGUNUSEDPARM(self), P
       arg1 = const_cast< AMT::Vehicle * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Vehicle_SetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetProperty" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Vehicle_SetProperty" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetProperty" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg3 = ptr;
   }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Vehicle_SetProperty" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Vehicle_SetProperty" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg3 = reinterpret_cast< AMT::utf8string * >(argp3);
   (arg1)->SetProperty((AMT::utf8string const &)*arg2,(AMT::utf8string const &)*arg3);
   resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return NULL;
 }
 
@@ -8700,7 +8852,9 @@ SWIGINTERN PyObject *_wrap_MaintenanceTask_GetType(PyObject *SWIGUNUSEDPARM(self
     }
   }
   result = (AMT::utf8string *) &(arg1)->GetType();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
+  {
+    resultobj = PyString_FromStringAndSize((*result).data(), (*result).size());
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8715,8 +8869,7 @@ SWIGINTERN PyObject *_wrap_MaintenanceTask_SetType(PyObject *SWIGUNUSEDPARM(self
   int res1 = 0 ;
   std::shared_ptr< AMT::MaintenanceTask > tempshared1 ;
   std::shared_ptr< AMT::MaintenanceTask > *smartarg1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -8736,18 +8889,23 @@ SWIGINTERN PyObject *_wrap_MaintenanceTask_SetType(PyObject *SWIGUNUSEDPARM(self
       arg1 = const_cast< AMT::MaintenanceTask * >((smartarg1 ? smartarg1->get() : 0));
     }
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MaintenanceTask_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MaintenanceTask_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MaintenanceTask_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MaintenanceTask_SetType" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   (arg1)->SetType((AMT::utf8string const &)*arg2);
   resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8897,8 +9055,7 @@ SWIGINTERN PyObject *_wrap_APIBase_AddTypeOfVehicle(PyObject *SWIGUNUSEDPARM(sel
   AMT::utf8string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   bool result;
@@ -8909,18 +9066,23 @@ SWIGINTERN PyObject *_wrap_APIBase_AddTypeOfVehicle(PyObject *SWIGUNUSEDPARM(sel
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "APIBase_AddTypeOfVehicle" "', argument " "1"" of type '" "AMT::APIBase *""'"); 
   }
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   result = (bool)(arg1)->AddTypeOfVehicle((AMT::utf8string const &)*arg2);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -8932,10 +9094,8 @@ SWIGINTERN PyObject *_wrap_APIBase_UpdateTypesOfVehicles(PyObject *SWIGUNUSEDPAR
   AMT::utf8string *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -8947,26 +9107,36 @@ SWIGINTERN PyObject *_wrap_APIBase_UpdateTypesOfVehicles(PyObject *SWIGUNUSEDPAR
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "1"" of type '" "AMT::APIBase *""'"); 
   }
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg3 = ptr;
   }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg3 = reinterpret_cast< AMT::utf8string * >(argp3);
   result = (bool)(arg1)->UpdateTypesOfVehicles((AMT::utf8string const &)*arg2,(AMT::utf8string const &)*arg3);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return NULL;
 }
 
@@ -9446,8 +9616,7 @@ SWIGINTERN PyObject *_wrap_APIBase_AddTypeOfMaintenance(PyObject *SWIGUNUSEDPARM
   AMT::utf8string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   bool result;
@@ -9458,18 +9627,23 @@ SWIGINTERN PyObject *_wrap_APIBase_AddTypeOfMaintenance(PyObject *SWIGUNUSEDPARM
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "APIBase_AddTypeOfMaintenance" "', argument " "1"" of type '" "AMT::APIBase *""'"); 
   }
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   result = (bool)(arg1)->AddTypeOfMaintenance((AMT::utf8string const &)*arg2);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -9481,10 +9655,8 @@ SWIGINTERN PyObject *_wrap_APIBase_UpdateTypesOfMaintenance(PyObject *SWIGUNUSED
   AMT::utf8string *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -9496,26 +9668,36 @@ SWIGINTERN PyObject *_wrap_APIBase_UpdateTypesOfMaintenance(PyObject *SWIGUNUSED
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "1"" of type '" "AMT::APIBase *""'"); 
   }
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg3 = ptr;
   }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "APIBase_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg3 = reinterpret_cast< AMT::utf8string * >(argp3);
   result = (bool)(arg1)->UpdateTypesOfMaintenance((AMT::utf8string const &)*arg2,(AMT::utf8string const &)*arg3);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return NULL;
 }
 
@@ -9988,8 +10170,7 @@ SWIGINTERN PyObject *_wrap_AMTAPI_AddTypeOfVehicle(PyObject *SWIGUNUSEDPARM(self
   AMT::utf8string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   bool result;
@@ -10000,18 +10181,23 @@ SWIGINTERN PyObject *_wrap_AMTAPI_AddTypeOfVehicle(PyObject *SWIGUNUSEDPARM(self
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AMTAPI_AddTypeOfVehicle" "', argument " "1"" of type '" "AMT::AMTAPI *""'"); 
   }
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_AddTypeOfVehicle" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   result = (bool)(arg1)->AddTypeOfVehicle((AMT::utf8string const &)*arg2);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -10023,10 +10209,8 @@ SWIGINTERN PyObject *_wrap_AMTAPI_UpdateTypesOfVehicles(PyObject *SWIGUNUSEDPARM
   AMT::utf8string *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -10038,26 +10222,36 @@ SWIGINTERN PyObject *_wrap_AMTAPI_UpdateTypesOfVehicles(PyObject *SWIGUNUSEDPARM
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "1"" of type '" "AMT::AMTAPI *""'"); 
   }
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg3 = ptr;
   }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfVehicles" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg3 = reinterpret_cast< AMT::utf8string * >(argp3);
   result = (bool)(arg1)->UpdateTypesOfVehicles((AMT::utf8string const &)*arg2,(AMT::utf8string const &)*arg3);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return NULL;
 }
 
@@ -10537,8 +10731,7 @@ SWIGINTERN PyObject *_wrap_AMTAPI_AddTypeOfMaintenance(PyObject *SWIGUNUSEDPARM(
   AMT::utf8string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   bool result;
@@ -10549,18 +10742,23 @@ SWIGINTERN PyObject *_wrap_AMTAPI_AddTypeOfMaintenance(PyObject *SWIGUNUSEDPARM(
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AMTAPI_AddTypeOfMaintenance" "', argument " "1"" of type '" "AMT::AMTAPI *""'"); 
   }
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_AddTypeOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
   result = (bool)(arg1)->AddTypeOfMaintenance((AMT::utf8string const &)*arg2);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
 }
 
@@ -10572,10 +10770,8 @@ SWIGINTERN PyObject *_wrap_AMTAPI_UpdateTypesOfMaintenance(PyObject *SWIGUNUSEDP
   AMT::utf8string *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -10587,26 +10783,36 @@ SWIGINTERN PyObject *_wrap_AMTAPI_UpdateTypesOfMaintenance(PyObject *SWIGUNUSEDP
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "1"" of type '" "AMT::AMTAPI *""'"); 
   }
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg2 = ptr;
   }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "2"" of type '" "AMT::utf8string const &""'"); 
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
+    }
+    arg3 = ptr;
   }
-  arg2 = reinterpret_cast< AMT::utf8string * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__string,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AMTAPI_UpdateTypesOfMaintenance" "', argument " "3"" of type '" "AMT::utf8string const &""'"); 
-  }
-  arg3 = reinterpret_cast< AMT::utf8string * >(argp3);
   result = (bool)(arg1)->UpdateTypesOfMaintenance((AMT::utf8string const &)*arg2,(AMT::utf8string const &)*arg3);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
   return NULL;
 }
 

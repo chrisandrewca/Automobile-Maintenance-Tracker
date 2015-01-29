@@ -3,15 +3,16 @@
 %include typemaps.i
 %include <std_vector.i>
 %include <std_shared_ptr.i>
+%include <std_string.i>
 
 %{
 #include "AutomobileMaintenanceTracker.hpp"
 %}
 
 %inline {
-	namespace AMT {
-		typedef std::string utf8string;
-	}
+namespace AMT {
+	typedef std::string utf8string;
+}
 }
 
 %template(VehiclePtr) std::shared_ptr<AMT::Vehicle>;
@@ -34,6 +35,10 @@
 
 %typemap(out) int& {
 	$result = PyInt_FromLong(*$1);
+}
+
+%typemap(out) AMT::utf8string& {
+	$result = PyString_FromStringAndSize((*$1).data(), (*$1).size());
 }
 
 %typemap(out) std::shared_ptr<std::vector<std::shared_ptr<AMT::Vehicle> > > {
