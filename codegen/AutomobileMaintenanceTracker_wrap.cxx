@@ -8987,8 +8987,15 @@ SWIGINTERN PyObject *_wrap_APIBase_ListAllTypesOfVehicles(PyObject *SWIGUNUSEDPA
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
   result = (arg1)->ListAllTypesOfVehicles();
   {
-    std::shared_ptr<  std::vector<AMT::utf8string> > *smartresult = result ? new std::shared_ptr<  std::vector<AMT::utf8string> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& utf8str : (*result))
+    {
+      PyObject* o = PyString_FromStringAndSize(utf8str.data(), utf8str.size());
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -9529,8 +9536,15 @@ SWIGINTERN PyObject *_wrap_APIBase_ListAllTypesOfMaintenance(PyObject *SWIGUNUSE
   arg1 = reinterpret_cast< AMT::APIBase * >(argp1);
   result = (arg1)->ListAllTypesOfMaintenance();
   {
-    std::shared_ptr<  std::vector<AMT::utf8string> > *smartresult = result ? new std::shared_ptr<  std::vector<AMT::utf8string> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& utf8str : (*result))
+    {
+      PyObject* o = PyString_FromStringAndSize(utf8str.data(), utf8str.size());
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -9777,8 +9791,17 @@ SWIGINTERN PyObject *_wrap_APIBase_ListVehicleMaintenanceHistory__SWIG_0(PyObjec
   arg2 = static_cast< int >(val2);
   result = (arg1)->ListVehicleMaintenanceHistory(arg2);
   {
-    std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> > *smartresult = result ? new std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__shared_ptrT_AMT__MaintenanceTask_t_std__allocatorT_std__shared_ptrT_AMT__MaintenanceTask_t_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& task_sp : (*result))
+    {
+      auto* task_sp_ptr = new std::shared_ptr<AMT::MaintenanceTask>(task_sp);
+      PyObject* o = SWIG_NewPointerObj(SWIG_as_voidptr(task_sp_ptr),
+        SWIGTYPE_p_std__shared_ptrT_AMT__MaintenanceTask_t, SWIG_POINTER_OWN);
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -9829,8 +9852,17 @@ SWIGINTERN PyObject *_wrap_APIBase_ListVehicleMaintenanceHistory__SWIG_1(PyObjec
   arg4 = static_cast< int >(val4);
   result = (arg1)->ListVehicleMaintenanceHistory(arg2,arg3,arg4);
   {
-    std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> > *smartresult = result ? new std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__shared_ptrT_AMT__MaintenanceTask_t_std__allocatorT_std__shared_ptrT_AMT__MaintenanceTask_t_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& task_sp : (*result))
+    {
+      auto* task_sp_ptr = new std::shared_ptr<AMT::MaintenanceTask>(task_sp);
+      PyObject* o = SWIG_NewPointerObj(SWIG_as_voidptr(task_sp_ptr),
+        SWIGTYPE_p_std__shared_ptrT_AMT__MaintenanceTask_t, SWIG_POINTER_OWN);
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -10046,8 +10078,15 @@ SWIGINTERN PyObject *_wrap_AMTAPI_ListAllTypesOfVehicles(PyObject *SWIGUNUSEDPAR
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
   result = (arg1)->ListAllTypesOfVehicles();
   {
-    std::shared_ptr<  std::vector<AMT::utf8string> > *smartresult = result ? new std::shared_ptr<  std::vector<AMT::utf8string> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& utf8str : (*result))
+    {
+      PyObject* o = PyString_FromStringAndSize(utf8str.data(), utf8str.size());
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -10588,8 +10627,15 @@ SWIGINTERN PyObject *_wrap_AMTAPI_ListAllTypesOfMaintenance(PyObject *SWIGUNUSED
   arg1 = reinterpret_cast< AMT::AMTAPI * >(argp1);
   result = (arg1)->ListAllTypesOfMaintenance();
   {
-    std::shared_ptr<  std::vector<AMT::utf8string> > *smartresult = result ? new std::shared_ptr<  std::vector<AMT::utf8string> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& utf8str : (*result))
+    {
+      PyObject* o = PyString_FromStringAndSize(utf8str.data(), utf8str.size());
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -10836,8 +10882,17 @@ SWIGINTERN PyObject *_wrap_AMTAPI_ListVehicleMaintenanceHistory__SWIG_0(PyObject
   arg2 = static_cast< int >(val2);
   result = (arg1)->ListVehicleMaintenanceHistory(arg2);
   {
-    std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> > *smartresult = result ? new std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__shared_ptrT_AMT__MaintenanceTask_t_std__allocatorT_std__shared_ptrT_AMT__MaintenanceTask_t_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& task_sp : (*result))
+    {
+      auto* task_sp_ptr = new std::shared_ptr<AMT::MaintenanceTask>(task_sp);
+      PyObject* o = SWIG_NewPointerObj(SWIG_as_voidptr(task_sp_ptr),
+        SWIGTYPE_p_std__shared_ptrT_AMT__MaintenanceTask_t, SWIG_POINTER_OWN);
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -10888,8 +10943,17 @@ SWIGINTERN PyObject *_wrap_AMTAPI_ListVehicleMaintenanceHistory__SWIG_1(PyObject
   arg4 = static_cast< int >(val4);
   result = (arg1)->ListVehicleMaintenanceHistory(arg2,arg3,arg4);
   {
-    std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> > *smartresult = result ? new std::shared_ptr<  std::vector<std::shared_ptr<AMT::MaintenanceTask>> >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__shared_ptrT_AMT__MaintenanceTask_t_std__allocatorT_std__shared_ptrT_AMT__MaintenanceTask_t_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& task_sp : (*result))
+    {
+      auto* task_sp_ptr = new std::shared_ptr<AMT::MaintenanceTask>(task_sp);
+      PyObject* o = SWIG_NewPointerObj(SWIG_as_voidptr(task_sp_ptr),
+        SWIGTYPE_p_std__shared_ptrT_AMT__MaintenanceTask_t, SWIG_POINTER_OWN);
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
