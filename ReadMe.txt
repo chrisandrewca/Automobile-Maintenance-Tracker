@@ -33,6 +33,8 @@ Open a terminal window:
     cd tests
     python test_amt_api.py (or test_vehicle.py, test_maintenance_task.py)
 
+Handy firefox addon to view SQLite DBs https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/
+
 -----------------------------------------------------------------
 Source Breakdown
 -----------------------------------------------------------------
