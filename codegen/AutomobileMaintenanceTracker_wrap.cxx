@@ -5685,6 +5685,47 @@ SWIGINTERN PyObject *SwigPyIterator_swigregister(PyObject *SWIGUNUSEDPARM(self),
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_Utf8VecPtr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::shared_ptr< std::vector< AMT::utf8string > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_Utf8VecPtr")) SWIG_fail;
+  result = (std::shared_ptr< std::vector< AMT::utf8string > > *)new std::shared_ptr< std::vector< AMT::utf8string > >();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Utf8VecPtr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::shared_ptr< std::vector< AMT::utf8string > > *arg1 = (std::shared_ptr< std::vector< AMT::utf8string > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_Utf8VecPtr",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Utf8VecPtr" "', argument " "1"" of type '" "std::shared_ptr< std::vector< AMT::utf8string > > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::shared_ptr< std::vector< AMT::utf8string > > * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Utf8VecPtr_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_VehiclePtr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::shared_ptr< AMT::Vehicle > *result = 0 ;
@@ -7746,47 +7787,6 @@ SWIGINTERN PyObject *MaintenanceTaskPtrVecPtr_swigregister(PyObject *SWIGUNUSEDP
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_new_Utf8VecPtr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  std::shared_ptr< std::vector< AMT::utf8string > > *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_Utf8VecPtr")) SWIG_fail;
-  result = (std::shared_ptr< std::vector< AMT::utf8string > > *)new std::shared_ptr< std::vector< AMT::utf8string > >();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_Utf8VecPtr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  std::shared_ptr< std::vector< AMT::utf8string > > *arg1 = (std::shared_ptr< std::vector< AMT::utf8string > > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_Utf8VecPtr",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Utf8VecPtr" "', argument " "1"" of type '" "std::shared_ptr< std::vector< AMT::utf8string > > *""'"); 
-  }
-  arg1 = reinterpret_cast< std::shared_ptr< std::vector< AMT::utf8string > > * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *Utf8VecPtr_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
 SWIGINTERN PyObject *_wrap_new_Vehicle__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -8378,8 +8378,15 @@ SWIGINTERN PyObject *_wrap_Vehicle_GetPropertyNames(PyObject *SWIGUNUSEDPARM(sel
   }
   result = (std::vector< AMT::utf8string,std::allocator< AMT::utf8string > > *) &(arg1)->GetPropertyNames();
   {
-    std::shared_ptr<  std::vector<AMT::utf8string> > *smartresult = new std::shared_ptr<  std::vector<AMT::utf8string> >(result SWIG_NO_NULL_DELETER_0);
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t, SWIG_POINTER_OWN);
+    resultobj = PyList_New((*result).size());
+    
+    unsigned int i = 0;
+    for (auto& utf8str : (*result))
+    {
+      PyObject* o = PyString_FromStringAndSize(utf8str.data(), utf8str.size());
+      PyList_SetItem(resultobj, i, o);
+      i++;
+    }
   }
   return resultobj;
 fail:
@@ -11256,6 +11263,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SwigPyIterator___add__", _wrap_SwigPyIterator___add__, METH_VARARGS, NULL},
 	 { (char *)"SwigPyIterator___sub__", _wrap_SwigPyIterator___sub__, METH_VARARGS, NULL},
 	 { (char *)"SwigPyIterator_swigregister", SwigPyIterator_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_Utf8VecPtr", _wrap_new_Utf8VecPtr, METH_VARARGS, NULL},
+	 { (char *)"delete_Utf8VecPtr", _wrap_delete_Utf8VecPtr, METH_VARARGS, NULL},
+	 { (char *)"Utf8VecPtr_swigregister", Utf8VecPtr_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_VehiclePtr", _wrap_new_VehiclePtr, METH_VARARGS, NULL},
 	 { (char *)"delete_VehiclePtr", _wrap_delete_VehiclePtr, METH_VARARGS, NULL},
 	 { (char *)"VehiclePtr_swigregister", VehiclePtr_swigregister, METH_VARARGS, NULL},
@@ -11302,9 +11312,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_MaintenanceTaskPtrVecPtr", _wrap_new_MaintenanceTaskPtrVecPtr, METH_VARARGS, NULL},
 	 { (char *)"delete_MaintenanceTaskPtrVecPtr", _wrap_delete_MaintenanceTaskPtrVecPtr, METH_VARARGS, NULL},
 	 { (char *)"MaintenanceTaskPtrVecPtr_swigregister", MaintenanceTaskPtrVecPtr_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_Utf8VecPtr", _wrap_new_Utf8VecPtr, METH_VARARGS, NULL},
-	 { (char *)"delete_Utf8VecPtr", _wrap_delete_Utf8VecPtr, METH_VARARGS, NULL},
-	 { (char *)"Utf8VecPtr_swigregister", Utf8VecPtr_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Vehicle", _wrap_new_Vehicle, METH_VARARGS, NULL},
 	 { (char *)"Vehicle_GetID", _wrap_Vehicle_GetID, METH_VARARGS, NULL},
 	 { (char *)"Vehicle_SetID", _wrap_Vehicle_SetID, METH_VARARGS, NULL},

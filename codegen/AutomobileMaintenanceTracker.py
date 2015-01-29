@@ -152,6 +152,24 @@ SwigPyIterator_swigregister = _AutomobileMaintenanceTracker.SwigPyIterator_swigr
 SwigPyIterator_swigregister(SwigPyIterator)
 
 SHARED_PTR_DISOWN = _AutomobileMaintenanceTracker.SHARED_PTR_DISOWN
+class Utf8VecPtr(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Utf8VecPtr, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Utf8VecPtr, name)
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        this = _AutomobileMaintenanceTracker.new_Utf8VecPtr()
+        try:
+            self.this.append(this)
+        except:
+            self.this = this
+    __swig_destroy__ = _AutomobileMaintenanceTracker.delete_Utf8VecPtr
+    __del__ = lambda self: None
+Utf8VecPtr_swigregister = _AutomobileMaintenanceTracker.Utf8VecPtr_swigregister
+Utf8VecPtr_swigregister(Utf8VecPtr)
+
 class VehiclePtr(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, VehiclePtr, name, value)
@@ -336,24 +354,6 @@ class MaintenanceTaskPtrVecPtr(_object):
     __del__ = lambda self: None
 MaintenanceTaskPtrVecPtr_swigregister = _AutomobileMaintenanceTracker.MaintenanceTaskPtrVecPtr_swigregister
 MaintenanceTaskPtrVecPtr_swigregister(MaintenanceTaskPtrVecPtr)
-
-class Utf8VecPtr(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, Utf8VecPtr, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, Utf8VecPtr, name)
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        this = _AutomobileMaintenanceTracker.new_Utf8VecPtr()
-        try:
-            self.this.append(this)
-        except:
-            self.this = this
-    __swig_destroy__ = _AutomobileMaintenanceTracker.delete_Utf8VecPtr
-    __del__ = lambda self: None
-Utf8VecPtr_swigregister = _AutomobileMaintenanceTracker.Utf8VecPtr_swigregister
-Utf8VecPtr_swigregister(Utf8VecPtr)
 
 class Vehicle(_object):
     __swig_setmethods__ = {}
