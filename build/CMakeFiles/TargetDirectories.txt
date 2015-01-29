@@ -1,3 +1,0 @@
-C:/codez/amt/build/CMakeFiles/ALL_BUILD.dir
-C:/codez/amt/build/CMakeFiles/AutomobileMaintenanceTracker.dir
-C:/codez/amt/build/CMakeFiles/ZERO_CHECK.dir
