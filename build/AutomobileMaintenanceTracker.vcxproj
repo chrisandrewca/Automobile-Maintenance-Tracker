@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{F84C7B24-F64A-4A60-9178-8856F4E329B0}</ProjectGUID>
+    <ProjectGUID>{A78052E5-5BCF-41B8-8188-CBD5C08F0394}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>AutomobileMaintenanceTracker</ProjectName>
@@ -412,7 +412,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:/codez/amt/build/ZERO_CHECK.vcxproj">
-      <Project>4B664220-B3D2-4E17-AEAC-0C8D65B65FA5</Project>
+      <Project>3AE6F180-EC4E-483D-AF0D-4A9A2456698A</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

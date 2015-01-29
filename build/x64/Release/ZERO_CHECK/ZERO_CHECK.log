@@ -1,5 +1,10 @@
-﻿Build started 1/29/2015 9:01:10 AM.
+﻿Build started 1/29/2015 9:11:41 AM.
+     1>Project "C:\codez\amt\build\ZERO_CHECK.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         Checking Build System
+         CMake does not need to re-run because C:/codez/amt/build/CMakeFiles/generate.stamp is up-to-date.
+     1>Done Building Project "C:\codez\amt\build\ZERO_CHECK.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.04
+Time Elapsed 00:00:00.06
