@@ -12,14 +12,11 @@ if (${UNIX})
 endif (${UNIX})
 
 IF (WIN32)
-#	include_directories(C:/Python27/include)
-#	list(APPEND CMAKE_LIBRARY_PATH C:/Python27/libs)
 	execute_process(COMMAND "${CMAKE_CURRENT_LIST_DIR}/tools/swigwin/swig.exe" -c++ -python -I${CMAKE_CURRENT_LIST_DIR}/include -o ${CMAKE_CURRENT_LIST_DIR}/codegen/AutomobileMaintenanceTracker_wrap.cxx ${CMAKE_CURRENT_LIST_DIR}/codegen/AutomobileMaintenanceTracker.i)
 ENDIF()
 
 include_directories(include/)
 
-#add_executable(AutomobileMaintenanceTracker
 add_library(AutomobileMaintenanceTracker SHARED
 	src/cpp/main.cpp
 	include/AutomobileMaintenanceTracker.hpp
