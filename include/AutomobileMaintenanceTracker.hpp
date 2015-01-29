@@ -6,15 +6,9 @@
 #include <vector>
 #include <unordered_map>
 
-/// !!! what are the CRUD API semantics think ease of use
-// if vehicle updated its own properties it would need a ref to the datastore, an injected ctor,
-// and the user would need to call V.save with these flags anyways (because client cant change
-// a const ref), so the API handles it
-// flags could be as large or fine grained as needed to cover different types of objects
-
 namespace AMT
 {
-// returning/accept utf8 strings
+
 typedef std::string utf8string;
 
 class Vehicle
@@ -216,11 +210,6 @@ public:
 class AMTAPI : public APIBase
 {
 public:
-    // returning errors?
-//	struct Result
-//	{
-//	};
-
 	enum class DataStoreOption { Database };
 
 	AMTAPI(DataStoreOption dataStore);

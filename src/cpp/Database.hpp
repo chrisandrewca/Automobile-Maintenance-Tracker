@@ -124,12 +124,21 @@ public:
 
 private:
     sqlite3* sqlite;
-	std::mutex sqliteStatementMutex; // TODO Transactions
-    // per function -- takeout anythin really common
-    std::vector<sqlite3_stmt*> preparedStatements;
 
+	// each sqlite prepared statement requires a mutex
+	std::mutex sqliteStatementMutex;
+    
+	std::vector<sqlite3_stmt*> preparedStatements;
+
+	/// sqlite3_prepare_v2 wrapper
+	/// @return SQLITE_OK or -1 if preparedQuery already points to an object
     int PrepareQuery(const std::string& queryText, sqlite3_stmt** preparedQuery);
-    int RetrieveVehiclePropsAndValues(Vehicle& vehicle, std::unordered_map<utf8string, utf8string>& propValMap);
+   
+	/// Gets the user defined field names and values for the vehicle
+	/// @return SQLITE_OK or other SQLITE_*
+	int RetrieveVehiclePropsAndValues(Vehicle& vehicle, std::unordered_map<utf8string, utf8string>& propValMap);
+	
+	/// connects to the database and creates tables if they do not exist
 	bool Setup(const char* databaseName, std::string& errorMessage);
 };
 
