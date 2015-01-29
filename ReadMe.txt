@@ -14,7 +14,7 @@ Windows (fully Linux compatibile with CMakeLists.txt path adjustments)
 -----------------------------------------------------------------
 Build Prep
 -----------------------------------------------------------------
-Define a couple system environment variables:
+Define a couple system environment variables for use by SWIG:
     PYTHON_INCLUDE: C:\python27\include
     PYTHON_LIB: C:\python27\libs\python27.lib
 
@@ -32,3 +32,21 @@ Running the test harness
 Open a terminal window:
     cd tests
     python test_amt_api.py (or test_vehicle.py, test_maintenance_task.py)
+
+-----------------------------------------------------------------
+Source Breakdown
+-----------------------------------------------------------------
+   .git/ - Commit history
+  build/ - CMake build dir
+codegen/ - SWIG interface (.i) file and generated code
+include/ - Single header AutomobileMaintenanceTracker.hpp
+    src/ - C++ files
+  tests/ - Python test harness for the API
+  tools/ - SWIGwin
+
+include/AutomobileMaintenanceTracker.hpp  - API interface / entry
+src/AMTAPI.cpp                            - Client facing API implementation
+src/Database.hpp                          - Implements the API and stores the data in a SQLite3 database
+src/Vehicle.cpp                           - Vehicle data
+src/MaintenanceTask.cpp                   - Maintenance Task data
+src/AutomobileMaintenanceTracker_wrap.cxx - SWIG generated API wrapper for Python interop
