@@ -52,3 +52,10 @@ assert response.GetType() == "Gasoline"
 assert response.GetMake() == "Volkswagon"
 assert response.GetYear() == 2014
 assert not response.GetModel()
+
+vid = vehicle.GetID()
+api.DeleteVehicle(vehicle.GetID())
+response = api.GetVehicle(vid)
+assert response.GetID() == -1
+
+api.DeleteMaintenanceTask(task.GetID())

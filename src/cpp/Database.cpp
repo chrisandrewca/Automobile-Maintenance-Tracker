@@ -403,38 +403,42 @@ std::shared_ptr<Vehicle> Database::GetVehicle(int vehicleID)
     this->PrepareQuery(queryText, &query);
 
 	sqlite3_bind_int(query, 1, vehicleID);
-	sqlite3_step(query);
-
-    const unsigned char* type = sqlite3_column_text(query, 0);
-    int typeSize = sqlite3_column_bytes(query, 0);
-
-    const unsigned char* make = sqlite3_column_text(query, 1);
-    int makeSize = sqlite3_column_bytes(query, 1);
-
-    const unsigned char* model = sqlite3_column_text(query, 2);
-    int modelSize = sqlite3_column_bytes(query, 2);
-
-    int year = sqlite3_column_int(query, 3);
-    int odometer = sqlite3_column_int(query, 4);
-
-    std::shared_ptr<Vehicle> vehicle =
-		std::shared_ptr<Vehicle>(new Vehicle(vehicleID));
-    vehicle->GetType() = std::string(type, type + typeSize);
-    vehicle->GetMake() = std::string(make, make + makeSize);
-    vehicle->GetModel() = std::string(model, model + modelSize);
-    vehicle->GetYear() = year;
-    vehicle->GetOdometer() = odometer;
-
-    sqlite3_reset(query);
-    sqlite3_clear_bindings(query);
-
-	std::unordered_map<utf8string, utf8string> propValMap;
-	this->RetrieveVehiclePropsAndValues(*vehicle, propValMap);
-
-	for (auto& kvp : propValMap)
+	int stepResult = sqlite3_step(query);
+	auto vehicle = std::shared_ptr<Vehicle>(new Vehicle());
+	
+	if (SQLITE_ROW == stepResult)
 	{
-		vehicle->SetProperty(kvp.first, kvp.second);
+		const unsigned char* type = sqlite3_column_text(query, 0);
+		int typeSize = sqlite3_column_bytes(query, 0);
+
+		const unsigned char* make = sqlite3_column_text(query, 1);
+		int makeSize = sqlite3_column_bytes(query, 1);
+
+		const unsigned char* model = sqlite3_column_text(query, 2);
+		int modelSize = sqlite3_column_bytes(query, 2);
+
+		int year = sqlite3_column_int(query, 3);
+		int odometer = sqlite3_column_int(query, 4);
+
+		vehicle.reset(new Vehicle());
+		vehicle->GetID() = vehicleID;
+		vehicle->GetType() = std::string(type, type + typeSize);
+		vehicle->GetMake() = std::string(make, make + makeSize);
+		vehicle->GetModel() = std::string(model, model + modelSize);
+		vehicle->GetYear() = year;
+		vehicle->GetOdometer() = odometer;
+
+		std::unordered_map<utf8string, utf8string> propValMap;
+		this->RetrieveVehiclePropsAndValues(*vehicle, propValMap);
+
+		for (auto& kvp : propValMap)
+		{
+			vehicle->SetProperty(kvp.first, kvp.second);
+		}
 	}
+
+	sqlite3_reset(query);
+	sqlite3_clear_bindings(query);
 
 	return vehicle;
 }
@@ -776,7 +780,6 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 
 	if (task.GetID() < 1)
 	{
-		std::cout << "creating new task" << "\n";
 		auto newTask = this->CreateMaintenanceTask(task.VehicleID());
 		task.GetID() = std::move(newTask->GetID()); // might not need move
 	}
