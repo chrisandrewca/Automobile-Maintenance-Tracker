@@ -4,6 +4,7 @@ using namespace AMT;
 
 Database::Database() :
     sqlite(nullptr),
+	sqliteStatementMutex(),
     preparedStatements()
 {
 }
@@ -48,6 +49,7 @@ int Database::PrepareQuery(const std::string& queryText, sqlite3_stmt** prepared
 
 int Database::RetrieveVehiclePropsAndValues(Vehicle &vehicle, std::unordered_map<utf8string, utf8string> &propValMap)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
     //std::cout << "compiling qtxtVehicleProperties" << "\n";
     static const std::string qtxtVehicleProperties("SELECT Name FROM VehicleUserDefinedField WHERE ApplicableVehicleType=?");
     static sqlite3_stmt* queryVehicleProperties = nullptr;
@@ -114,6 +116,12 @@ int Database::RetrieveVehiclePropsAndValues(Vehicle &vehicle, std::unordered_map
 
 bool Database::Setup(const char* databaseName, std::string& errorMessage)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
+	static bool setupDone = false;
+	if (setupDone)
+		return true;
+
 	errorMessage.clear();
 
 	if (sqlite3_open_v2(databaseName,
@@ -247,12 +255,15 @@ bool Database::Setup(const char* databaseName, std::string& errorMessage)
 		errMsg = nullptr;
 	}
 
-	return (errorMessage.size() == 0);
+	setupDone = (errorMessage.size() == 0);
+	return setupDone;
 }
 
 bool
 Database::AddTypeOfVehicle(const utf8string& name)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     // "register" mechanism
     static const char* queryText = "INSERT INTO VehicleType (Name) VALUES (?)";
     static sqlite3_stmt* query = nullptr;
@@ -283,6 +294,8 @@ Database::AddTypeOfVehicle(const utf8string& name)
 bool
 Database::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newName)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
 	// for functions which Bind + Step
@@ -316,6 +329,8 @@ Database::UpdateTypesOfVehicles(const utf8string& name, const utf8string& newNam
 std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfVehicles()
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	/// !!! TODO ERROR CHECKING LOGGING
 	/// !!! important
 	// need mutex on SQLitePreparedStatementPtr
@@ -353,6 +368,8 @@ Database::ListAllTypesOfVehicles()
 std::shared_ptr<Vehicle>
 Database::CreateVehicle()
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     /// !!! TODO ERROR CHECKING LOGGING
     /// !!! important
     // need mutex on SQLitePreparedStatementPtr
@@ -378,6 +395,8 @@ Database::CreateVehicle()
 bool
 Database::DeleteVehicle(int vehicleID)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     /// !!! TODO ERROR CHECKING LOGGING
     /// !!! important
     // need mutex on SQLitePreparedStatementPtr
@@ -407,6 +426,8 @@ Database::DeleteVehicle(int vehicleID)
 std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 Database::ListAllVehicles()
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     /// !!! TODO ERROR CHECKING LOGGING
     /// !!! important
     // need mutex on SQLitePreparedStatementPtr
@@ -479,6 +500,8 @@ Database::ListAllVehicles()
 std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >
 Database::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	auto v = std::shared_ptr<std::vector<std::shared_ptr<Vehicle> > >();
 	return v;
 }
@@ -488,6 +511,8 @@ Database::FindVehicles(Vehicle::Properties properties, const Vehicle& values)
 /// @return a vehicle with an ID > -1 if successful otherwise ID == -1
 std::shared_ptr<Vehicle> Database::GetVehicle(int vehicleID)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     static const std::string queryText("SELECT Type, Make, Model, Year, Odometer FROM Vehicle "
 									   "WHERE ID=?");
     static sqlite3_stmt* query = nullptr;
@@ -536,6 +561,8 @@ std::shared_ptr<Vehicle> Database::GetVehicle(int vehicleID)
 /// return true if update/add otherwise false
 bool Database::UpdateVehicle(Vehicle& vehicle)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     std::cout << "inside UpdateVehicle" << "\n";
 
     if (vehicle.GetID() < 1)
@@ -681,6 +708,8 @@ bool Database::UpdateVehicle(Vehicle& vehicle,
 	Vehicle::Properties properties,
 	const std::vector<utf8string>& userDefinedProperties)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     // deleting property names?
 	return false;
 }
@@ -690,6 +719,8 @@ bool Database::UpdateVehicle(Vehicle& vehicle,
 /// @return true if added otherwise false
 bool Database::AddTypeOfMaintenance(const utf8string& name)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     static const char* queryText = "INSERT INTO MaintenanceType (Name) VALUES (?)";
     static sqlite3_stmt* query = nullptr;
     this->PrepareQuery(queryText, &query);
@@ -714,6 +745,8 @@ bool Database::AddTypeOfMaintenance(const utf8string& name)
 /// @return true if updated/same otherwise false
 bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string& newType)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     static const char* queryText = "UPDATE MaintenanceType SET Name=? WHERE Name=?";
     static sqlite3_stmt* query = nullptr;
     this->PrepareQuery(queryText, &query);
@@ -740,6 +773,8 @@ bool Database::UpdateTypesOfMaintenance(const utf8string& type, const utf8string
 std::shared_ptr<std::vector<utf8string> >
 Database::ListAllTypesOfMaintenance()
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	static const char* queryText = "SELECT * FROM MaintenanceType";
 	static sqlite3_stmt* query = nullptr;
 	this->PrepareQuery(queryText, &query);
@@ -771,6 +806,8 @@ Database::ListAllTypesOfMaintenance()
 std::shared_ptr<MaintenanceTask>
 Database::CreateMaintenanceTask(int vehicleID)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     // TODO update DB to have constraint on vehicleID existing
     static const char* queryText = "INSERT INTO Maintenance (VehicleID) VALUES (?)";
     static sqlite3_stmt* query = nullptr;
@@ -795,6 +832,8 @@ Database::CreateMaintenanceTask(int vehicleID)
 /// return true if update/add otherwise false
 bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	static const std::string qtxt_Insert_or_Ignore_Maintenance_Type(
 		"INSERT OR IGNORE INTO MaintenanceType (Name) VALUES (?)");
 	static sqlite3_stmt* queryInsertOrIgnoreMaintenanceType = nullptr;
@@ -849,6 +888,8 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task)
 bool Database::UpdateMaintenanceTask(MaintenanceTask& task,
 	MaintenanceTask::Properties properties)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	return false;
 }
 
@@ -856,6 +897,8 @@ bool Database::UpdateMaintenanceTask(MaintenanceTask& task,
 /// @return true if task removed/not found otherwise false
 bool Database::DeleteMaintenanceTask(int taskID)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
     static const char* queryText = "DELETE FROM Maintenance WHERE ID=?";
     static sqlite3_stmt* query = nullptr;
     this->PrepareQuery(queryText, &query);
@@ -878,6 +921,8 @@ bool Database::DeleteMaintenanceTask(int taskID)
 std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 Database::ListVehicleMaintenanceHistory(int vehicleID)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	std::cout << "Inside ListVehicleMaintenanceHistory" << "\n";
 	static const char* qtxtMaintenanceHistory = "SELECT ID, Type, Date FROM Maintenance "
 												"WHERE VehicleID=?";
@@ -924,5 +969,7 @@ Database::ListVehicleMaintenanceHistory(int vehicleID)
 std::shared_ptr<std::vector<std::shared_ptr<MaintenanceTask> > >
 Database::ListVehicleMaintenanceHistory(int vehicleID, int startDate, int endDate)
 {
+	std::lock_guard<std::mutex>(this->sqliteStatementMutex);
+
 	return nullptr;
 }

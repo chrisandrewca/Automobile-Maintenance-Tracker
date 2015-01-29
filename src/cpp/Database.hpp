@@ -3,6 +3,7 @@
 
 #include "AutomobileMaintenanceTracker.hpp"
 #include "sqlite/sqlite3.h"
+#include <mutex>
 
 namespace AMT
 {
@@ -123,6 +124,7 @@ public:
 
 private:
     sqlite3* sqlite;
+	std::mutex sqliteStatementMutex; // TODO Transactions
     // per function -- takeout anythin really common
     std::vector<sqlite3_stmt*> preparedStatements;
 
